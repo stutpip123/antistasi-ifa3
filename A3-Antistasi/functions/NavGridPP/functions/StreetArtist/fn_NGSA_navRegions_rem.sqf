@@ -3,16 +3,13 @@ Maintainer: Caleb Serafin
     Removes a _roadStruct reference from navRegions
 
 Arguments:
-    <ARRAY<             navGrid:
-        <OBJECT>            Road
-        <ARRAY<OBJECT>>         Connected roads.
-        <ARRAY<SCALAR>>         True driving distance in meters to connected roads.
-    >>
+    <LOCATION> _navRegions
+    <<OBJECT>,<ARRAY<OBJECT>>,<ARRAY<SCALAR>>> Road Struct
 
 Return Value:
     <BOOLEAN> true if deleted, false if not found.
 
-Scope: Any, Global Arguments
+Scope: Client, Local Arguments, Local Effect
 Environment: Unscheduled
 Public: Yes
 

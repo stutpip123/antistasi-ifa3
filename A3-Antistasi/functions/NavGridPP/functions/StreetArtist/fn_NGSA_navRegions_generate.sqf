@@ -12,9 +12,9 @@ Arguments:
 
 Return Value:
     <LOCATION> same _navRegions as found in localNamespace >> "NavGridPP" >> "NavRegions".
-        Each var element: <<STRING>Region POS,<ARRAY< <POS2D|POSAGL>Road Pos, <ARRAY>StructReference >>
+        Each var element: <ARRAY< <POS2D|POSAGL>Road Pos, <ARRAY>StructReference >>
 
-Scope: Any, Global Arguments
+Scope: Client, Global Arguments, Local Effect
 Environment: Unscheduled
 Public: Yes
 
@@ -31,7 +31,7 @@ private _navRegions = [localNamespace,"NavGridPP","NavRegions",nil,nil] call Col
     private _pos = getPos (_x#0);
     private _region = str [floor (_pos#0 / 100),floor (_pos#1 / 100)];
     private _items = _navRegions getVariable [_region,[]];
-    _items pushBack [_pos,_x];
+    _items pushBack _x;
     _navRegions setVariable [_region,_items];
 } forEach _navGrid;
 

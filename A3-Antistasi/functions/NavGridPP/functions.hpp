@@ -1,9 +1,4 @@
 class A3A {
-    class StreetArtist {
-        class NGSA_navRegions_add {};
-        class NGSA_navRegions_generate {};
-        class NGSA_navRegions_rem {};
-    };
     class NavGridPP {
         class NG_check_conExists {};
         class NG_check_oneWays {};
@@ -28,6 +23,18 @@ class A3A {
         class NG_simplify_conDupe {};
         class NG_simplify_flat {};
         class NG_simplify_junc {};
+    };
+    class StreetArtist {
+        class NGSA_EH_add {};
+        class NGSA_EH_rem {};
+        class NGSA_export {};
+        class NGSA_main {};
+        class NGSA_navRegions_add {};
+        class NGSA_navRegions_generate {};
+        class NGSA_navRegions_getStruct {};
+        class NGSA_navRegions_rem {};
+        class NGSA_onMouseClick {};
+        class NGSA_toggleConnection {};
     };
     class UI {
         class customHint {};

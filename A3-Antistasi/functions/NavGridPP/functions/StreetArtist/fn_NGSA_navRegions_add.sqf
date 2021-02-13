@@ -3,16 +3,13 @@ Maintainer: Caleb Serafin
     Adds a _roadStruct reference to navRegions
 
 Arguments:
-    <ARRAY<             navGrid:
-        <OBJECT>            Road
-        <ARRAY<OBJECT>>         Connected roads.
-        <ARRAY<SCALAR>>         True driving distance in meters to connected roads.
-    >>
+    <LOCATION> _navRegions
+    <<OBJECT>,<ARRAY<OBJECT>>,<ARRAY<SCALAR>>> Road Struct
 
 Return Value:
     <BOOLEAN> true if added.
 
-Scope: Any, Global Arguments
+Scope: Client, Local Arguments, Local Effect
 Environment: Unscheduled
 Public: Yes
 
@@ -27,7 +24,7 @@ params [
 private _pos = getPos (_roadStruct#0);
 private _region = str [floor (_pos#0 / 100),floor (_pos#1 / 100)];
 private _items = _navRegions getVariable [_region,[]];
-_items pushBack [_pos,_roadStruct];
+_items pushBack _roadStruct;
 _navRegions setVariable [_region,_items];
 
 true;

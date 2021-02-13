@@ -78,5 +78,6 @@ if (_leftClick) then {
     };
 } else {
     // [A3A_NGSA_selectedStruct,_targetStruct] call A3A_NGSA_toggleEnabled;
-    ["Street Artist","Pretend that a node's existence was toggled"] call A3A_fnc_customHint;
+    ["Street Artist","Re-Drawing."] call A3A_fnc_customHint;
+    [4,false,false,0.8,0] spawn A3A_fnc_NG_main_draw;
 };

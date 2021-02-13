@@ -47,6 +47,7 @@ private _flatMaxDrift = -1;
 private _juncMergeDistance = -1;
 private _navGridDB_formatted = ("/*{""systemTimeUCT_G"":"""+(systemTimeUTC call A3A_fnc_systemTime_format_G)+""",""worldName"":"""+worldName+""",""NavGridPP_Config"":{""_flatMaxDrift"":"+str _flatMaxDrift+",""_juncMergeDistance"":"+str _juncMergeDistance+"}}*/
 ") + ([_navGridDB] call A3A_fnc_NG_format_navGridDB);
+copyToClipboard _navGridDB_formatted;
 
 [localNamespace,"A3A_NGPP","navIslands",_navIslands] call Col_fnc_nestLoc_set;
 [localNamespace,"A3A_NGPP","navGridDB_formatted",_navGridDB_formatted] call Col_fnc_nestLoc_set;

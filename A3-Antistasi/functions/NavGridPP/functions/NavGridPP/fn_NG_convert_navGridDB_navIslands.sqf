@@ -9,6 +9,7 @@ Arguments:
     <ARRAY<             navGridDB:
         <POS2D|POSAGL>      Road pos.
         <SCALAR>            Island ID.
+        <BOOLEAN>           isJunction.
         <ARRAY<             Connections:
             <SCALAR>            Index in navGridDB of connected road.
             <SCALAR>            Road type Enumeration. {TRACK = 0; ROAD = 1; MAIN ROAD = 2} at time of writing.
@@ -27,7 +28,7 @@ Return Value:
     >>
 
 Scope: Any, Global Arguments
-Environment: Unscheduled
+Environment: Scheduled
 Public: Yes
 
 Example:

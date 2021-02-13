@@ -35,7 +35,7 @@ Return Value:
     <ANY> Undefined
 
 Scope: Client, Global Arguments
-Environment: Unscheduled
+Environment: Scheduled
 Public: Yes
 
 Example:
@@ -194,7 +194,6 @@ try {
     _diag_step_main = "Done";
     _diag_step_sub = "navGridDB copied to clipboard!<br/><br/>If you have lost your clipboard, you can grab the navGridDB_formatted with<br/>`copyToClipboard ([localNamespace,'A3A_NGPP','navGridDB_formatted',''] call Col_fnc_nestLoc_get)`";
     call _fnc_diag_render;
-    forceUnicode 0;
     copyToClipboard _navGridDB_formatted; // In case user cleared their clipboard
     [localNamespace,"A3A_NGPP","activeProcesses","NG_main",false] call Col_fnc_nestLoc_set;
     uiSleep 1;

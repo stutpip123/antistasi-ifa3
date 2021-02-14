@@ -144,5 +144,3 @@ reverse _orphanedIndices;
 [_navGridSimple,_orphanedIndices] call Col_fnc_array_remIndices;
 
 _navGridSimple;
-
-//private _navGridFixed = _navGrid apply {str (_x#0)} apply {_navGridNS getVariable [_x,nil]};

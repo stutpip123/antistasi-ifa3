@@ -48,7 +48,12 @@ private _fnc_connectStructAndRoad = {
     private _myRoad = _myStruct#0;
     private _distance = _myRoad distance2D _otherRoad;
 
-    private _otherStruct = _navGridNS getVariable [str _otherRoad,nil];
+    private _otherStruct = _navGridNS getVariable [str _otherRoad,0];
+
+    if (_otherStruct isEqualType 0) exitWith {
+        [1,"Could not find index of '"+str _otherRoad+"' " + str (getPos _otherRoad) + ".","fn_NG_fix_deadEnds"] call A3A_fnc_log;
+        ["fn_NG_fix_deadEnds Error","Please check RPT."] call A3A_fnc_customHint;
+    };
 
     _myStruct#1 pushBack _otherRoad;    // Original values are modified by reference
     _myStruct#2 pushBack _distance;

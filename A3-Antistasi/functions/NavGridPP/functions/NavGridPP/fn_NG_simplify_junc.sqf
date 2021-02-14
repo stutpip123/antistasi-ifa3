@@ -93,14 +93,14 @@ private _fnc_consumeStruct = {
     private _otherRoad = _otherStruct#0;
     private _otherName = str _otherRoad;
     private _otherConnections = _otherStruct#1;
-    private _otherConnectedStructs = _otherConnections apply {_navGridSimple #(_roadIndexNS getVariable [str _x,nil])};
+    private _otherConnectedStructs = _otherConnections apply {_navGridSimple #(_roadIndexNS getVariable [str _x,-1])};
 
     private _oldOtherConnections = +_otherConnections;
 
     {
         [_otherStruct,_x] call _fnc_disconnectStructs;
     } forEach _otherConnectedStructs;
-    if !((_navGridSimple #(_roadIndexNS getVariable [str _otherRoad,nil]) #1) isEqualTo _const_emptyArray) then {
+    if !((_navGridSimple #(_roadIndexNS getVariable [str _otherRoad,-1]) #1) isEqualTo _const_emptyArray) then {
         [1,"Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPos _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     };
@@ -162,7 +162,7 @@ private _diag_totalSegments = count _navGridSimple;
     if ((count _myConnections) > 2) then {
         _connectedJuncStructs = _myConnections
             select {_myRoad distance2D _x < _juncMergeDistance}                       // Only within small junction proximity
-            apply {_navGridSimple #(_roadIndexNS getVariable [str _x,nil])}     // Get their structs
+            apply {_navGridSimple #(_roadIndexNS getVariable [str _x,-1])}     // Get their structs
             select {count (_x#1) > 2};                                          // Only structs that are junctions
     };
 
@@ -197,5 +197,3 @@ _orphanedIndices sort false; // The order of orphaned indices will be random.
 [_navGridSimple,_orphanedIndices] call Col_fnc_array_remIndices;
 
 _navGridSimple;
-
-//private _navGridFixed = _navGrid apply {str (_x#0)} apply {_navGridNS getVariable [_x,nil]};

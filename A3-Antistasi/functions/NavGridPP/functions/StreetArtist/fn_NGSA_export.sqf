@@ -51,7 +51,7 @@ copyToClipboard _navGridDB_formatted;
 
 [localNamespace,"A3A_NGPP","navIslands",_navIslands] call Col_fnc_nestLoc_set;
 [localNamespace,"A3A_NGPP","navGridDB_formatted",_navGridDB_formatted] call Col_fnc_nestLoc_set;
-[4,false,false,0.8,0] spawn A3A_fnc_NG_main_draw;
+[4,false,false,1.2,2] spawn A3A_fnc_NG_main_draw;
 
 [4,"Done","fn_NGSA_export"] call A3A_fnc_log;
 _diag_step_main = "Done";

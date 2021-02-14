@@ -22,4 +22,4 @@ private _navGrid = [_navIslands] call A3A_fnc_NG_convert_navIslands_navGrid;
 [_navGrid] call A3A_fnc_NGSA_navRegions_generate;
 call A3A_fnc_NGSA_EH_add;
 
-[4,false,false,0.8,0] spawn A3A_fnc_NG_main_draw;
+[4,false,false,1.2,2] spawn A3A_fnc_NG_main_draw;

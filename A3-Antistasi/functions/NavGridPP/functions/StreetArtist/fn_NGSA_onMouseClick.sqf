@@ -39,8 +39,6 @@ private _worldPos = _map displayCtrl 51 ctrlMapScreenToWorld [_xPos, _yPos];
 private _navRegions = [localNamespace,"NavGridPP","NavRegions",locationNull] call Col_fnc_nestLoc_get;
 _targetStruct = [_navRegions,_worldPos] call A3A_fnc_NGSA_navRegions_getStruct;
 
-private _const_emptyArray = [];
-if (_targetStruct isEqualTo _const_emptyArray) exitWith {};
 
 if (isNil {DEV_tempMarkers}) then {
     DEV_tempMarkers = [];
@@ -63,21 +61,22 @@ private _select = {
     private _name = str (_struct#0);
     A3A_NGSA_selectionMarker = createMarkerLocal [_name,getPosWorld (_struct#0)];
     _name setMarkerTypeLocal "Select";
-    _name setMarkerSizeLocal [0.8, 0.8];
+    _name setMarkerSizeLocal [1.2, 1.2];
     _name setMarkerColor "colorRed"; // Broadcasts here
 };
 
+private _const_emptyArray = [];
 if (_leftClick) then {
-    if (_targetStruct isEqualTo A3A_NGSA_selectedStruct) then {     // Deselect
-        call _deselect;
-    } else {                                                        // Select
-        if !(A3A_NGSA_selectedStruct isEqualTo _const_emptyArray) then {
-            [A3A_NGSA_selectedStruct,_targetStruct] call A3A_fnc_NGSA_toggleConnection;
-        };
-        [_targetStruct] call _select;
+    if (_targetStruct isEqualTo A3A_NGSA_selectedStruct || _targetStruct isEqualTo _const_emptyArray) exitWith { call _deselect; };   // Deselect
+    // Select
+    if !(A3A_NGSA_selectedStruct isEqualTo _const_emptyArray) then {
+        [A3A_NGSA_selectedStruct,_targetStruct] call A3A_fnc_NGSA_toggleConnection;
     };
+    [_targetStruct] call _select;
+
 } else {
+    if (_targetStruct isEqualTo _const_emptyArray) exitWith {};
     // [A3A_NGSA_selectedStruct,_targetStruct] call A3A_NGSA_toggleEnabled;
-    ["Street Artist","Re-Drawing."] call A3A_fnc_customHint;
-    [4,false,false,0.8,0] spawn A3A_fnc_NG_main_draw;
+    ["Street Artist","Re-Drawing and exported."] call A3A_fnc_customHint;
+    [] spawn A3A_fnc_NGSA_export;
 };

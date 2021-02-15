@@ -1,9 +1,9 @@
 # ❗❗ HEY YOU, READ THIS! &nbsp;&nbsp; HEY DU, LIES DAS! ❗❗
 ### 👉 BASIC AND QUICK START 👈
 0.  Run arma.
-1.  Make empty mp-mission on any map (community or offical) with just one player.
+1.  Make empty mp-mission on any map (community or official) with just one player.
 2.  Save and close editor.
-3.  Copy Everything in upper NavGridPP folder (includes: /Collections/; /function/; /description.ext; /functions.hpp)
+3.  Copy Everything in this folder (includes: /Collections/; /function/; /description.ext; /functions.hpp; /NG_GUI_defines.hpp; /NG_importGUI.hpp)
 4.  Paste into the folder of the mp mission you created. Usually in `C:\Users\User\Documents\Arma 3 - Other Profiles\YOUR_ARMA_NAME\mpmissions\MISSION_NAME.MAP\`
 5.  Start host LAN multiplayer.
 6.  Run and join mission.

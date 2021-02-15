@@ -178,7 +178,7 @@ try {
     [4,"A3A_fnc_NG_convert_navIslands_navGridDB","fn_NG_main"] call A3A_fnc_log;
     private _navGridDB = [_navIslands] call A3A_fnc_NG_convert_navIslands_navGridDB;
 
-//*
+/*
     _diag_step_sub = "Unit Test Running<br/>navGridDB to navIsland";  // Serves as a self check
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_convert_navGridDB_navIslands","fn_NG_main"] call A3A_fnc_log;

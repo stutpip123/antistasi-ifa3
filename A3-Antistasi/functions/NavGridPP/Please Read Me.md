@@ -53,9 +53,10 @@ You can re-run this command as much as you want, everytime it will delete the ol
 Therefore, the default execution would also look like this: `[4,false,false,0.8,1] spawn A3A_fnc_NG_main_draw;`<br/>
 
 ### 🆓 Presents:
-* Only road dots and islands: `[0,false,false,0.8,1.5] spawn A3A_fnc_NG_main_draw;`
-* Only huge opaque lines and islands: `[12,true,false,0,1.5] spawn A3A_fnc_NG_main_draw;`
-* Only large lines and distances: `[4,false,true,0,0] spawn A3A_fnc_NG_main_draw;`
+* Inspect road network overview `[6,true,false,0,1] spawn A3A_fnc_NG_main_draw;`
+* Inspect Junctions `[1,false,false,0.4,0.8] spawn A3A_fnc_NG_main_draw;`
+* Only road dots and islands: `[0,false,false,0.8,1] spawn A3A_fnc_NG_main_draw;`
+* Only large lines and distances: `[6,false,true,0,0] spawn A3A_fnc_NG_main_draw;`
 
 # 📥 Import navGridDB
 If you have already generated a navGridDB before loading the world and you do not want to regenerate it again: you can use the import function to load it into Arma 3 for viewing or editing.

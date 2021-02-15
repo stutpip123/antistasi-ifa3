@@ -1,130 +1,67 @@
+import RscEditMulti;
+import RscText;
+import RscFrame;
+import RscButton;
+
+#define NG_FRAME_X (0.05 * safezoneW + safezoneX)
+#define NG_FRAME_Y (0.1 * safezoneH + safezoneY)
+#define NG_FRAME_WIDTH (0.9 * safezoneW)
+#define NG_FRAME_HEIGHT (0.8 * safezoneH)
+
+#define NG_CONTENTS_X (NG_FRAME_X + NG_FRAME_WIDTH * 0.005)
+#define NG_CONTENTS_Y (NG_FRAME_Y + NG_FRAME_HEIGHT * 0.025)
+#define NG_CONTENTS_WIDTH (NG_FRAME_WIDTH * 0.99)
+#define NG_CONTENTS_HEIGHT (NG_FRAME_HEIGHT * 0.95)
+
 class A3A_NG_import_dialogue {
     idd = -1;
     access = 0;
     movingEnable = true;
-    enableSimulation = false;
+    enableSimulation = true;
     class Controls {
-        class GreyBox {
-            type = CT_STATIC;
-            style = ST_CENTER;
-            shadow = 2;
-            colorText[] = {1,1,1,1};
-            font = "PuristaMedium";
-            sizeEx = 0.02;
+        class GreyBox : RscText {
             colorBackground[] = { 0.2,0.2,0.2, 0.9 };
 
-            idc = -1;
-            text = "";
-            x = 0.244979 * safezoneW + safezoneX;
-            y = 0.223941 * safezoneH + safezoneY;
-            w = 0.445038 * safezoneW;
-            h = 0.20 * safezoneH;//30
+            x = NG_FRAME_X;
+            y = NG_FRAME_Y;
+            w = NG_FRAME_WIDTH;
+            h = NG_FRAME_HEIGHT;
         };
 
-        class Frame {
+        class Frame : RscFrame {
+            colorBackground[] = {1,1,1,1};
+            sizeEx = 0.05;
 
-            type = CT_STATIC;
-            style = ST_FRAME;
-            shadow = 2;
-            colorBackground[] = {1,1,1,1};//{1,1,1,1}
-            colorText[] = {1,1,1,0.9};
-            font = "PuristaMedium";
-            sizeEx = 0.03;
-
-            idc = -1;
             text = "Import navGridDB";
-            x = 0.254979 * safezoneW + safezoneX;
-            y = 0.233941 * safezoneH + safezoneY;
-            w = 0.425038 * safezoneW;
-            h = 0.18 * safezoneH;//28
+            x = NG_FRAME_X;
+            y = NG_FRAME_Y;
+            w = NG_FRAME_WIDTH;
+            h = NG_FRAME_HEIGHT;
         };
 
-        class EditBox {
-            deletable = 0;
-            fade = 0;
-            access = 0;
-            type = CT_EDIT;
-            colorBackground[] = {0,0,0,0};
-            colorText[] = {0.95,0.95,0.95,1};
-            colorDisabled[] = {1,1,1,0.25};
-            colorSelection[] =
-            {
-                "(profilenamespace getvariable ['GUI_BCG_RGB_R',0.13])",
-                "(profilenamespace getvariable ['GUI_BCG_RGB_G',0.54])",
-                "(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21])",
-                1
-            };
-            autocomplete = "";
-            text = "Ctrl+A then Ctrl+V";
-            style = ST_FRAME;
+        class EditBox : RscEditMulti {
             font = "RobotoCondensed";
-            shadow = 2;
-            sizeEx = 0.05;
-            canModify = 1;
-            tooltipColorText[] = {1,1,1,1};
-            tooltipColorBox[] = {1,1,1,1};
-            tooltipColorShade[] = {0,0,0,0.65};
+            text = "Ctrl+A then Ctrl+V";
 
-
+            size = 0.55;
+            access = 1;
+            sizeEx = 0.025;
+            linespacing = 1;
             idc = 42069;
-            tooltip = "";
-            x = 0.272481 * safezoneW + safezoneX;
-            y = 0.317959 * safezoneH + safezoneY;
-            w = 0.175015 * safezoneW;
-            h = 0.0560125 * safezoneH;
+            x = NG_CONTENTS_X;
+            y = NG_CONTENTS_Y;
+            w = NG_CONTENTS_WIDTH;
+            h = NG_CONTENTS_HEIGHT * 0.9;
         };
 
-        class ImportButton {
-            soundEnter[] = {
-                "\A3\ui_f\data\sound\RscButton\soundEnter",
-                0.09,
-                1
-            };
-            soundPush[] = {
-                "\A3\ui_f\data\sound\RscButton\soundPush",
-                0.09,
-                1
-            };
-            soundClick[] = {
-                "\A3\ui_f\data\sound\RscButton\soundClick",
-                0.09,
-                1
-            };
-            soundEscape[] = {
-                "\A3\ui_f\data\sound\RscButton\soundEscape",
-                0.09,
-                1
-            };
+        class ImportButton : RscButton {
 
-            access = 0;
-            type = CT_BUTTON;
-            colorText[] = {0.73,0,0,1};
-            colorDisabled[] = {0.4,0.4,0.4,0};
-            colorBackground[] =  {0.247,0.243,0.243,1};
-            colorBackgroundDisabled[] = {0,0.0,0};
-            colorBackgroundActive[] = {0.247,0.243,0.243,1};
-            colorFocused[] = {0.247,0.243,0.243,1};
-            colorShadow[] = {0.023529,0,0.0313725,1};
-            colorBorder[] = {0.023529,0,0.0313725,1};
-            style = 2;
-            shadow = 2;
-            font = "PuristaMedium";
-            sizeEx = 0.05;
-            offsetX = 0.003;
-            offsetY = 0.003;
-            offsetPressedX = 0.002;
-            offsetPressedY = 0.002;
-            borderSize = 0;
-            onMouseEnter = "(_this select 0) ctrlSetTextColor [1,0.969,0,1]";
-            onMouseExit = "(_this select 0) ctrlSetTextColor [0.73,0,0,1]";
-
-            idc = -1;
             text = "Import";
-            tooltip = "";
-            x = 0.482498 * safezoneW + safezoneX;
-            y = 0.317959 * safezoneH + safezoneY;
-            w = 0.175015 * safezoneW;
-            h = 0.0560125 * safezoneH;
+            sizeEx = 0.1;
+            x = NG_CONTENTS_X;
+            y = NG_CONTENTS_Y + NG_CONTENTS_HEIGHT * 0.9;
+            w = NG_CONTENTS_WIDTH;
+            h = NG_CONTENTS_HEIGHT * 0.1;
             action = "A3A_NG_import_NGDB_formatted = ctrlText 42069; closeDialog 1;";
         };
     };

@@ -30,6 +30,7 @@ Maintainer: Caleb Serafin
 Arguments:
     <SCALAR> Max drift is how far the simplified line segment can stray from the road in metres. (Default = 50)
     <SCALAR> Junctions are only merged if within this distance from each other. (Default = 15)
+    <BOOLEAN> True to start the drawing script automatically. (Default = false)
 
 Return Value:
     <ANY> Undefined
@@ -53,7 +54,8 @@ Example:
 
 params [
     ["_flatMaxDrift",50,[ 0 ]],
-    ["_juncMergeDistance",15,[ 0 ]]
+    ["_juncMergeDistance",15,[ 0 ]],
+    ["_autoDraw",false,[ false ]]
 ];
 
 if (!canSuspend) exitWith {
@@ -196,8 +198,10 @@ try {
     call _fnc_diag_render;
     copyToClipboard _navGridDB_formatted; // In case user cleared their clipboard
     [localNamespace,"A3A_NGPP","activeProcesses","NG_main",false] call Col_fnc_nestLoc_set;
-    uiSleep 1;
-    call _fnc_diag_render;
+
+    if (_autoDraw) then {
+        [] call A3A_fnc_NG_main_draw;
+    };
 } catch {
     ["NavGrid Error",str _exception] call A3A_fnc_customHint;
     [localNamespace,"A3A_NGPP","activeProcesses","NG_main",false] call Col_fnc_nestLoc_set;

@@ -19,7 +19,7 @@ Arguments:
         >>
     >>
     <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
-    <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1.5)
+    <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1)
 
 Return Value:
     <ANY> undefined.
@@ -34,7 +34,7 @@ Example:
 params [
     ["_navIslands",[],[ [] ]], //<ARRAY< island ARRAY<Road,connections ARRAY<Road>>  >>
     ["_dot_size",0.8,[ 0 ]],
-    ["_islandDot_size",1.5,[ 0 ]]
+    ["_islandDot_size",1,[ 0 ]]
 ];
 
 private _markers = [localNamespace,"A3A_NGPP","draw","dotOnRoads",[]] call Col_fnc_nestLoc_get;

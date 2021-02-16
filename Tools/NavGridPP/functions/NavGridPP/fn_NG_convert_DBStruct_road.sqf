@@ -2,12 +2,13 @@
 Maintainer: Caleb Serafin
     Converts a save position into a road, this handles overlapping roads at that position.
     Similar to NG_convert_DBStruct_road, except input format matches the road structs in navGridDB.
+    Argument order matches the type of a navGridDB struct to avoid reforming an array.
 
 Arguments:
     <POS2D|POSAGL> DB position of road.
-    <ANY>
-    <ANY>
-    <ANY>
+    <ANY> Discarded DBStruct islandID
+    <ANY> Discarded DBStruct isJunction
+    <ANY> Discarded DBStruct connections
     <STRING> Name of road | <SCALAR> No name provided
 
 Return Value:
@@ -37,5 +38,5 @@ if (_index != -1) exitWith {
     _roadObjects#_index;
 };
 
-[1,"Could not round-trip position of road "+_name+" at " + str _pos + ".","fn_NG_DB_roadAtStruct"] call A3A_fnc_log;
+[1,"Could not round-trip position of road "+_name+" at " + str _pos + ".","fn_NG_convert_DBStruct_road"] call A3A_fnc_log;
 objNull;

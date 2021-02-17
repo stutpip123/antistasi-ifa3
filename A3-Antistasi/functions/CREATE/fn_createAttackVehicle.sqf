@@ -33,7 +33,8 @@ private _crewGroup = createVehicleCrew _vehicle;
 [_vehicle, _side] call A3A_fnc_AIVEHinit;
 
 private _cargoGroup = grpNull;
-if ((([_vehicleType, true] call BIS_fnc_crewCount) - ([_vehicleType, false] call BIS_fnc_crewCount)) > 0) then
+private _expectedCargo = ([_vehicleType, true] call BIS_fnc_crewCount) - ([_vehicleType, false] call BIS_fnc_crewCount);
+if (_expectedCargo > 0) then
 {
     //Vehicle is able to transport units
     private _groupType = if (_typeOfAttack == "Normal") then
@@ -65,6 +66,18 @@ if ((([_vehicleType, true] call BIS_fnc_crewCount) - ([_vehicleType, false] call
             deleteVehicle _x;
         };
     } forEach units _cargoGroup;
+};
+
+if(count (units _cargoGroup) < _expectedCargo) exitWith
+{
+    [3, "Unit limit reached, deleting vehicle and crew", _fileName] call A3A_fnc_log;
+    {
+        deleteVehicle _x;
+    } forEach ((units _cargoGroup) + (units _crewGroup));
+    deleteVehicle _vehicle;
+    deleteGroup _cargoGroup;
+    deleteGroup _crewGroup;
+    objNull;
 };
 
 _landPosBlacklist = [_vehicle, _crewGroup, _cargoGroup, _posDestination, _markerOrigin, _landPosBlacklist] call A3A_fnc_createVehicleQRFBehaviour;

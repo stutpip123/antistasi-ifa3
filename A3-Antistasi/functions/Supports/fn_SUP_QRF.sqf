@@ -127,7 +127,7 @@ for "_i" from 1 to _vehicleCount do
 
 [_side, _vehicles, _groups, _posDestination, _supportName] spawn A3A_fnc_SUP_QRFRoutine;
 
-_marker spawn
+_markerOrigin spawn
 {
     sleep 60;
     if(spawner getVariable _this == 2) then

@@ -26,7 +26,7 @@ Example:
 */
 params ["_myRoad","_otherRoad","_markerID","_roadColourClassification","_realDistance"];
 
-private _centre = (getPos _myRoad vectorAdd getPos _otherRoad) vectorMultiply 0.5;
+private _centre = (getPosWorld _myRoad vectorAdd getPosWorld _otherRoad) vectorMultiply 0.5;
 
 private _name = "NGPP_dist_" + _markerID;
 createMarkerLocal [_name,_centre];

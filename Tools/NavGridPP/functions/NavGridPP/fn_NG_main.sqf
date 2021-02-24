@@ -86,19 +86,14 @@ private _worldMaxRadius = sqrt(0.5 * (worldSize^2));
 
 private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_roadTypeEnum, _worldMaxRadius, false, true];
 
-private _diag_step_sub = "Applying connections<br/>No progress report available, due to being too relatively expensive.";
+private _diag_step_sub = "Applying connections and distances<br/>No progress report available, due to being too relatively expensive.";
 call _fnc_diag_render;
-private _navGrid = _allRoadObjects apply {[
-    _x,
-    roadsConnectedTo [_x,true] select {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}
-]};
 
-private _diag_step_sub = "Applying distances<br/>No progress report available, due to being too relatively expensive.";
-call _fnc_diag_render;
-{
-    private _road = _x#0;
-    _x pushBack ((_x#1) apply {_x distance2D _road});
-} forEach _navGrid;
+private _navRoadHM = createHashMapFromArray (_allRoadObjects apply {
+    private _road = _x;
+    private _connections = roadsConnectedTo [_road,true] select {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum};
+    [str _road,[_road,_connections,_connections apply {_x distance2D _road}]]
+});
 
 
 try {
@@ -106,74 +101,80 @@ try {
     _diag_step_sub = "One ways";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_fix_oneWays","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_fix_oneWays;
+    [_navRoadHM] call A3A_fnc_NG_fix_oneWays;
+    copyToClipboard str _navRoadHM;
+    throw ["Done","check clipboard"];
 //*
     _diag_step_sub = "Simplifying Connection Duplicates";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_conDupe","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
+    _navRoad = [_navRoad] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
 //*/
 
     _diag_step_main = "Fixing";
     _diag_step_sub = "Dead Ends";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_fix_deadEnds","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_fix_deadEnds;
+    _navRoad = [_navRoad] call A3A_fnc_NG_fix_deadEnds;
 
     _diag_step_main = "Simplification";
     _diag_step_sub = "simplify_flat";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_flat","fn_NG_main"] call A3A_fnc_log;
-    [4,"A3A_fnc_NG_simplify_flat on "+str count _navGrid+" road segments.","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid,_flatMaxDrift] call A3A_fnc_NG_simplify_flat;    // Gives less markers for junc to work on. (junc is far more expensive)
+    [4,"A3A_fnc_NG_simplify_flat on "+str count _navRoad+" road segments.","fn_NG_main"] call A3A_fnc_log;
+    _navRoad = [_navRoad,_flatMaxDrift] call A3A_fnc_NG_simplify_flat;    // Gives less markers for junc to work on. (junc is far more expensive)
 
 //*
     _diag_step_sub = "Simplifying Connection Duplicates";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_conDupe","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
+    _navRoad = [_navRoad] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
 //*/
 //*
     _diag_step_main = "Fixing";
     _diag_step_sub = "One ways";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_fix_oneWays","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_fix_oneWays;
+    _navRoad = [_navRoad] call A3A_fnc_NG_fix_oneWays;
 //*/
 /*
     _diag_step_main = "Check";
     _diag_step_sub = "One way check";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_check_oneWays","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_check_oneWays;
+    _navRoad = [_navRoad] call A3A_fnc_NG_check_oneWays;
 //*/
 /*
     _diag_step_main = "Check";
     _diag_step_sub = "Connected Roads Existence";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_check_conExists","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_check_conExists;
+    _navRoad = [_navRoad] call A3A_fnc_NG_check_conExists;
 //*/
     _diag_step_sub = "simplify_junc";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_junc","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid,_juncMergeDistance] call A3A_fnc_NG_simplify_junc;
+    _navRoad = [_navRoad,_juncMergeDistance] call A3A_fnc_NG_simplify_junc;
 
     _diag_step_sub = "Simplifing Connection Duplicates";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_conDupe","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid] call A3A_fnc_NG_simplify_conDupe;         // Junc may cause duplicates
+    _navRoad = [_navRoad] call A3A_fnc_NG_simplify_conDupe;         // Junc may cause duplicates
 
     _diag_step_sub = "simplify_flat";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_flat","fn_NG_main"] call A3A_fnc_log;
-    _navGrid = [_navGrid,15] call A3A_fnc_NG_simplify_flat;    // Clean up after junc, much smaller tolerance
+    _navRoad = [_navRoad,15] call A3A_fnc_NG_simplify_flat;    // Clean up after junc, much smaller tolerance
+
+    private _navGridHM = [_navRoadHM] call A3A_fnc_NG_convert_navRoadHM_navGridHM;
+    copyToClipboard str _navGridHM;
+    throw ["Done","check clipboard"];
 
     _diag_step_main = "Conversion Island";
     _diag_step_sub = "Separating Island";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_separateIslands","fn_NG_main"] call A3A_fnc_log;
-    _navIslands = [_navGrid] call A3A_fnc_NG_convert_navGrid_navIslands;
+    _navIslands = [_navRoad] call A3A_fnc_NG_convert_navGrid_navIslands;
 
     _diag_step_sub = "navIsland to navGridDB";
     call _fnc_diag_render;

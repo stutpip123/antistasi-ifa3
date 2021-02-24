@@ -6,6 +6,7 @@ class A3A {
         class NG_convert_navGridDB_navIslands {};
         class NG_convert_navIslands_navGrid {};
         class NG_convert_navIslands_navGridDB {};
+        class NG_convert_navRoadHM_navGridHM {};
         class NG_convert_road_DBPosName {};
         class NG_convert_road_pos {};
         class NG_convert_DBPosName_road {};

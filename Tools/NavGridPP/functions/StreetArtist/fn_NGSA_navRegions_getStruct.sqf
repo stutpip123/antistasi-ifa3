@@ -41,7 +41,7 @@ private _structs = [];
 private _closestStruct = [];
 private _closestDistance = 1e6;
 {
-    private _distance = getPos (_x#0) distance2D _pos;
+    private _distance = getPosWorld (_x#0) distance2D _pos;
     if (_distance < _closestDistance) then {
         _closestDistance = _distance;
         _closestStruct = _x;

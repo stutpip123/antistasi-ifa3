@@ -61,7 +61,7 @@ private _fnc_disconnectStructs = {
     };
     if ((_myStruct#0) in _otherConnections || (_otherStruct#0) in _myConnections) then {
         throw ["CouldNotDisconnectStructs","CouldNotDisconnectStructs."];
-        [1,"CouldNotDisconnectStructs " + str (getPos (_myStruct#0)) + ", " + str (getPos (_otherStruct#0)) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
+        [1,"CouldNotDisconnectStructs " + str (getPosWorld (_myStruct#0)) + ", " + str (getPosWorld (_otherStruct#0)) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     };
 };
@@ -100,11 +100,11 @@ private _fnc_consumeStruct = {
         [_otherStruct,_x] call _fnc_disconnectStructs;
     } forEach _otherConnectedStructs;
     if !((_navGridSimple #(_roadIndexNS getOrDefault [str _otherRoad,-1]) #1) isEqualTo A3A_NG_const_emptyArray) then {
-        [1,"Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPos _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
+        [1,"Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPosWorld _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     };
     //if (_oldOtherConnections findIf (_otherRoad in (_navGridSimple #(_roadIndexNS getOrDefault [str _x,-1]) #1)) != -1) then {
-    //    [1,"Tried to schedule deletion of non-orphan that is connected from other roads'"+_otherName+"' " + str (getPos _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
+    //    [1,"Tried to schedule deletion of non-orphan that is connected from other roads'"+_otherName+"' " + str (getPosWorld _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
     //    ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     //};
     _orphanedIndices pushBack (_roadIndexNS getOrDefault [_otherName,-1]);
@@ -115,7 +115,7 @@ private _fnc_consumeStruct = {
 
         if !(_otherConnectedRoad in _myConnections) then {
             if (_roadIndexNS getOrDefault [str _otherConnectedRoad,-1] in _orphanedIndices) then {
-                [1,"Tried to connect to orphan '"+str _otherConnectedRoad+"' " + str (getPos _otherConnectedRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
+                [1,"Tried to connect to orphan '"+str _otherConnectedRoad+"' " + str (getPosWorld _otherConnectedRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
                 ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
             };
 
@@ -131,14 +131,14 @@ private _fnc_selectCentreStruct = {
 
     private _midPoint = [0,0];
     {
-        _midPoint = _midPoint vectorAdd getPos (_x#0);
+        _midPoint = _midPoint vectorAdd getPosWorld (_x#0);
     } forEach _structs;
     _midPoint = _midPoint vectorMultiply (1 / count _structs);
 
     private _centreStruct = _structs#0;
     private _closestDistance = 9999999;
     {
-        private _distance = getPos (_x#0) distance2D _midPoint;
+        private _distance = getPosWorld (_x#0) distance2D _midPoint;
         if (_distance < _closestDistance) then {
             _centreStruct = _x;
             _closestDistance = _distance;
@@ -187,7 +187,7 @@ call _fnc_diag_render;
         [];
     };
     if (count (_navGridSimple#_x#1) > 0) then {
-        [1,"Tried to delete non-orphan '"+str (_navGridSimple#_x#0)+"' " + str (getPos (_navGridSimple#_x#0)) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
+        [1,"Tried to delete non-orphan '"+str (_navGridSimple#_x#0)+"' " + str (getPosWorld (_navGridSimple#_x#0)) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     };
 } forEach _orphanedIndices;//*/

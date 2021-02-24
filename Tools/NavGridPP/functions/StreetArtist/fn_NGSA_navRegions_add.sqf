@@ -21,7 +21,7 @@ params [
     ["_roadStruct",[],[ [] ]]
 ];
 
-private _pos = getPos (_roadStruct#0);
+private _pos = getPosWorld (_roadStruct#0);
 private _region = str [floor (_pos#0 / 100),floor (_pos#1 / 100)];
 private _items = _navRegions getOrDefault [_region,[]];
 _items pushBack _roadStruct;

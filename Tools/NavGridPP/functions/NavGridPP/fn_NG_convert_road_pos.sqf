@@ -13,12 +13,12 @@ Environment: Any
 Public: No
 
 Example:
-    private _road = nearestTerrainObjects [getPos player,["MAIN ROAD","ROAD","TRACK"],1000] #0;
+    private _road = nearestTerrainObjects [getPosWorld player,["MAIN ROAD","ROAD","TRACK"],1000] #0;
     private _roadPosName = _road call A3A_NG_convert_road_pos;
 */
 params ["_road"];
 
-private _pos = getPos _road;
+private _pos = getPosWorld _road;
 if (isNull roadAt _pos && !(roadAt _pos isEqualTo _road)) then {
     _pos = _pos select A3A_NG_const_pos2DSelect;
 };

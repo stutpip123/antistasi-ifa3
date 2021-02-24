@@ -51,7 +51,7 @@ private _fnc_connectStructAndRoad = {
     private _otherStruct = _navGridNS getOrDefault [str _otherRoad,0];
 
     if (_otherStruct isEqualType 0) exitWith {
-        [1,"Could not find index of '"+str _otherRoad+"' " + str (getPos _otherRoad) + ".","fn_NG_fix_deadEnds"] call A3A_fnc_log;
+        [1,"Could not find index of '"+str _otherRoad+"' " + str (getPosWorld _otherRoad) + ".","fn_NG_fix_deadEnds"] call A3A_fnc_log;
         ["fn_NG_fix_deadEnds Error","Please check RPT."] call A3A_fnc_customHint;
     };
 
@@ -67,7 +67,7 @@ private _fnc_searchAzimuth = {
 
     private _testRoad = objNull;
     private _finalRoad = objNull;
-    private _mytPos = getPos _road;
+    private _mytPos = getPosWorld _road;
     {
         _testRoad = roadAt (_mytPos getPos [_x,_azimuth]);
         if !(_testRoad isEqualTo _road || {isNil {_navGridNS getOrDefault [str _testRoad,nil]}}) exitWith {_finalRoad = _testRoad};

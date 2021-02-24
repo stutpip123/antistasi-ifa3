@@ -69,7 +69,7 @@ private _roadIndexNS = createHashMap;
 _fnc_NG_convert_road_DBPosName = {
     params ["_road"];
 
-    private _pos = getPos _road;
+    private _pos = getPosWorld _road;
     private _name = 0;      // Type may change to string if name is required
     if (isNull roadAt _pos && !(roadAt _pos isEqualTo _road)) then {
         _pos = _pos select A3A_NG_const_pos2DSelect;
@@ -82,7 +82,7 @@ _fnc_NG_convert_road_DBPosName = {
     };
     if (isNull roadAt _pos && !(roadAt _pos isEqualTo _road)) then {
         _name = str _road;
-        [1,"Could not use pos alone to find road '"+_name+"' " + str getPos _road + ".","fn_NG_main"] call A3A_fnc_log;
+        [1,"Could not use pos alone to find road '"+_name+"' " + str getPosWorld _road + ".","fn_NG_main"] call A3A_fnc_log;
     };
     [_pos,_name];
 };

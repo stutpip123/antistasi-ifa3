@@ -1,54 +1,52 @@
 
-# NavFlatHM
+# navGridHM
 _Speedy and fast access version of navGridDB_
 ```
-<HASHMAP<         NavFlatHM, referenced by serialisation of position.
-  <POS2D|POSAGL>    Road pos.
-  <SCALAR>          Island ID.
-  <BOOLEAN>         isJunction.
-  <ARRAY<           Connections:
-    <STRING>          Serialisation of connected road position.
-    <SCALAR>          Road type Enumeration. {TRACK = 0; ROAD = 1; MAIN ROAD = 2} at time of writing.
-    <SCALAR>          True driving distance to connection, includes distance of roads swallowed in simplification.
-  >>
->>
+HASHMAP<          NavFlatHM
+  POS2D             Key is Road pos.
+  ARRAY<
+    <POS2D>           Road pos.
+    <SCALAR>          Island ID.
+    <BOOLEAN>         isJunction.
+    <ARRAY<           Connections:
+      <POS2D>         Connected road position.
+      <SCALAR>          Road type Enumeration. {TRACK = 0; ROAD = 1; MAIN ROAD = 2} at time of writing.
+      <SCALAR>          True driving distance to connection, includes distance of roads swallowed in simplification.
+    >>
+  >
+>
 ```
-
-
-# NavMetaIslands
-_Speedy and fast access version of navGridDB_
-```
-<ARRAY<           NavFlatHM, referenced by serialisation of position.
-  ARRAY<STRING>     Serialisation of road position for each Island.
->>
-```
-
-# navGrid
+`[_pos2D,[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`
+# navRoadHM
 _From road extraction and distance application._
 ```
-<ARRAY<           navGrid:
-  <OBJECT>          Road
-  <ARRAY<OBJECT>>     Connected roads.
-  <ARRAY<SCALAR>>     True driving distance in meters to connected roads.
+<HASHMAP<         navGrid:
+  <STRING>          Road string.
+  <
+    <OBJECT>          Road
+    <ARRAY<OBJECT>>     Connected roads.
+    <ARRAY<SCALAR>>     True driving distance in meters to connected roads.
+  >
 >>
 ```
+`[_name_,[_road_,_connectedRoads,_connectedDistances]]`
 
 # navIslands
 _Seperation of navGrid into islands._
 ```
-<ARRAY<           navIslands:
+ARRAY<           navIslands:
   <ARRAY<           A single road network island:
     <OBJECT>        Road
     <ARRAY<OBJECT>>   Connected roads.
     <ARRAY<SCALAR>>   True driving distance in meters to connected roads.
   >>
->>
+>
 ```
 
 # navGrdDB
 _Desired Output format used by Antistasi._
 ```
-<ARRAY<           navGridDB:
+ARRAY<           navGridDB:
   <POS2D|POSAGL>    Road pos.
   <SCALAR>          Island ID.
   <BOOLEAN>         isJunction.
@@ -58,5 +56,5 @@ _Desired Output format used by Antistasi._
     <SCALAR>          True driving distance to connection, includes distance of roads swallowed in simplification.
   >>
   <STRING|SCALAR>   Road name or 0 if name not needed for finding road (Ie. name is need if roadAt cannot find road). Will be deprecated and removed soon.
->>
+>
 ```

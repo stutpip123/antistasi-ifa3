@@ -27,8 +27,8 @@ Example:
 */
 params ["_myRoad","_otherRoad","_markerID","_roadColourClassification","_line_size","_line_opaque"];
 
-private _myPos = getPos _myRoad;
-private _otherPos = getPos _otherRoad;
+private _myPos = getPosWorld _myRoad;
+private _otherPos = getPosWorld _otherRoad;
 
 private _radius = 0.5 * (_myPos distance2D _otherPos);
 private _azimuth = _myPos getDir _otherPos;

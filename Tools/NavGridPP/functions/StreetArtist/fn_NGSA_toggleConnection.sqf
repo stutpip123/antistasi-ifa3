@@ -55,7 +55,7 @@ if (_myRoad in _otherConnections) then { // If connected, then disconnect.
     };
     if (_myRoad in _otherConnections || _otherRoad in _myConnections) then {
         throw ["CouldNotDisconnectStructs","CouldNotDisconnectStructs."];
-        [1,"CouldNotDisconnectStructs " + str (getPos _myRoad) + ", " + str (getPos _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
+        [1,"CouldNotDisconnectStructs " + str (getPosWorld _myRoad) + ", " + str (getPosWorld _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     };
 

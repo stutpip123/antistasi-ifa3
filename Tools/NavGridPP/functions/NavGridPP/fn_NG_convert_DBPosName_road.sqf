@@ -18,8 +18,7 @@ Example:
     private _roadPosName = _road call A3A_NG_convert_road_DBPosName;
     [_roadPosName#0, _roadPosName#1] call A3A_fnc_NG_convert_DBPosName_road;   // original road
 */
-private _pos = _this#0;
-private _name = _this#1;
+params ["_pos","_name"];
 
 private _road = roadAt _pos;
 if !(isNull _road) exitWith {
@@ -32,5 +31,5 @@ if (_index != -1) exitWith {
     _roadObjects#_index;
 };
 
-[1,"Could not round-trip position of road "+_name+" at " + str _pos + ".","fn_NG_DB_roadAtStruct"] call A3A_fnc_log;
+[1,"Could not round-trip position of road "+_name+" at " + str _pos + ".","fn_NG_convert_DBPosName_road"] call A3A_fnc_log;
 objNull;

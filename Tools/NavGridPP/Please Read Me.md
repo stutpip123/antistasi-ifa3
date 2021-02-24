@@ -1,9 +1,9 @@
 # ❗❗ HEY YOU, READ THIS! &nbsp;&nbsp; HEY DU, LIES DAS! ❗❗
 ### 👉 BASIC AND QUICK START 👈
 0.  Run arma.
-1.  Make empty mp-mission on any map (community or offical) with just one player.
+1.  Make empty mp-mission on any map (community or official) with just one player.
 2.  Save and close editor.
-3.  Copy Everything in upper NavGridPP folder (includes: /Collections/; /function/; /description.ext; /functions.hpp)
+3.  Copy Everything in this folder (includes: /Collections/; /function/; /description.ext; /functions.hpp; /NG_importGUI.hpp)
 4.  Paste into the folder of the mp mission you created. Usually in `C:\Users\User\Documents\Arma 3 - Other Profiles\YOUR_ARMA_NAME\mpmissions\MISSION_NAME.MAP\`
 5.  Start host LAN multiplayer.
 6.  Run and join mission.
@@ -32,8 +32,10 @@ However, you may need to tweak some arguments depending on the simplification le
 ### ⚙ A3A_fnc_NG_main Arguments:
 1.  <SCALAR> Max drift is how far the simplified line segment can stray from the road in metres. (Default = 50)
 2.  <SCALAR> Junctions are only merged if within this distance from each other. (Default = 15)
+3.  <BOOLEAN> True to start the drawing script automatically. (Default = false)
 
 So running with default settings would also look like this `[50,15] spawn A3A_fnc_NG_main;`<br/>
+To run with default and just draw use `[nil,nil,true] spawn A3A_fnc_NG_main;`<br/>
 Max drift is not the only thing that affects road simplification: It will only simplify if the nearestTerrainObject from its position will still return one of it's neighbouring roads. This prevents virtual convoys that are trying to spawn vehicles from jumping to another nearby road because that is the closest navGrid node.
 
 # 📍 Draw Markers
@@ -48,12 +50,13 @@ You can re-run this command as much as you want, everytime it will delete the ol
 4.  <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
 5.  <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1.5)
 
-Therefore, the default execution would also look like this: `[4,false,false,0.8,1.5] spawn A3A_fnc_NG_main_draw;`<br/>
+Therefore, the default execution would also look like this: `[4,false,false,0.8,1] spawn A3A_fnc_NG_main_draw;`<br/>
 
 ### 🆓 Presents:
-* Only road dots and islands: `[0,false,false,0.8,1.5] spawn A3A_fnc_NG_main_draw;`
-* Only huge opaque lines and islands: `[12,true,false,0,1.5] spawn A3A_fnc_NG_main_draw;`
-* Only large lines and distances: `[4,false,true,0,0] spawn A3A_fnc_NG_main_draw;`
+* Inspect road network overview `[6,true,false,0,1] spawn A3A_fnc_NG_main_draw;`
+* Inspect Junctions `[1,false,false,0.4,0.8] spawn A3A_fnc_NG_main_draw;`
+* Only road dots and islands: `[0,false,false,0.8,1] spawn A3A_fnc_NG_main_draw;`
+* Only large lines and distances: `[6,false,true,0,0] spawn A3A_fnc_NG_main_draw;`
 
 # 📥 Import navGridDB
 If you have already generated a navGridDB before loading the world and you do not want to regenerate it again: you can use the import function to load it into Arma 3 for viewing or editing.

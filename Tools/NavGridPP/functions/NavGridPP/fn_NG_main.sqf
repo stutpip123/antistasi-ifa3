@@ -30,6 +30,7 @@ Maintainer: Caleb Serafin
 Arguments:
     <SCALAR> Max drift is how far the simplified line segment can stray from the road in metres. (Default = 50)
     <SCALAR> Junctions are only merged if within this distance from each other. (Default = 15)
+    <BOOLEAN> True to start the drawing script automatically. (Default = false)
 
 Return Value:
     <ANY> Undefined
@@ -53,7 +54,8 @@ Example:
 
 params [
     ["_flatMaxDrift",50,[ 0 ]],
-    ["_juncMergeDistance",15,[ 0 ]]
+    ["_juncMergeDistance",15,[ 0 ]],
+    ["_autoDraw",false,[ false ]]
 ];
 
 if (!canSuspend) exitWith {
@@ -178,7 +180,7 @@ try {
     [4,"A3A_fnc_NG_convert_navIslands_navGridDB","fn_NG_main"] call A3A_fnc_log;
     private _navGridDB = [_navIslands] call A3A_fnc_NG_convert_navIslands_navGridDB;
 
-//*
+/*
     _diag_step_sub = "Unit Test Running<br/>navGridDB to navIsland";  // Serves as a self check
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_convert_navGridDB_navIslands","fn_NG_main"] call A3A_fnc_log;
@@ -194,10 +196,12 @@ try {
     _diag_step_main = "Done";
     _diag_step_sub = "navGridDB copied to clipboard!<br/><br/>If you have lost your clipboard, you can grab the navGridDB_formatted with<br/>`copyToClipboard ([localNamespace,'A3A_NGPP','navGridDB_formatted',''] call Col_fnc_nestLoc_get)`";
     call _fnc_diag_render;
-    copyToClipboard _navGridDB_formatted; // In case user cleared their clipboard
+    copyToClipboard _navGridDB_formatted;
     [localNamespace,"A3A_NGPP","activeProcesses","NG_main",false] call Col_fnc_nestLoc_set;
-    uiSleep 1;
-    call _fnc_diag_render;
+
+    if (_autoDraw) then {
+        [] call A3A_fnc_NG_main_draw;
+    };
 } catch {
     ["NavGrid Error",str _exception] call A3A_fnc_customHint;
     [localNamespace,"A3A_NGPP","activeProcesses","NG_main",false] call Col_fnc_nestLoc_set;

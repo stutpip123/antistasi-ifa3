@@ -17,7 +17,7 @@ Environment: Scheduled
 Public: No
 
 Example:
-    ["something", player, 2.718281828, 4, nil, ["Tom","Dick","Harry"], ["UID123Money",0], "hint ""Hello World!"""] call A3A_fnc_standardizedHeader; // false
+    [_navGrid] call A3A_fnc_NG_check_conExists;
 */
 params [
     ["_navGrid",[],[ [] ]]

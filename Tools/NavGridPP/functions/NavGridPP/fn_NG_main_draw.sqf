@@ -9,7 +9,7 @@ Arguments:
     <BOOLEAN> False if line partially transparent, true if solid and opaque. (Default = false)
     <BOOLEAN> True to draw distance between road segments. (Only draws if above 5m) (Default = false)
     <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
-    <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1.5)
+    <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1)
 
 Return Value:
     <ANY> Undefined
@@ -32,7 +32,7 @@ params [
     ["_line_opaque",false,[ false ]],
     ["_drawDistance",false,[ false ]],
     ["_dot_size",0.8,[ 0 ]],
-    ["_islandDot_size",1.5,[ 0 ]]
+    ["_islandDot_size",1,[ 0 ]]
 ];
 
 if (!canSuspend) exitWith {

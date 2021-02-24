@@ -50,24 +50,24 @@ private _currentNames = [];    // Array<struct>
 private _nextNames = [];    // Array<struct>
 
 private _unprocessed = _navGridFlat apply {str (_x#0)};    // Array<road>
-private _unprocessedNS = [localNamespace,"NavGridPP","separateIslands","unprocessed", nil, nil] call Col_fnc_nestLoc_set;
+private _unprocessedNS = createHashMap;
 {
-    _unprocessedNS setVariable [_x,true];
+    _unprocessedNS set [_x,true];
 } forEach _unprocessed;
 
-private _structNS = [localNamespace,"NavGridPP","separateIslands","structs", nil, nil] call Col_fnc_nestLoc_set;
+private _structNS = createHashMap;
 {
-    _structNS setVariable [str (_x#0),_x];
+    _structNS set [str (_x#0),_x];
 } forEach _navGridFlat;
 
 private _fnc_nameToStruct = {
     params ["_name"];
-    _structNS getVariable [_name,[]];
+    _structNS getOrDefault [_name,[]];
 };
 
 private _fnc_markProcessed = {
     params ["_name"];
-    _unprocessedNS setVariable [_name,false];
+    _unprocessedNS set [_name,false];
     _unprocessed deleteAt (_unprocessed find _name);    // Please save a group of indices at a time, then use Col_fnc_remIndices
 };
 
@@ -76,7 +76,7 @@ private _fnc_expandCurrent = {
     private _struct = [_name] call _fnc_nameToStruct;
     _currentNavGrid pushBack _struct;
     private _connectedNames = (_struct#1) apply {str _x};
-    _connectedNames = _connectedNames select {_unprocessedNS getVariable [_x, false]};
+    _connectedNames = _connectedNames select {_unprocessedNS getOrDefault [_x, false]};
     { [_x] call _fnc_markProcessed } forEach _connectedNames;
     _nextNames append _connectedNames;
 };
@@ -104,8 +104,5 @@ while {count _unprocessed != 0} do {
     };
     _navIslands pushBack _currentNavGrid;
 };
-deleteLocation _structNS;
-[_unprocessedNS] call Col_fnc_nestLoc_rem;
-[_structNS] call Col_fnc_nestLoc_rem;
 
 _navIslands;

@@ -38,9 +38,9 @@ private _fnc_diag_render = { // call _fnc_diag_render;
     ] remoteExec ["A3A_fnc_customHint",0];
 };
 
-private _navGridNS = [localNamespace,"NavGridPP","MissingRoadCheck_roadIndex", nil, nil] call Col_fnc_nestLoc_set;
+private _navGridNS = createHashMap;
 {
-    _navGridNS setVariable [str (_x#0),_x];
+    _navGridNS set [str (_x#0),_x];
 } forEach _navGrid; // _x is road struct <road,ARRAY<connections>,ARRAY<distances>>
 
 private _fnc_connectStructAndRoad = {
@@ -48,7 +48,7 @@ private _fnc_connectStructAndRoad = {
     private _myRoad = _myStruct#0;
     private _distance = _myRoad distance2D _otherRoad;
 
-    private _otherStruct = _navGridNS getVariable [str _otherRoad,0];
+    private _otherStruct = _navGridNS getOrDefault [str _otherRoad,0];
 
     if (_otherStruct isEqualType 0) exitWith {
         [1,"Could not find index of '"+str _otherRoad+"' " + str (getPos _otherRoad) + ".","fn_NG_fix_deadEnds"] call A3A_fnc_log;
@@ -62,7 +62,6 @@ private _fnc_connectStructAndRoad = {
     _otherStruct#2 pushBack _distance;
 };
 
-private _const_searchSteps = [10,20,30,40];
 private _fnc_searchAzimuth = {
     params ["_road","_azimuth"];
 
@@ -71,12 +70,11 @@ private _fnc_searchAzimuth = {
     private _mytPos = getPos _road;
     {
         _testRoad = roadAt (_mytPos getPos [_x,_azimuth]);
-        if !(_testRoad isEqualTo _road || {isNil {_navGridNS getVariable [str _testRoad,nil]}}) exitWith {_finalRoad = _testRoad};
-    } forEach _const_searchSteps;
+        if !(_testRoad isEqualTo _road || {isNil {_navGridNS getOrDefault [str _testRoad,nil]}}) exitWith {_finalRoad = _testRoad};
+    } forEach [10,20,30,40];    // Search steps
     _finalRoad;
 };
 
-private _const_emptyArray = [];
 private _isolatedStructs = _navGrid select {count (_x#1) < 2};
 private _deadEndStructs = [];
 _diag_totalSegments = count _isolatedStructs;
@@ -85,7 +83,7 @@ _diag_totalSegments = count _isolatedStructs;
         _diag_step_sub = "Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing isolated &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;";;
         call _fnc_diag_render;
     };
-    if (_x#1 isEqualTo _const_emptyArray) then {
+    if (_x#1 isEqualTo A3A_NG_const_emptyArray) then {
         private _road = _x#0;
         private _roadInfo = getRoadInfo _road;
         private _azimuth = (_roadInfo#6) getDir (_roadInfo#7);
@@ -120,6 +118,5 @@ _diag_totalSegments = count _deadEndStructs;
     };
 } forEach _deadEndStructs;
 
-private _navGridFixed = allVariables _navGridNS apply {_navGridNS getVariable [_x,nil]};
-[_navGridNS] call Col_fnc_nestLoc_rem;
+private _navGridFixed = keys _navGridNS apply {_navGridNS getOrDefault [_x,nil]};
 _navGridFixed;

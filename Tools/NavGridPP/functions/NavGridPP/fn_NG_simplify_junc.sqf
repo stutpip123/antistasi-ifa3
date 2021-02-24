@@ -26,9 +26,9 @@ params [
 ];
 private _navGridSimple = +_navGrid;
 
-private _roadIndexNS = [localNamespace,"NavGridPP","simplify_junc_roadIndex", nil, nil] call Col_fnc_nestLoc_set;
+private _roadIndexNS = createHashMap;
 {
-    _roadIndexNS setVariable [str (_x#0),_forEachIndex];
+    _roadIndexNS set [str (_x#0),_forEachIndex];
 } forEach _navGridSimple; // _x is road struct <road,ARRAY<connections>,ARRAY<indices>>
 
 private _diag_step_sub = "";
@@ -83,7 +83,6 @@ call _fnc_diag_render;
 
 private _orphanedIndices = [];
 
-private _const_emptyArray = [];
 private _fnc_consumeStruct = {
     params ["_myStruct","_otherStruct"]; // _otherStruct is consumed & added to _orphanedIndices
 
@@ -93,29 +92,29 @@ private _fnc_consumeStruct = {
     private _otherRoad = _otherStruct#0;
     private _otherName = str _otherRoad;
     private _otherConnections = _otherStruct#1;
-    private _otherConnectedStructs = _otherConnections apply {_navGridSimple #(_roadIndexNS getVariable [str _x,-1])};
+    private _otherConnectedStructs = _otherConnections apply {_navGridSimple #(_roadIndexNS getOrDefault [str _x,-1])};
 
     private _oldOtherConnections = +_otherConnections;
 
     {
         [_otherStruct,_x] call _fnc_disconnectStructs;
     } forEach _otherConnectedStructs;
-    if !((_navGridSimple #(_roadIndexNS getVariable [str _otherRoad,-1]) #1) isEqualTo _const_emptyArray) then {
+    if !((_navGridSimple #(_roadIndexNS getOrDefault [str _otherRoad,-1]) #1) isEqualTo A3A_NG_const_emptyArray) then {
         [1,"Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPos _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     };
-    //if (_oldOtherConnections findIf (_otherRoad in (_navGridSimple #(_roadIndexNS getVariable [str _x,-1]) #1)) != -1) then {
+    //if (_oldOtherConnections findIf (_otherRoad in (_navGridSimple #(_roadIndexNS getOrDefault [str _x,-1]) #1)) != -1) then {
     //    [1,"Tried to schedule deletion of non-orphan that is connected from other roads'"+_otherName+"' " + str (getPos _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
     //    ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
     //};
-    _orphanedIndices pushBack (_roadIndexNS getVariable [_otherName,-1]);
+    _orphanedIndices pushBack (_roadIndexNS getOrDefault [_otherName,-1]);
 
     {
         private _otherConnectedStruct = _x;
         private _otherConnectedRoad = _otherConnectedStruct#0;
 
         if !(_otherConnectedRoad in _myConnections) then {
-            if (_roadIndexNS getVariable [str _otherConnectedRoad,-1] in _orphanedIndices) then {
+            if (_roadIndexNS getOrDefault [str _otherConnectedRoad,-1] in _orphanedIndices) then {
                 [1,"Tried to connect to orphan '"+str _otherConnectedRoad+"' " + str (getPos _otherConnectedRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
                 ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
             };
@@ -162,7 +161,7 @@ private _diag_totalSegments = count _navGridSimple;
     if ((count _myConnections) > 2) then {
         _connectedJuncStructs = _myConnections
             select {_myRoad distance2D _x < _juncMergeDistance}                       // Only within small junction proximity
-            apply {_navGridSimple #(_roadIndexNS getVariable [str _x,-1])}     // Get their structs
+            apply {_navGridSimple #(_roadIndexNS getOrDefault [str _x,-1])}     // Get their structs
             select {count (_x#1) > 2};                                          // Only structs that are junctions
     };
 
@@ -177,7 +176,6 @@ private _diag_totalSegments = count _navGridSimple;
         } forEach _connectedJuncStructs;
     };
 } forEach _navGridSimple;
-[_roadIndexNS] call Col_fnc_nestLoc_rem;
 
 _diag_step_sub = "Cleaning orphans...";
 call _fnc_diag_render;

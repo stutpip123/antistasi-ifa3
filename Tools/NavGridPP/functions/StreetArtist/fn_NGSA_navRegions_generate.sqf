@@ -25,13 +25,14 @@ params [
     ["_navGrid",[],[ [] ]]
 ];
 
-private _navRegions = [localNamespace,"NavGridPP","NavRegions",nil,nil] call Col_fnc_nestLoc_set;
+private _navRegions = createHashMap;
+[localNamespace,"NavGridPP","NavRegions",_navRegions] call Col_fnc_nestLoc_set;
 
 {
     private _pos = getPos (_x#0);
     private _region = str [floor (_pos#0 / 100),floor (_pos#1 / 100)];
-    private _items = _navRegions getVariable [_region,[]];
+    private _items = _navRegions getOrDefault [_region,[]];
     _items pushBack _x;
-    _navRegions setVariable [_region,_items];
+    _navRegions set [_region,_items];
 } forEach _navGrid;
 

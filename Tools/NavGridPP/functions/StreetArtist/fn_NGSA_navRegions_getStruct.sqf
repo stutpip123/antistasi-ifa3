@@ -16,28 +16,26 @@ Example:
     [_navRegions,_pos] call A3A_fnc_NGSA_navRegions_getStruct.
 */
 params [
-    ["_navRegions",locationNull,[ locationNull ]],
+    ["_navRegions",0],//ToDo
     ["_pos",[], [ [] ]]
 ];
 private _filename = "fn_NGSA_navRegions_getStruct";
 
-private _const_emptyArray = [];
-if (_pos isEqualTo _const_emptyArray) exitWith {
+if (_pos isEqualTo A3A_NG_const_emptyArray) exitWith {
     [1,"Position not provided.",_filename] call A3A_fnc_log;
 };
 
-private _const_pos2DSelect = [0,2];
 private _regionPos = [floor (_pos#0 / 100),floor (_pos#1 / 100)];
 private _regionRange = [];
 for "_j" from -1 to 1 do {
     for "_k" from -1 to 1 do {  // Does not matter if it goes out of map range, the getVariable will just return empty array asif it were empty.
-        _regionRange pushBack (_regionPos vectorAdd [_j,_k] select _const_pos2DSelect);
+        _regionRange pushBack (_regionPos vectorAdd [_j,_k] select A3A_NG_const_pos2DSelect);
     };
 };
 
 private _structs = [];
 {
-    _structs append (_navRegions getVariable [str _x,[]]);
+    _structs append (_navRegions getOrDefault [str _x,[]]);
 } forEach _regionRange;
 
 private _closestStruct = [];

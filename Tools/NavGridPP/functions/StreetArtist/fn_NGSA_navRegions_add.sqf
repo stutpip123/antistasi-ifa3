@@ -23,8 +23,8 @@ params [
 
 private _pos = getPos (_roadStruct#0);
 private _region = str [floor (_pos#0 / 100),floor (_pos#1 / 100)];
-private _items = _navRegions getVariable [_region,[]];
+private _items = _navRegions getOrDefault [_region,[]];
 _items pushBack _roadStruct;
-_navRegions setVariable [_region,_items];
+_navRegions set [_region,_items];
 
 true;

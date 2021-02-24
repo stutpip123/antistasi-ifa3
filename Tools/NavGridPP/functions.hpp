@@ -7,6 +7,7 @@ class A3A {
         class NG_convert_navIslands_navGrid {};
         class NG_convert_navIslands_navGridDB {};
         class NG_convert_road_DBPosName {};
+        class NG_convert_road_pos {};
         class NG_convert_DBPosName_road {};
         class NG_convert_DBStruct_road {};
         class NG_draw_deleteAll {};
@@ -18,6 +19,7 @@ class A3A {
         class NG_fix_oneWays {};
         class NG_format_navGridDB {};
         class NG_import {};
+        class NG_init { preInit = 1; };
         class NG_main {};
         class NG_main_draw {};
         class NG_simplify_conDupe {};

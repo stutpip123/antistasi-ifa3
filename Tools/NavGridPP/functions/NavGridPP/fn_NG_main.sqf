@@ -78,19 +78,19 @@ private _fnc_diag_render = { // call _fnc_diag_render;
 
 _diag_step_main = "Extracting roads";
 call _fnc_diag_render;
+[4,"Extracting roads","fn_NG_main"] call A3A_fnc_log;
 
 private _halfWorldSize = worldSize/2;
 private _worldCentre = [_halfWorldSize,_halfWorldSize];
 private _worldMaxRadius = sqrt(0.5 * (worldSize^2));
 
-private _const_allowedRoadTypes = ["ROAD", "MAIN ROAD", "TRACK"];
-private _allRoadObjects = nearestTerrainObjects [_worldCentre, _const_allowedRoadTypes, _worldMaxRadius, false, true];
+private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_roadTypeEnum, _worldMaxRadius, false, true];
 
 private _diag_step_sub = "Applying connections<br/>No progress report available, due to being too relatively expensive.";
 call _fnc_diag_render;
 private _navGrid = _allRoadObjects apply {[
     _x,
-    roadsConnectedTo [_x,true] select {getRoadInfo _x #0 in _const_allowedRoadTypes}
+    roadsConnectedTo [_x,true] select {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}
 ]};
 
 private _diag_step_sub = "Applying distances<br/>No progress report available, due to being too relatively expensive.";

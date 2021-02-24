@@ -70,7 +70,8 @@ private _roadColourClassification = [["MAIN ROAD", "ROAD", "TRACK"],["ColorGreen
     private _segments = _x;
     _diag_totalSegments = count _segments;
 
-    private _roadsAndConnections = [localNamespace,"NavGridPP","draw","linesBetweenRoads_roadAndConnections", nil, nil] call Col_fnc_nestLoc_set;
+    private _roadsAndConnections = createHashMap;
+    [localNamespace,"NavGridPP","draw","linesBetweenRoads_roadAndConnections", _roadsAndConnections] call Col_fnc_nestLoc_set;
     {
         _diag_sub_counter = _diag_sub_counter +1;
         if (_diag_sub_counter mod 100 == 0) then {
@@ -84,14 +85,14 @@ private _roadColourClassification = [["MAIN ROAD", "ROAD", "TRACK"],["ColorGreen
         {
             private _otherRoad = _x;
             private _otherName = str _otherRoad;
-            private _myConnections = _roadsAndConnections getVariable [_myName,[]];
+            private _myConnections = _roadsAndConnections getOrDefault [_myName,[]];
             if !(_otherName in _myConnections) then {
                 _myConnections pushBack _otherName;
-                _roadsAndConnections setVariable [_myName,_myConnections];
+                _roadsAndConnections set [_myName,_myConnections];
 
-                private _otherConnections = _roadsAndConnections getVariable [_otherName,[]];
+                private _otherConnections = _roadsAndConnections getOrDefault [_otherName,[]];
                 _otherConnections pushBack _myName;
-                _roadsAndConnections setVariable [_otherName,_otherConnections];
+                _roadsAndConnections set [_otherName,_otherConnections];
                 private _realDistance = _segStruct #2 #_forEachIndex;
 
                 if (_line_size > 0) then {
@@ -104,8 +105,6 @@ private _roadColourClassification = [["MAIN ROAD", "ROAD", "TRACK"],["ColorGreen
 
         } forEach (_segStruct#1); // connections ARRAY<Road>  // _x is Road
     } forEach _segments;   // island ARRAY<Road,connections ARRAY<Road>>  // _x is <Road,connections ARRAY<Road>>
-    [_roadsAndConnections] call Col_fnc_nestLoc_rem;
-
 } forEach _navIslands; //<ARRAY< island ARRAY<Road,connections ARRAY<Road>>  >>// _x is <island ARRAY<Road,connections ARRAY<Road>>>
 
 [localNamespace,"NavGridPP","draw","LinesBetweenRoads",_markers] call Col_fnc_nestLoc_set;

@@ -65,17 +65,16 @@ private _select = {
     _name setMarkerColor "colorRed"; // Broadcasts here
 };
 
-private _const_emptyArray = [];
 if (_leftClick) then {
-    if (_targetStruct isEqualTo A3A_NGSA_selectedStruct || _targetStruct isEqualTo _const_emptyArray) exitWith { call _deselect; };   // Deselect
+    if (_targetStruct isEqualTo A3A_NGSA_selectedStruct || _targetStruct isEqualTo A3A_NG_const_emptyArray) exitWith { call _deselect; };   // Deselect
     // Select
-    if !(A3A_NGSA_selectedStruct isEqualTo _const_emptyArray) then {
+    if !(A3A_NGSA_selectedStruct isEqualTo A3A_NG_const_emptyArray) then {
         [A3A_NGSA_selectedStruct,_targetStruct] call A3A_fnc_NGSA_toggleConnection;
     };
     [_targetStruct] call _select;
 
 } else {
-    if (_targetStruct isEqualTo _const_emptyArray) exitWith {};
+    if (_targetStruct isEqualTo A3A_NG_const_emptyArray) exitWith {};
     // [A3A_NGSA_selectedStruct,_targetStruct] call A3A_NGSA_toggleEnabled;
     ["Street Artist","Re-Drawing and exported."] call A3A_fnc_customHint;
     [] spawn A3A_fnc_NGSA_export;

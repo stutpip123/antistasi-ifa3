@@ -17,13 +17,13 @@ Example:
     private _navGrid = [_navIslands] call A3A_fnc_NG_convert_navIslands_navGrid;
 */
 params [
-    ["_navRegions",locationNull,[ locationNull ]],
+    ["_navRegions",0],//ToDo
     ["_roadStruct",[],[ [] ]]
 ];
 
 private _pos = getPos (_roadStruct#0);
 private _region = str [floor (_pos#0 / 100),floor (_pos#1 / 100)];
-private _items = _navRegions getVariable [_region,[]];
+private _items = _navRegions getOrDefault [_region,[]];
 private _index = _items find [_pos,_roadStruct];
 _items deleteAt _index;     // No need to set after deletion.
 

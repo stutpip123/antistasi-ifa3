@@ -16,7 +16,7 @@ Environment: Scheduled
 Public: No
 
 Example:
-    _navGrid = [_navGrid,50] call A3A_fnc_NG_simplify_flat;
+    [_navRoadHM,50] call A3A_fnc_NG_simplify_flat;
 */
 params [
     "_navRoadHM",

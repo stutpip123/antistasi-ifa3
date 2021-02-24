@@ -122,21 +122,19 @@ try {
     [4,"A3A_fnc_NG_simplify_flat on "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
     [_navRoadHM,_flatMaxDrift] call A3A_fnc_NG_simplify_flat;    // Gives less markers for junc to work on. (junc is far more expensive)
     [4,"A3A_fnc_NG_simplify_flat returned "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
-    copyToClipboard str _navRoadHM;
-    throw ["Done","check clipboard"];
 
 //*
     _diag_step_sub = "Simplifying Connection Duplicates";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_conDupe","fn_NG_main"] call A3A_fnc_log;
-    _navRoad = [_navRoad] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
+    [_navRoadHM] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
 //*/
 //*
     _diag_step_main = "Fixing";
     _diag_step_sub = "One ways";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_fix_oneWays","fn_NG_main"] call A3A_fnc_log;
-    _navRoad = [_navRoad] call A3A_fnc_NG_fix_oneWays;
+    [_navRoadHM] call A3A_fnc_NG_fix_oneWays;
 //*/
 /*
     _diag_step_main = "Check";
@@ -155,7 +153,11 @@ try {
     _diag_step_sub = "simplify_junc";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_junc","fn_NG_main"] call A3A_fnc_log;
-    _navRoad = [_navRoad,_juncMergeDistance] call A3A_fnc_NG_simplify_junc;
+    [4,"A3A_fnc_NG_simplify_junc on "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
+    [_navRoadHM,_juncMergeDistance] call A3A_fnc_NG_simplify_junc;
+    [4,"A3A_fnc_NG_simplify_junc returned "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
+    copyToClipboard str _navRoadHM;
+    throw ["Done","check clipboard"];
 
     _diag_step_sub = "Simplifing Connection Duplicates";
     call _fnc_diag_render;
@@ -165,7 +167,9 @@ try {
     _diag_step_sub = "simplify_flat";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_flat","fn_NG_main"] call A3A_fnc_log;
+    [4,"A3A_fnc_NG_simplify_flat on "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
     _navRoad = [_navRoad,15] call A3A_fnc_NG_simplify_flat;    // Clean up after junc, much smaller tolerance
+    [4,"A3A_fnc_NG_simplify_flat returned "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
 
     private _navGridHM = [_navRoadHM] call A3A_fnc_NG_convert_navRoadHM_navGridHM;
     copyToClipboard str _navGridHM;

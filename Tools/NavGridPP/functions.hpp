@@ -46,6 +46,7 @@ class A3A {
     class Utility {
         class log {};
         class systemTime_format_G {};
+        class init { preInit = 1; };
     };
 };
 

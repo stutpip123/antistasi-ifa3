@@ -102,13 +102,13 @@ try {
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_fix_oneWays","fn_NG_main"] call A3A_fnc_log;
     [_navRoadHM] call A3A_fnc_NG_fix_oneWays;
-    copyToClipboard str _navRoadHM;
-    throw ["Done","check clipboard"];
 //*
     _diag_step_sub = "Simplifying Connection Duplicates";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_conDupe","fn_NG_main"] call A3A_fnc_log;
-    _navRoad = [_navRoad] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
+    [_navRoadHM] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
+    copyToClipboard str _navRoadHM;
+    throw ["Done","check clipboard"];
 //*/
 
     _diag_step_main = "Fixing";

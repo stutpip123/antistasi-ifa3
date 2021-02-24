@@ -15,7 +15,7 @@ Environment: Scheduled
 Public: No
 
 Example:
-    _navGrid = [_navGrid] call A3A_fnc_NG_fix_oneWays;
+    [_navRoadHM] call A3A_fnc_NG_fix_oneWays;
 */
 params [
     "_navRoadHM"

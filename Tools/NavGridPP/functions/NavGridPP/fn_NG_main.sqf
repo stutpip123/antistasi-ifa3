@@ -114,15 +114,16 @@ try {
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_fix_deadEnds","fn_NG_main"] call A3A_fnc_log;
     [_navRoadHM] call A3A_fnc_NG_fix_deadEnds;
-    copyToClipboard str _navRoadHM;
-    throw ["Done","check clipboard"];
 
     _diag_step_main = "Simplification";
     _diag_step_sub = "simplify_flat";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_flat","fn_NG_main"] call A3A_fnc_log;
-    [4,"A3A_fnc_NG_simplify_flat on "+str count _navRoad+" road segments.","fn_NG_main"] call A3A_fnc_log;
-    _navRoad = [_navRoad,_flatMaxDrift] call A3A_fnc_NG_simplify_flat;    // Gives less markers for junc to work on. (junc is far more expensive)
+    [4,"A3A_fnc_NG_simplify_flat on "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
+    [_navRoadHM,_flatMaxDrift] call A3A_fnc_NG_simplify_flat;    // Gives less markers for junc to work on. (junc is far more expensive)
+    [4,"A3A_fnc_NG_simplify_flat returned "+str count _navRoadHM+" road segments.","fn_NG_main"] call A3A_fnc_log;
+    copyToClipboard str _navRoadHM;
+    throw ["Done","check clipboard"];
 
 //*
     _diag_step_sub = "Simplifying Connection Duplicates";

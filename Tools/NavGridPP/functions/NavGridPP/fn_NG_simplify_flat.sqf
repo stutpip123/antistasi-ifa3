@@ -1,18 +1,15 @@
 /*
 Maintainer: Caleb Serafin
+    navRoadHM is Modified by reference
     If a node is within the tolerance azimuth to its neighbours, and it is not a junction:
     It's neighbours will be connected directly with the distance equal to the distance to each summed (maintaining true distance)
 
 Arguments:
-    <ARRAY<             navGrid:
-        <OBJECT>            Road
-        <ARRAY<OBJECT>>         Connected roads.
-        <ARRAY<SCALAR>>         True driving distance in meters to connected roads.
-    >>
+    <navRoadHM> navRoadHM is Modified by reference
     <SCALAR> Max drift the simplified line segment can stray from the road in metres. (Default = 50)
 
 Return Value:
-    <ARRAY> Simplified navGrid
+    <navRoadHM> same reference
 
 Scope: Any, Global Arguments
 Environment: Scheduled
@@ -22,10 +19,9 @@ Example:
     _navGrid = [_navGrid,50] call A3A_fnc_NG_simplify_flat;
 */
 params [
-    ["_navGrid",[],[ [] ]],
+    "_navRoadHM",
     ["_maxDrift",50,[ 0 ]]
 ];
-private _navGridSimple = +_navGrid;
 private _maxDriftSqr = _maxDrift^2;
 
 private _diag_step_sub = "";
@@ -41,10 +37,6 @@ private _fnc_diag_render = { // call _fnc_diag_render;
     ] remoteExec ["A3A_fnc_customHint",0];
 };
 
-private _fnc_getStruct = {
-    params ["_navGridSimple","_roadIndexNS","_roadName"];
-    _navGridSimple #(_roadIndexNS getOrDefault [_roadName,-1]);
-};
 private _fnc_replaceRoadConnection = {
     params ["_roadStruct","_oldRoadConnection","_newRoadConnection","_newDistance"];
     private _connectionRoads = _roadStruct#1;
@@ -63,79 +55,58 @@ private _fnc_removeRoadConnection = {
     _connectionRoads deleteAt _conIndex;
     (_roadStruct#2) deleteAt _conIndex;
 };
-private _fnc_isRoadConnected = {    // Assumes both will have connection, no one-way.
-    params ["_struct","_road"];
-
-    _road in (_struct#1);
-};
 
 call _fnc_diag_render;
 
-private _orphanedIndices = [];
-
-private _orphanedRoadsNS = createHashMap;
-
-private _roadIndexNS = createHashMap;
-{
-    _roadIndexNS set [str (_x#0),_forEachIndex];
-} forEach _navGridSimple; // _x is road struct <road,ARRAY<connections>,ARRAY<indices>>
-
-
 private _fnc_canSimplify = {
-    params ["_myRoad","_otherRoad","_realDistance","_currentRoad"];
+    params ["_leftRoad","_rightRoad","_realDistance","_middleRoad"];
 
-    if !(getRoadInfo _myRoad#0 isEqualTo getRoadInfo _otherRoad#0) exitWith {false;};   // Must be same type
+    if !(getRoadInfo _leftRoad#0 isEqualTo getRoadInfo _rightRoad#0) exitWith {false;};   // Must be same type
 
-    private _base = 0.5 * (_myRoad distance _otherRoad);
+    private _base = 0.5 * (_leftRoad distance2D _rightRoad);
     private _hypotenuse = 0.5 * _realDistance; //  The hypotenuse is half, as the worst real road can do is climb to a point, then come back down.
 
     if ((_hypotenuse^2 - _base^2) > _maxDriftSqr) exitWith { false; };
 
-    private _midPoint2D = getPosWorld _myRoad vectorAdd getPosWorld _otherRoad vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
-    private _nearRoads = (nearestTerrainObjects [_midPoint2D, A3A_NG_const_roadTypeEnum, _base, false, true]) - [_myRoad,_otherRoad,_currentRoad];
-    _nearRoads = _nearRoads select {!(_orphanedRoadsNS getOrDefault [str _x,false])};
+    private _midPoint2D = getPosWorld _leftRoad vectorAdd getPosWorld _rightRoad vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+    private _nearRoads = (nearestTerrainObjects [_midPoint2D, A3A_NG_const_roadTypeEnum, _base, false, true]) - [_leftRoad,_rightRoad,_middleRoad];
+    _nearRoads findIf {str _x in _navRoadHM} == -1;    // There cannot be any nodes from other roads nearby.
 
-    _nearRoads isEqualTo A3A_NG_const_emptyArray;
 };
 
-private _diag_totalSegments = count _navGridSimple;
+private _diag_totalSegments = count _navRoadHM;
 {
     if (_forEachIndex mod 100 == 0) then {
         _diag_step_sub = "Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;";;
         call _fnc_diag_render;
     };
+    private _currentStruct = _navRoadHM get _x;
+    if (isNil {_currentStruct}) then {
+        [1,"Could not find "+str _x+" in hashMap: ","A3A_fnc_NG_simplify_flat"] call A3A_fnc_log;
+    };
+    private _myRoad = _currentStruct#0;
+    private _connectedRoads = _currentStruct#1;
+    if ((count _connectedRoads) == 2) then {
 
-    private _currentStruct = _x;
-    private _currentRoad = _currentStruct#0;
-    private _currentConnectionNames = _currentStruct#1;
-    if ((count _currentConnectionNames) == 2) then {
-
-        private _connectRoad0 = _currentConnectionNames#0;
-        private _connectRoad1 = _currentConnectionNames#1;
+        private _leftRoad = _connectedRoads#0;
+        private _rightRoad = _connectedRoads#1;
 
         private _connectionDistances = _currentStruct#2;
         private _newDistance = _connectionDistances#0 + _connectionDistances#1;
 
-        if !([_connectRoad0,_connectRoad1,_newDistance,_currentRoad] call _fnc_canSimplify) exitWith {};  // Only merge same types of roads and similar azimuth, this will preserve road types and corners
-        private _connectStruct0 = [_navGridSimple,_roadIndexNS,str _connectRoad0] call _fnc_getStruct;
-        private _connectStruct1 = [_navGridSimple,_roadIndexNS,str _connectRoad1] call _fnc_getStruct;
+        if !([_leftRoad,_rightRoad,_newDistance,_myRoad] call _fnc_canSimplify) exitWith {};  // Only merge same types of roads and similar azimuth, this will preserve road types and corners
+        private _leftStruct = _navRoadHM get str _leftRoad;
+        private _rightStruct = _navRoadHM get str _rightRoad;
 
-        if !([_connectStruct0,_connectRoad1] call _fnc_isRoadConnected) then {  // If our neighbours are not already connected:
-
-            [_connectStruct0,_currentRoad,_connectRoad1,_newDistance] call _fnc_replaceRoadConnection;       // We connect our two neighbors together, replacing our own connection
-            [_connectStruct1,_currentRoad,_connectRoad0,_newDistance] call _fnc_replaceRoadConnection;
+        if (_rightRoad in (_leftStruct#1)) then {  // If our neighbours are not already connected:
+            [_leftStruct,_myRoad] call _fnc_removeRoadConnection;
+            [_rightStruct,_myRoad] call _fnc_removeRoadConnection;
         } else {
-            [_connectStruct0,_currentRoad] call _fnc_removeRoadConnection;
-            [_connectStruct1,_currentRoad] call _fnc_removeRoadConnection;
+            [_leftStruct,_myRoad,_rightRoad,_newDistance] call _fnc_replaceRoadConnection;       // We connect our two neighbors together, replacing our own connection
+            [_rightStruct,_myRoad,_leftRoad,_newDistance] call _fnc_replaceRoadConnection;
         };
-        _orphanedIndices pushBack _forEachIndex;
-        _orphanedRoadsNS set [str _currentRoad,true];
+        _navRoadHM deleteAt (str _myRoad);
     };
-} forEach _navGridSimple;
+} forEach keys _navRoadHM;
 
-_diag_step_sub = "Cleaning orphans...";
-call _fnc_diag_render;
-reverse _orphanedIndices;
-[_navGridSimple,_orphanedIndices] call Col_fnc_array_remIndices;
-
-_navGridSimple;
+_navRoadHM;

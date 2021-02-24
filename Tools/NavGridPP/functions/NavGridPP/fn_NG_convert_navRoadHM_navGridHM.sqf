@@ -59,8 +59,8 @@ while {count _nameUnprocessedHM != 0} do {
     private _nextNames = [_newName];// Array<road string>
 
     while {count _nextNames != 0} do {
-        private _diag_sub_counter = count _navFlatHM;
-        _diag_step_sub = ("Completion &lt;" + ((100 * _diag_sub_counter /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _diag_sub_counter) + " / " + (str _diag_totalSegments) + "&gt;") call _fnc_diag_render;
+        //private _diag_sub_counter = count _navFlatHM;
+        //("Completion &lt;" + ((100 * _diag_sub_counter /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _diag_sub_counter) + " / " + (str _diag_totalSegments) + "&gt;") call _fnc_diag_render;
 
         private _currentNames = _nextNames; // Array<struct>
         _nextNames = [];

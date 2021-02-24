@@ -4,6 +4,7 @@ class A3A {
         class NG_check_oneWays {};
         class NG_convert_navGrid_navIslands {};
         class NG_convert_navGridDB_navIslands {};
+        class NG_convert_navGridHM_navGridDB {};
         class NG_convert_navIslands_navGrid {};
         class NG_convert_navIslands_navGridDB {};
         class NG_convert_navRoadHM_navGridHM {};

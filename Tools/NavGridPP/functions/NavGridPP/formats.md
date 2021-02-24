@@ -1,6 +1,6 @@
 
 # navGridHM
-_Speedy and fast access version of navGridDB_
+_Speedy and fast access version of navGridDB, navGridHM connections are positions._
 ```
 HASHMAP<          NavFlatHM
   POS2D             Key is Road pos.
@@ -44,7 +44,7 @@ ARRAY<           navIslands:
 ```
 
 # navGrdDB
-_Desired Output format used by Antistasi._
+_Desired output format saved for A3-Antistasi. navGridDB connections are array indices._
 ```
 ARRAY<           navGridDB:
   <POS2D|POSAGL>    Road pos.

@@ -131,10 +131,10 @@ private _fnc_selectCentreStruct = {
 
 private _diag_totalSegments = count _navRoadHM;
 {
-    if (_forEachIndex mod 100 == 0) then {
-        _diag_step_sub = "Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;";;
-        call _fnc_diag_render;
-    };
+    //if (_forEachIndex mod 100 == 0) then {
+    //    _diag_step_sub = "Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;";;
+    //    call _fnc_diag_render;
+    //};
 
     private _myStruct = _navRoadHM get _x;
     if !(isNil {_myStruct}) then {  // If it is nil, it has been previously deleted.

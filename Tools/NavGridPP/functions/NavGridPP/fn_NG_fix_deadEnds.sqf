@@ -1,28 +1,23 @@
 /*
 Maintainer: Caleb Serafin
+    Modifies Reference
     Tries to find roads after a dead-end or on both sides of an isolated road.
 
 Arguments:
-    <ARRAY<             navIslands:
-        <ARRAY<             A single road network island:
-            <OBJECT>            Road
-            <ARRAY<OBJECT>>         Connected roads.
-            <ARRAY<SCALAR>>         True driving distance in meters to connected roads.
-        >>
-    >>
+    <navRoadHM> Modifies Reference
 
 Return Value:
-    <ARRAY> Nav islands with fake dead-ends fixed.
+    <navRoadHM> Nav islands with fake dead-ends fixed.
 
 Scope: Any, Global Arguments
 Environment: Scheduled
 Public: No
 
 Example:
-    _navGrid = [_navGrid] call A3A_fnc_NG_fix_deadEnds;
+    [_navRoadHM] call A3A_fnc_NG_fix_deadEnds;
 */
 params [
-    ["_navGrid",[],[ [] ]]  // ARRAY<segmentStruct>
+    "_navRoadHM"
 ];
 
 private _diag_step_sub = "";
@@ -38,17 +33,12 @@ private _fnc_diag_render = { // call _fnc_diag_render;
     ] remoteExec ["A3A_fnc_customHint",0];
 };
 
-private _navGridNS = createHashMap;
-{
-    _navGridNS set [str (_x#0),_x];
-} forEach _navGrid; // _x is road struct <road,ARRAY<connections>,ARRAY<distances>>
-
 private _fnc_connectStructAndRoad = {
     params ["_myStruct","_otherRoad"];
     private _myRoad = _myStruct#0;
     private _distance = _myRoad distance2D _otherRoad;
 
-    private _otherStruct = _navGridNS getOrDefault [str _otherRoad,0];
+    private _otherStruct = _navRoadHM get str _otherRoad;
 
     if (_otherStruct isEqualType 0) exitWith {
         [1,"Could not find index of '"+str _otherRoad+"' " + str (getPosWorld _otherRoad) + ".","fn_NG_fix_deadEnds"] call A3A_fnc_log;
@@ -70,12 +60,13 @@ private _fnc_searchAzimuth = {
     private _mytPos = getPosWorld _road;
     {
         _testRoad = roadAt (_mytPos getPos [_x,_azimuth]);
-        if !(_testRoad isEqualTo _road || {isNil {_navGridNS getOrDefault [str _testRoad,nil]}}) exitWith {_finalRoad = _testRoad};
+        if !(_testRoad isEqualTo _road || {isNil {_navRoadHM get str _testRoad}}) exitWith {_finalRoad = _testRoad};
     } forEach [10,20,30,40];    // Search steps
     _finalRoad;
 };
 
-private _isolatedStructs = _navGrid select {count (_x#1) < 2};
+private _structs = keys _navRoadHM apply {_navRoadHM get _x};
+private _isolatedStructs = _structs select {count (_x#1) < 2};
 private _deadEndStructs = [];
 _diag_totalSegments = count _isolatedStructs;
 {
@@ -118,5 +109,4 @@ _diag_totalSegments = count _deadEndStructs;
     };
 } forEach _deadEndStructs;
 
-private _navGridFixed = keys _navGridNS apply {_navGridNS getOrDefault [_x,nil]};
-_navGridFixed;
+_navRoadHM;

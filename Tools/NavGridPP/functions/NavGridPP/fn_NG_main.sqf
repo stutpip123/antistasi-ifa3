@@ -107,15 +107,15 @@ try {
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_simplify_conDupe","fn_NG_main"] call A3A_fnc_log;
     [_navRoadHM] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
-    copyToClipboard str _navRoadHM;
-    throw ["Done","check clipboard"];
 //*/
 
     _diag_step_main = "Fixing";
     _diag_step_sub = "Dead Ends";
     call _fnc_diag_render;
     [4,"A3A_fnc_NG_fix_deadEnds","fn_NG_main"] call A3A_fnc_log;
-    _navRoad = [_navRoad] call A3A_fnc_NG_fix_deadEnds;
+    [_navRoadHM] call A3A_fnc_NG_fix_deadEnds;
+    copyToClipboard str _navRoadHM;
+    throw ["Done","check clipboard"];
 
     _diag_step_main = "Simplification";
     _diag_step_sub = "simplify_flat";

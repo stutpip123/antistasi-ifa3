@@ -69,8 +69,6 @@ class Collections
     {
         file="Collections\ID";
         class ID_init { preInit = 1; };
-        class ID_LArray_isEqualTo {};
-        class ID_LArray {};
     };
     class Collections_Location
     {
@@ -85,10 +83,5 @@ class Collections
         class nestLoc_get {};
         class nestLoc_rem {};
         class nestLoc_set {};
-    };
-    class Collections_Serialisation_Primitives
-    {
-        file="Collections\Serialisation\Primitives";
-        class serialise_namespace {};
     };
 };

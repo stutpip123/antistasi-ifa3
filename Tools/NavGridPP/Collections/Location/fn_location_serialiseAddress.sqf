@@ -21,9 +21,9 @@ Public: Yes
 Example:
     [localNamespace,"Collections","TestBucket","NewLocation"] call Col_fnc_location_serialiseAddress;  // "col_locaddress:[4,""collections"",""testbucket"",""newlocation""]"
 */
-private _parentArray = [_this] param [0, [missionNamespace], [ [] ]];
+private _parentArray = _this;
 if (count _parentArray < 2) exitWith {
-    diag_log "WARNING: Col_fnc_location_serialiseAddress: Less than one parent plus name."; // TODO: implement overridable method for logging.
+    diag_log "WARNING: Col_fnc_location_serialiseAddress: Less than one parent plus a name."; // TODO: implement overridable method for logging.
     "";
 };
 
@@ -33,7 +33,7 @@ switch (true) do {
         toLower ("col_locaddress:" + str _parentArray);
     };
     case (_root isEqualType missionNamespace): {
-        _parentArray set [0,([locationNull,_root] call Col_fnc_serialise_namespace)#1];
+        _parentArray set [0,[missionNamespace,parsingNamespace,uiNamespace,profileNamespace,localNamespace] find _root];
         toLower ("col_locaddress:" + str _parentArray);
     };
     case (_root isEqualType locationNull): {

@@ -1,16 +1,17 @@
 class A3A {
     class NavGridDraw {
         class NG_draw_deleteAll {};
-        class NG_draw_distanceBetweenTwoRoads {};
         class NG_draw_dotOnRoads {};
-        class NG_draw_lineBetweenTwoRoads {};
+        class NG_draw_line {};
         class NG_draw_linesBetweenRoads {};
         class NG_draw_main {};
+        class NG_draw_text {};
     };
     class NavGridGen {
         class NG_check_conExists {};
         class NG_check_oneWays {};
         class NG_convert_navGrid_navIslands {};
+        class NG_convert_navGridDB_navGridHM {};
         class NG_convert_navGridDB_navIslands {};
         class NG_convert_navGridHM_navGridDB {};
         class NG_convert_navIslands_navGrid {};

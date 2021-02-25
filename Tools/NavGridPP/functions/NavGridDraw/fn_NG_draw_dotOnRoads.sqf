@@ -1,6 +1,6 @@
 /*
 Maintainer: Caleb Serafin
-    Places a map marker on roads.
+    Places a map marker on points.
     Previous markers make by this function are deleted.
     Colour depends on number of connections:
         0  -> Black
@@ -11,13 +11,7 @@ Maintainer: Caleb Serafin
         >4 -> Blue
 
 Arguments:
-    <ARRAY<             navIslands:
-        <ARRAY<             A single road network island:
-            <OBJECT>            Road
-            <ARRAY<OBJECT>>         Connected roads.
-            <ARRAY<SCALAR>>         True driving distance in meters to connected roads.
-        >>
-    >>
+    <_navGridHM>
     <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
     <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1)
 
@@ -32,46 +26,58 @@ Example:
     [_navIslands] call A3A_fnc_NG_draw_dotOnRoads;
 */
 params [
-    ["_navIslands",[],[ [] ]], //<ARRAY< island ARRAY<Road,connections ARRAY<Road>>  >>
+    "_navGridHM",
     ["_dot_size",0.8,[ 0 ]],
     ["_islandDot_size",1,[ 0 ]]
 ];
 
-private _markers = [localNamespace,"A3A_NGPP","draw","dotOnRoads",[]] call Col_fnc_nestLoc_get;
-{
-    deleteMarker _x;
-} forEach _markers;
-_markers resize 0;  // Preserves reference
+private _markers_old = [localNamespace,"NavGridPP","draw","dotOnRoads_markers", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_new = createHashMap;
+[localNamespace,"A3A_NGPP","draw","dotOnRoads_markers",_markers_new] call Col_fnc_nestLoc_set;
 
 if (_dot_size > 0) then {
+    private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
+    private _const_dot_size = [_dot_size, _dot_size];
+    private _const_islandDot_size = [_islandDot_size, _islandDot_size];
+
+    private _islandIDs = [];
+
     {
-        {
-            private _name = "NGPP_dot_" + str (_x#0);
-            _markers pushBack createMarkerLocal [_name,getPosWorld (_x#0)];
+        private _struct = _navGridHM get _x;
+        private _name = "A3A_NG_Dot_"+str _x;
+
+        private _exists = _name in _markers_old;
+        _markers_old deleteAt _name;
+        _markers_new set [_name,true];
+
+        if !(_exists) then {
+            createMarkerLocal [_name,_x];
             _name setMarkerTypeLocal "mil_dot";
-            _name setMarkerSizeLocal [_dot_size, _dot_size];
-            _name setMarkerColor (switch (count (_x#1)) do { // Broadcasts here
-                case 0: { "ColorBlack" };
-                case 1: { "ColorRed" };
-                case 2: { "ColorOrange" };
-                case 3: { "ColorYellow" };
-                case 4: { "ColorGreen" };
-                default { "ColorBlue" };
-            });
-        } forEach _x;   // island ARRAY<Road,connections ARRAY<Road>>  // _x is <Road,connections ARRAY<Road>>
-    } forEach _navIslands; //<ARRAY< island ARRAY<Road,connections ARRAY<Road>>  >>// _x is <island ARRAY<Road,connections ARRAY<Road>>>
+        };
+        _name setMarkerSizeLocal _const_dot_size;
+        _name setMarkerColor (_const_countColours getOrDefault [count (_struct#3) ,"ColorBlue"]);
+
+        private _islandID = _struct#1;
+        if !(_islandID in _islandIDs) then {
+            _islandIDs pushBack _islandID;
+            private _islandName = "A3A_NG_DotIsland_"+str _islandID;
+
+             private _exists = _islandName in _markers_old;
+            _markers_old deleteAt _islandName;
+            _markers_new set [_islandName,true];
+
+            if !(_exists) then {
+                createMarkerLocal [_islandName,_x];
+                _islandName setMarkerTypeLocal "mil_objective";
+                _islandName setMarkerTextLocal ("Island <" + str (_struct#1) +">");
+                _islandName setMarkerColor "colorCivilian";
+            };
+            _islandName setMarkerSizeLocal _const_islandDot_size;
+            _islandName setMarkerPos _x
+        };
+    } forEach _navGridHM;
 };
 
-if (_islandDot_size > 0) then {
-    {
-        private _name = "NGPP_dotI_" + str _forEachIndex;
-        _markers pushBack createMarkerLocal [_name,getPosWorld (_x#0#0)];
-        _name setMarkerTypeLocal "mil_objective";
-        _name setMarkerSizeLocal [_islandDot_size, _islandDot_size];
-        _name setMarkerTextLocal ("Island <" + str _forEachIndex +">");
-        _name setMarkerColor "colorCivilian"; // Broadcasts here
-
-    } forEach _navIslands; //<ARRAY< island ARRAY<Road,connections ARRAY<Road>>  >>// _x is <island ARRAY<Road,connections ARRAY<Road>>>
-};
-
-[localNamespace,"A3A_NGPP","draw","dotOnRoads",_markers] call Col_fnc_nestLoc_set;
+{
+    deleteMarker _x;
+} forEach _markers_old;

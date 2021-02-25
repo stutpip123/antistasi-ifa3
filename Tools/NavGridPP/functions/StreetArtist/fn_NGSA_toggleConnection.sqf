@@ -76,5 +76,5 @@ if (_myRoad in _otherConnections) then { // If connected, then disconnect.
     _otherDistances pushBack _distance;
 
     private _roadColourClassification = [["MAIN ROAD", "ROAD", "TRACK"],["ColorGreen","ColorYellow","ColorOrange"]];
-    _marker_lines pushBack ([_myRoad,_otherRoad,_myName + _otherName,_roadColourClassification,4,false] call A3A_fnc_NG_draw_lineBetweenTwoRoads);
+    _marker_lines pushBack ([_myRoad,_otherRoad,_myName + _otherName,_roadColourClassification,4,false] call A3A_fnc_NG_draw_line);
 };

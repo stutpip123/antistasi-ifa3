@@ -16,7 +16,7 @@ Environment: Scheduled
 Public: Yes
 
 Example:
-    private _navGridDB = [navGridDB] call A3A_fnc_NG_convert_navIslands_navGridDB;
+    private _navGridHM = [navGridDB] call A3A_fnc_NG_convert_navGridHM_navGridDB;
 */
 params [
     "_navGridHM"

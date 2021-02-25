@@ -8,13 +8,7 @@ Maintainer: Caleb Serafin
         TRACK  -> Orange
 
 Arguments:
-    <ARRAY<             navIslands:
-        <ARRAY<             A single road network island:
-            <OBJECT>            Road
-            <ARRAY<OBJECT>>         Connected roads.
-            <ARRAY<SCALAR>>         True driving distance in meters to connected roads.
-        >>
-    >>
+    <navGridHM>
     <SCALAR> Thickness of line, 1-high density, 4-normal, 8-Stratis world view, 16-Seattle world view. (Set to 0 to disable) (Default = 4)
     <BOOLEAN> False if line partially transparent, true if solid and opaque. (Default = false)
     <BOOLEAN> True to draw distance between road segments. (Only draws if above 5m) (Default = false)
@@ -27,32 +21,33 @@ Environment: Scheduled
 Public: Yes
 
 Example:
-    [_navIslands,true,false] call A3A_fnc_NG_draw_linesBetweenRoads;
+    [_navGridHM,4,true,false] spawn A3A_fnc_NG_draw_linesBetweenRoads;
 */
 params [
-    ["_navIslands",[],[ [] ]], //<ARRAY< island ARRAY<Road,connections ARRAY<Road>>  >>
+    "_navGridHM",
     ["_line_size",4,[ 0 ]],
     ["_line_opaque",false,[ false ]],
     ["_drawDistance",false,[ false ]]
 ];
 
-if !(_line_size > 0 || _drawDistance) exitWith {};
-
-private _diag_step_main = "";
-private _diag_step_sub = "";
 
 
-private _fnc_diag_render = { // call _fnc_diag_render;
-    [
-        "Nav Grid++ Draw",
+private _fnc_diag_report = {
+    params ["_diag_step_main"];
+
+    private _hintData = [
+        "Nav Grid++",
         "<t align='left'>" +
-        "Drawing lines between roads<br/>"+
+        "Drawing Lines" +
         _diag_step_main+"<br/>"+
-        _diag_step_sub+"<br/>"+
-        "</t>"
-    ] remoteExec ["A3A_fnc_customHint",0];
+        "</t>",
+        true
+    ];
+    _hintData call A3A_fnc_customHint;
+    _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
 };
 
+/*
 _diag_step_main = "Deleting Old Markers";
 call _fnc_diag_render;
 private _markers = [localNamespace,"NavGridPP","draw","LinesBetweenRoads",[]] call Col_fnc_nestLoc_get;
@@ -60,56 +55,64 @@ private _markers = [localNamespace,"NavGridPP","draw","LinesBetweenRoads",[]] ca
     deleteMarker _x;
 } forEach _markers;
 _markers resize 0;  // Preserves reference
-private _roadColourClassification = [["MAIN ROAD", "ROAD", "TRACK"],["ColorGreen","ColorYellow","ColorOrange"]];
+*/
+private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
+private _diag_totalSegments = count _navGridHM;
 
-{
+private _markers_old_line = [localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_line", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_new_line = createHashMap;
+[localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_line", _markers_new_line] call Col_fnc_nestLoc_set;
 
-    _diag_step_main = "Drawing Lines on island &lt;" + str _forEachIndex + " / " + str count _navIslands + "&gt;";
-    call _fnc_diag_render;
-    private _diag_sub_counter = -1;
-    private _segments = _x;
-    _diag_totalSegments = count _segments;
+private _markers_old_distance = [localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_distance", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_new_distance = createHashMap;
+[localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_distance", _markers_new_distance] call Col_fnc_nestLoc_set;
 
-    private _roadsAndConnections = createHashMap;
-    [localNamespace,"NavGridPP","draw","linesBetweenRoads_roadAndConnections", _roadsAndConnections] call Col_fnc_nestLoc_set;
+if (_line_size > 0 || _drawDistance) then {
+    private _processedMidPoints = createHashMap;
+
+    private _line_brush = ["Solid","SolidFull"] select _line_opaque;
     {
-        _diag_sub_counter = _diag_sub_counter +1;
-        if (_diag_sub_counter mod 100 == 0) then {
-            _diag_step_sub = "Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;";
-            call _fnc_diag_render;
+        if (_forEachIndex mod 100 == 0) then {
+            ("Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;") call _fnc_diag_report;
         };
 
-        private _segStruct = _x;
-        private _myRoad = _segStruct#0;
-        private _myName = str _myRoad;
+        private _myPos = _x;
         {
-            private _otherRoad = _x;
-            private _otherName = str _otherRoad;
-            private _myConnections = _roadsAndConnections getOrDefault [_myName,[]];
-            if !(_otherName in _myConnections) then {
-                _myConnections pushBack _otherName;
-                _roadsAndConnections set [_myName,_myConnections];
+            private _otherPos = _x#0;
+            private _midPoint = _myPos vectorAdd _otherPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
 
-                private _otherConnections = _roadsAndConnections getOrDefault [_otherName,[]];
-                _otherConnections pushBack _myName;
-                _roadsAndConnections set [_otherName,_otherConnections];
-                private _realDistance = _segStruct #2 #_forEachIndex;
+            if !(_midPoint in _processedMidPoints) then {
+                _processedMidPoints set [_midPoint,true];
 
+                private _colour = _const_roadColourClassification #(_x#1);
                 if (_line_size > 0) then {
-                    _markers pushBack ([_myRoad,_otherRoad,_myName + _otherName,_roadColourClassification,_line_size,_line_opaque] call A3A_fnc_NG_draw_lineBetweenTwoRoads);
+                    private _name = "A3A_NG_Line_"+str _midPoint;
+                    private _exists = _name in _markers_old_line;
+                    _markers_old_line deleteAt _name;
+                    _markers_new_line set [_name,true];
+
+                    [_name,_exists,_myPos,_otherPos,_colour,_line_size,_line_brush] call A3A_fnc_NG_draw_line;
                 };
-                if (_drawDistance && (_realDistance > 5)) then { // disabled just for road clarity
-                    _markers pushBack ([_myRoad,_otherRoad,_myName + _otherName,_roadColourClassification,(_realDistance toFixed 0) + "m"] call A3A_fnc_NG_draw_distanceBetweenTwoRoads);
+
+                private _realDistance = _x#2;
+                if (_drawDistance && (_realDistance > 5)) then {
+                    private _name = "A3A_NG_Dist_"+str _midPoint;
+                    private _exists = _name in _markers_old_distance;
+                    _markers_old_distance deleteAt _name;
+                    _markers_new_distance set [_name,true];
+
+                    [_name,_exists,_midPoint,_colour,(_realDistance toFixed 0) + "m"] call A3A_fnc_NG_draw_text;
                 };
             };
 
-        } forEach (_segStruct#1); // connections ARRAY<Road>  // _x is Road
-    } forEach _segments;   // island ARRAY<Road,connections ARRAY<Road>>  // _x is <Road,connections ARRAY<Road>>
-} forEach _navIslands; //<ARRAY< island ARRAY<Road,connections ARRAY<Road>>  >>// _x is <island ARRAY<Road,connections ARRAY<Road>>>
+        } forEach ( (_navGridHM get _x) #3);
+    } forEach keys _navGridHM;
+};
+{
+    deleteMarker _x;
+} forEach _markers_old_line;
+{
+    deleteMarker _x;
+} forEach _markers_old_distance;
 
-[localNamespace,"NavGridPP","draw","LinesBetweenRoads",_markers] call Col_fnc_nestLoc_set;
-
-
-_diag_step_main = "Done drawing lines.";
-_diag_step_sub = "";
-call _fnc_diag_render;
+"Done drawing lines." call _fnc_diag_report;

@@ -19,10 +19,10 @@ Environment: Scheduled
 Public: Yes
 
 Example:
-    [] spawn A3A_fnc_NG_main_draw;
+    [] spawn A3A_fnc_NG_draw_main;
 
     Or tweak parameters:
-    [4,false,false,0.8,1.5] spawn A3A_fnc_NG_main_draw;
+    [4,false,false,0.8,1.5] spawn A3A_fnc_NG_draw_main;
 
     NB: if importing from clipboard, remember to run this first!
     [] spawn A3A_fnc_NG_import;

@@ -40,7 +40,7 @@ Max drift is not the only thing that affects road simplification: It will only s
 
 # 📍 Draw Markers
 **Run after you have generate a navGrid or have imported one.**<br/>
-To draw markers with default settings run `[] spawn A3A_fnc_NG_main_draw;`<br/>
+To draw markers with default settings run `[] spawn A3A_fnc_NG_draw_main;`<br/>
 You can re-run this command as much as you want, everytime it will delete the old markers and redraw new. (But please wait for the last one to finish otherwise bad things will happen.)<br/>
 
 ### ⚙ Here are some settings which you can tweak:
@@ -50,13 +50,13 @@ You can re-run this command as much as you want, everytime it will delete the ol
 4.  <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
 5.  <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1.5)
 
-Therefore, the default execution would also look like this: `[4,false,false,0.8,1] spawn A3A_fnc_NG_main_draw;`<br/>
+Therefore, the default execution would also look like this: `[4,false,false,0.8,1] spawn A3A_fnc_NG_draw_main;`<br/>
 
 ### 🆓 Presents:
-* Inspect road network overview `[6,true,false,0,1] spawn A3A_fnc_NG_main_draw;`
-* Inspect Junctions `[1,false,false,0.4,0.8] spawn A3A_fnc_NG_main_draw;`
-* Only road dots and islands: `[0,false,false,0.8,1] spawn A3A_fnc_NG_main_draw;`
-* Only large lines and distances: `[6,false,true,0,0] spawn A3A_fnc_NG_main_draw;`
+* Inspect road network overview `[6,true,false,0,1] spawn A3A_fnc_NG_draw_main;`
+* Inspect Junctions `[1,false,false,0.4,0.8] spawn A3A_fnc_NG_draw_main;`
+* Only road dots and islands: `[0,false,false,0.8,1] spawn A3A_fnc_NG_draw_main;`
+* Only large lines and distances: `[6,false,true,0,0] spawn A3A_fnc_NG_draw_main;`
 
 # 📥 Import navGridDB
 If you have already generated a navGridDB before loading the world and you do not want to regenerate it again: you can use the import function to load it into Arma 3 for viewing or editing.

@@ -108,7 +108,7 @@ try {
 //*/
 
     if (_autoDraw) then {
-        [] call A3A_fnc_NG_main_draw;
+        [] call A3A_fnc_NG_draw_main;
     };
 } catch {
     ["NavGrid Error",str _exception] call A3A_fnc_customHint;

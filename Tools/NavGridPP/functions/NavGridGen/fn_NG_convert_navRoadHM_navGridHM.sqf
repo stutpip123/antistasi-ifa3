@@ -35,7 +35,7 @@ private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
 
 ["Creating hashMaps"] call _fnc_diag_render;
 private _nameUnprocessedHM = createHashMapFromArray (keys _navRoadHM apply {[_x,true]});
-private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,(_navRoadHM get _x #0) call A3A_fnc_convert_road_pos]});
+private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,((_navRoadHM get _x) #0) call A3A_fnc_NG_convert_road_pos]});
 
 private _fnc_convert_NGStruct_NFStructKV = {
     params ["_NGRoadStruct","_IslandID"];

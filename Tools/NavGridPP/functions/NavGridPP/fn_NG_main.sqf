@@ -78,7 +78,6 @@ try {
     [_navRoadHM] call A3A_fnc_NG_simplify_conDupe;         // Some maps have duplicates even before simplification
 
     ["Fixing","Dead Ends"] call _fnc_diag_report;
-    [4,"A3A_fnc_NG_fix_deadEnds","fn_NG_main"] call A3A_fnc_log;
     [_navRoadHM] call A3A_fnc_NG_fix_deadEnds;
 
     ["Simplification","Simplifying "+str count _navRoadHM+" straight roads."] call _fnc_diag_report;
@@ -103,9 +102,7 @@ try {
     ["Done","navGridDB copied to clipboard!<br/><br/>If you have lost your clipboard, you can grab the navGridDB_formatted with<br/>`copyToClipboard ([localNamespace,'A3A_NGPP','navGridDB_formatted',''] call Col_fnc_nestLoc_get)`"] call _fnc_diag_report;
     copyToClipboard _navGridDB_formatted;
 /*
-    _diag_step_sub = "Unit Test Running<br/>navGridDB to navIsland";  // Serves as a self check
-    call _fnc_diag_report;
-    [4,"A3A_fnc_NG_convert_navGridDB_navIslands","fn_NG_main"] call A3A_fnc_log;
+    ["Unit Test","Converting navGridDB to navIsland."] call _fnc_diag_report;
     _navIslands = [_navGridDB] call A3A_fnc_NG_convert_navGridDB_navIslands;
     [localNamespace,"A3A_NGPP","navIslands",_navIslands] call Col_fnc_nestLoc_set;
 //*/

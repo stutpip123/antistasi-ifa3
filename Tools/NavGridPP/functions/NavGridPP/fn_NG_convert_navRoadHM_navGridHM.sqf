@@ -33,17 +33,18 @@ private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
     _customHintParams remoteExec ["A3A_fnc_customHint",-clientOwner];
 };
 
-["Creating unprocessed hashMap"] call _fnc_diag_render;
+["Creating hashMaps"] call _fnc_diag_render;
 private _nameUnprocessedHM = createHashMapFromArray (keys _navRoadHM apply {[_x,true]});
+private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,(_navRoadHM get _x #0) call A3A_fnc_convert_road_pos]});
 
 private _fnc_convert_NGStruct_NFStructKV = {
     params ["_NGRoadStruct","_IslandID"];
     _NGRoadStruct params ["_road","_connectedRoads","_connectedDistances"];
 
-    private _roadPos = getPosWorld _road select A3A_NG_const_pos2DSelect;
+    private _roadPos = _namePosHM get str _road;
     private _connections = [];
     {
-        _connections pushBack [getPosWorld _x select A3A_NG_const_pos2DSelect, A3A_NG_const_roadTypeEnum find (getRoadInfo _road #0), _connectedDistances#_forEachIndex];
+        _connections pushBack [_namePosHM get str _x, A3A_NG_const_roadTypeEnum find (getRoadInfo _road #0), _connectedDistances#_forEachIndex];
     } forEach _connectedRoads;
 
     [_roadPos, [_roadPos,_islandID,(count _connectedRoads) > 2,_connections]];

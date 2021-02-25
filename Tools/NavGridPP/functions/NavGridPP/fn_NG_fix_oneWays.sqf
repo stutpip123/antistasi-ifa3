@@ -30,7 +30,7 @@ params [
         {
             private _otherStruct = _navRoadHM get str _x;
             if !(_myRoad in (_otherStruct#1)) then {
-                [4,"Connecting Road '"+str _x+"' " + str getPos _x + " to '"+str _myRoad+"' " + str getPos _myRoad + ".","fn_NG_fix_oneWays"] call A3A_fnc_log;
+                //[4,"Connecting Road '"+str _x+"' " + str getPos _x + " to '"+str _myRoad+"' " + str getPos _myRoad + ".","fn_NG_fix_oneWays"] call A3A_fnc_log;
 
                 _otherStruct#1 pushBack _myRoad;
                 _otherStruct#2 pushBack (_myRoad distance2D _x);

@@ -86,7 +86,7 @@ try {
 
     ["Simplification","Simplifying "+str count _navRoadHM+" junctions."] call _fnc_diag_report;
     [_navRoadHM,_juncMergeDistance] call A3A_fnc_NG_simplify_junc;
-    ["Simplification","Simplification returned "+str count _navRoadHM+"road segments."] call _fnc_diag_report;
+    ["Simplification","Simplification returned "+str count _navRoadHM+" road segments."] call _fnc_diag_report;
 
     ["Format Conversion","Converting navRoadHM to navGridHM."] call _fnc_diag_report;
     private _navGridHM = [_navRoadHM] call A3A_fnc_NG_convert_navRoadHM_navGridHM;

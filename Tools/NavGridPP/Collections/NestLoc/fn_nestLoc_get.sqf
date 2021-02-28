@@ -30,6 +30,10 @@ Example:
         // _lootNo = _3 getVariable ["weapon", "hgun_Pistol_heavy_01_F"];
 */
 private _count = count _this;
+if (_count < 2) then {
+    diag_log "ERROR: Col_fnc_nestLoc_get: params has less than 2 values. If no log bellow, params were nil."; // TODO: implement overridable method for logging.
+    diag_log ("ERROR: Col_fnc_nestLoc_get: params: '"+str _this+"'");
+};
 private _varSpace = _this#0;
 for "_i" from 1 to _count - 3 do {
     _varSpace = _varSpace getVariable [_this#_i, false];

@@ -30,8 +30,6 @@ params [
     ["_drawDistance",false,[ false ]]
 ];
 
-
-
 private _fnc_diag_report = {
     params ["_diag_step_main"];
 

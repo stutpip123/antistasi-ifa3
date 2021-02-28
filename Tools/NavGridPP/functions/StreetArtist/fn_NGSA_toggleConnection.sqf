@@ -24,58 +24,40 @@ Example:
     }];
 */
 params [
-    ["_myStruct",[],[ [] ], [3]],
-    ["_otherStruct",[],[ [] ], [3]]
+    ["_leftStruct",[],[ [] ], [4]],
+    ["_rightStruct",[],[ [] ], [4]],
+    ["_connectionTypeEnum",0,[ 0 ]]
 ];
 
-private _myRoad = _myStruct#0;
-private _otherRoad = _otherStruct#0;
+private _leftPos = _leftStruct#0;
+private _rightPos = _rightStruct#0;
 
-private _myName = str _myRoad;
-private _otherName = str _otherRoad;
-
-private _myConnections = _myStruct#1;
-private _otherConnections = _otherStruct#1;
-
-private _myDistances = _myStruct#2;
-private _otherDistances = _otherStruct#2;
+private _leftConnections = _leftStruct#3;
+private _rightConnections = _rightStruct#3;
 
 private _marker_lines = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ + (_myName + _otherName) (we will exclude distance)
-private _marker_distances = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ + (_myName + _otherName) (we will exclude distance)
 
-if (_myRoad in _otherConnections) then { // If connected, then disconnect.
+private _midPoint = _leftPos vectorAdd _rightPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+private _name = "A3A_NG_Line_"+str _midPoint;
+
+if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If connected, then disconnect.
     ["Street Artist","Disconnected"] call A3A_fnc_customHint;
-    while {_myRoad in _otherConnections || _otherRoad in _myConnections} do {  // sometimes due to simplification or map roads, nodes may be connected multiple times.
-        private _otherInMy = _myConnections find _otherRoad;
-        _myConnections deleteAt _otherInMy;
-        _myDistances deleteAt _otherInMy;
+    private _rightInLeft = _leftConnections findIf {(_x#0) isEqualTo _rightPos};
+    _leftConnections deleteAt _rightInLeft;
 
-        private _myInOther = _otherConnections find _myRoad;
-        _otherConnections deleteAt _myInOther;
-        _otherDistances deleteAt _myInOther;
-    };
-    if (_myRoad in _otherConnections || _otherRoad in _myConnections) then {
-        throw ["CouldNotDisconnectStructs","CouldNotDisconnectStructs."];
-        [1,"CouldNotDisconnectStructs " + str (getPosWorld _myRoad) + ", " + str (getPosWorld _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
-        ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
-    };
+    private _leftInRight = _rightConnections findIf {(_x#0) isEqualTo _leftPos};
+    _rightConnections deleteAt _leftInRight;
 
-    private _probableNames = ["NGPP_line_" + (_myName + _otherName),"NGPP_line_" + (_otherName + _myName)];   // We try both
-    deleteMarker (_probableNames#0);   // We try both
-    deleteMarker (_probableNames#1);
-    {
-        _marker_lines deleteAt (_marker_lines find _x);   // We try both
-    } forEach _probableNames;
-
+    deleteMarker _name;
+    _marker_lines deleteAt _name;
 } else {    // If not connected, then connect.
     ["Street Artist","Connected"] call A3A_fnc_customHint;
-    private _distance = _myRoad distance2D _otherRoad;
-    _myConnections pushBack _otherRoad;
-    _myDistances pushBack _distance;
+    private _distance = _leftPos distance2D _rightPos;
+    _leftConnections pushBack [_rightPos,_connectionTypeEnum,_distance];
+    _rightConnections pushBack [_leftPos,_connectionTypeEnum,_distance];
 
-    _otherConnections pushBack _myRoad;
-    _otherDistances pushBack _distance;
+    private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
+    private _colour = _const_roadColourClassification #_connectionTypeEnum;
 
-    private _roadColourClassification = [["MAIN ROAD", "ROAD", "TRACK"],["ColorGreen","ColorYellow","ColorOrange"]];
-    _marker_lines pushBack ([_myRoad,_otherRoad,_myName + _otherName,_roadColourClassification,4,false] call A3A_fnc_NG_draw_line);
+    [_name,false,_leftPos,_rightPos,_colour,4,"Solid"] call A3A_fnc_NG_draw_line;
 };

@@ -47,7 +47,7 @@ for "_i" from 1 to _count - 3 do {
         throw ["nameAlreadyInUse",["Variable '",_this#_i,"' in (",(_this select [0,_i]) joinString " > ",") already has <",typeName _varSpace,"> '",str _varSpace,"'."] joinString ""];
     };
     if (isNull _varSpace) then {
-        _varSpace = [_this select [0,_i]] call Col_fnc_location_new;
+        _varSpace = [_this select [0,_i +1]] call Col_fnc_location_new;
         _lastVarSpace setVariable [_this#_i,_varSpace];
     };
 };

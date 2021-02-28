@@ -63,7 +63,7 @@ private _select = {
     private _name = str (_struct#0);
     A3A_NGSA_selectionMarker = createMarkerLocal [_name,_struct#0];
     _name setMarkerTypeLocal "Select";
-    _name setMarkerSizeLocal [1.2, 1.2];
+    _name setMarkerSizeLocal [1, 1];
     _name setMarkerColor "colorRed"; // Broadcasts here
 };
 
@@ -71,7 +71,7 @@ if (_leftClick) then {
     if (_targetStruct isEqualTo A3A_NGSA_selectedStruct || count _targetStruct == 0) exitWith { call _deselect; };   // Deselect
     // Select
     if !(A3A_NGSA_selectedStruct isEqualTo A3A_NG_const_emptyArray) then {
-        [A3A_NGSA_selectedStruct,_targetStruct] call A3A_fnc_NGSA_toggleConnection;
+        [A3A_NGSA_selectedStruct,_targetStruct,2] call A3A_fnc_NGSA_toggleConnection;
     };
     [_targetStruct] call _select;
 

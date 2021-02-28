@@ -25,6 +25,5 @@ if (_navGridHM isEqualType 0) then {
 
 private _navRegions = [_navGridHM] call A3A_fnc_NGSA_navRegions_generate;
 
-[4,false,false,1.2,2] spawn A3A_fnc_NG_draw_main;
-
 [_navGridHM,_navRegions] call A3A_fnc_NGSA_EH_add;
+[4,false,false,1.2,2] spawn A3A_fnc_NG_draw_main;

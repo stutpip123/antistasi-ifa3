@@ -29,7 +29,7 @@ private _fnc_diag_render = { // call _fnc_diag_render;
 
 _diag_step_main = "Deleting Dots";
 call _fnc_diag_render;
-private _markers = [localNamespace,"A3A_NGPP","draw","dotOnRoads",[]] call Col_fnc_nestLoc_get;
+private _markers = [localNamespace,"A3A_NGPP","draw","dotOnRoads_markers",[]] call Col_fnc_nestLoc_get;
 {
     deleteMarker _x;
 } forEach _markers;
@@ -37,7 +37,12 @@ _markers resize 0;  // Preserves reference
 
 _diag_step_main = "Deleting Lines";
 call _fnc_diag_render;
-private _markers = [localNamespace,"NavGridPP","draw","LinesBetweenRoads",[]] call Col_fnc_nestLoc_get;
+private _markers = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line",[]] call Col_fnc_nestLoc_get;
+{
+    deleteMarker _x;
+} forEach _markers;
+_markers resize 0;  // Preserves reference
+private _markers = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance",[]] call Col_fnc_nestLoc_get;
 {
     deleteMarker _x;
 } forEach _markers;

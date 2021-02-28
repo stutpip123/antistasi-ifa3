@@ -22,12 +22,12 @@ waitUntil {
 private _map = findDisplay 12;
 
 
-private _mapEH_down_ID = [localNamespace,"NavGridPP","MapEH_down_ID",-1] call Col_fnc_nestLoc_get;
+private _mapEH_down_ID = [localNamespace,"A3A_NGPP","MapEH_down_ID",-1] call Col_fnc_nestLoc_get;
 if (_mapEH_down_ID != -1) then {
     _map displayRemoveEventHandler ["MouseButtonDown",_mapEH_down_ID];
 };
 
-private _mapEH_up_ID = [localNamespace,"NavGridPP","MapEH_up_ID",-1] call Col_fnc_nestLoc_get;
+private _mapEH_up_ID = [localNamespace,"A3A_NGPP","MapEH_up_ID",-1] call Col_fnc_nestLoc_get;
 if (_mapEH_up_ID != -1) then {
     _map displayRemoveEventHandler ["MouseButtonUp",_mapEH_up_ID];
 };

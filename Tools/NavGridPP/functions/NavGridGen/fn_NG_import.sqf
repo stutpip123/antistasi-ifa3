@@ -1,10 +1,11 @@
 /*
 Maintainer: Caleb Serafin
     Create a dialogue to paste navGridDB from the clipboard.
-    Saves it to nestLocs for further usage by other modules.
+    Also converts navGridDB to navGridHM.
+    Saves both to nestLocs for further usage by other modules.
 
 Return Value:
-    <BOOLEAN> True if success, false if error.
+    <ARRAY<navGridDB,navGridHM>>
 
 Scope: Any, Global Arguments
 Environment: Scheduled
@@ -15,7 +16,7 @@ Example:
 */
 
 if (!canSuspend) exitWith {
-    throw ["NotScheduledEnvironment","Please execute NG_main in a scheduled environment as it is a long process: `[] spawn A3A_fnc_NG_main_draw;`."];
+    throw ["NotScheduledEnvironment","Please execute NG_main in a scheduled environment as it is a long process: `[] spawn A3A_fnc_NG_draw_main;`."];
 };
 
 private _diag_step_main = "";
@@ -65,18 +66,21 @@ if (isNil {_navGridDB} || _navGridDB isEqualTo []) exitWith {
     call _fnc_diag_render;
 };
 
-_diag_step_main = "Converting navGridDB to navIslands...";
+_diag_step_main = "Converting navGridDB to navGridHM...";
 call _fnc_diag_render;
 
-[4,"A3A_fnc_NG_convert_navGridDB_navIslands","fn_NG_main"] call A3A_fnc_log;
-private _navIslands = [_navGridDB] call A3A_fnc_NG_convert_navGridDB_navIslands;
+[4,"A3A_fnc_NG_convert_navGridDB_navGridHM","fn_NG_main"] call A3A_fnc_log;
+private _navGridHM = [_navGridDB] call A3A_fnc_NG_convert_navGridDB_navGridHM;
 
-if (isNil {_navIslands} || _navIslands isEqualTo []) exitWith {
-    _diag_step_main = "Failed to convert navGridDB to navIslands.<br/><br/>Please check that all entries are nested in one big array and that the opening square bracket `[` wasn't deleted accidentally.";
+if (isNil {_navGridHM} || count _navGridHM != count _navGridDB) exitWith {
+    _diag_step_main = "Failed to convert navGridDB to navGridHM.<br/><br/>Please check that all entries are nested in one big array and that the opening square bracket `[` wasn't deleted accidentally.";
     call _fnc_diag_render;
 };
-[localNamespace,"A3A_NGPP","navIslands",_navIslands] call Col_fnc_nestLoc_set;
+[localNamespace,"A3A_NGPP","navGridDB",_navGridDB] call Col_fnc_nestLoc_set;
+[localNamespace,"A3A_NGPP","navGridHM",_navGridHM] call Col_fnc_nestLoc_set;
 
 
-_diag_step_main = "Done! Import successful<br/><br/>Data is stored in nestLoc: localNamespace &gt;&gt; ""A3A_NGPP"" &gt;&gt; ""navIslands"" <br/><br/>Drawing code will use this data.";
+_diag_step_main = "Done! Import successful<br/><br/>Data is stored in nestLoc: localNamespace &gt;&gt; ""A3A_NGPP"" &gt;&gt; ""navGridHM"" <br/><br/>Drawing code will use this data.";
 call _fnc_diag_render;
+
+[_navGridDB,_navGridHM];

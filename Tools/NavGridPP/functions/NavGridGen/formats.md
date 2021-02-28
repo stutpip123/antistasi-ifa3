@@ -1,6 +1,20 @@
 
+# navRoadHM
+_From road extraction and distance application. Used in simplification._<br/>
+```
+<HASHMAP<         navGrid:
+  <STRING>          Road string.
+  <
+    <OBJECT>          Road
+    <ARRAY<OBJECT>>     Connected roads.
+    <ARRAY<SCALAR>>     True driving distance in meters to connected roads.
+  >
+>>
+```
+`[_name_,[_road_,_connectedRoads,_connectedDistances]]`
 # navGridHM
-_Speedy and fast access version of navGridDB, navGridHM connections are positions._
+_Speedy and fast writeable version of navGridDB, navGridHM connections are positions._<br/>
+_Island ID may become inaccurate during editing in StreetArtist and will require a refresh._<br/>
 ```
 HASHMAP<          NavFlatHM
   POS2D             Key is Road pos.
@@ -17,34 +31,8 @@ HASHMAP<          NavFlatHM
 >
 ```
 `[_pos2D,[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`
-# navRoadHM
-_From road extraction and distance application._
-```
-<HASHMAP<         navGrid:
-  <STRING>          Road string.
-  <
-    <OBJECT>          Road
-    <ARRAY<OBJECT>>     Connected roads.
-    <ARRAY<SCALAR>>     True driving distance in meters to connected roads.
-  >
->>
-```
-`[_name_,[_road_,_connectedRoads,_connectedDistances]]`
-
-# navIslands
-_Seperation of navGrid into islands._
-```
-ARRAY<           navIslands:
-  <ARRAY<           A single road network island:
-    <OBJECT>        Road
-    <ARRAY<OBJECT>>   Connected roads.
-    <ARRAY<SCALAR>>   True driving distance in meters to connected roads.
-  >>
->
-```
-
 # navGrdDB
-_Desired output format saved for A3-Antistasi. navGridDB connections are array indices._
+_Desired output format saved for A3-Antistasi. navGridDB connections are array indices._<br/>
 ```
 ARRAY<           navGridDB:
   <POS2D|POSAGL>    Road pos.
@@ -58,3 +46,4 @@ ARRAY<           navGridDB:
   <STRING|SCALAR>   Road name or 0 if name not needed for finding road (Ie. name is need if roadAt cannot find road). Will be deprecated and removed soon.
 >
 ```
+`[_pos2D,[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`

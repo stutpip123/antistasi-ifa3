@@ -55,6 +55,8 @@ private _fnc_diag_report = {
     _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
 };
 
+uiSleep 0.001;  // Readies the scheduler to avoid a lag spike for the following loop.
+
 ["Extraction","Extracting roads"] call _fnc_diag_report;
 private _halfWorldSize = worldSize/2;
 private _worldCentre = [_halfWorldSize,_halfWorldSize];

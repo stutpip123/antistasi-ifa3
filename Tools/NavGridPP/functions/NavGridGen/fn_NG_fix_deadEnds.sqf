@@ -7,7 +7,7 @@ Arguments:
     <navRoadHM> Modifies Reference
 
 Return Value:
-    <navRoadHM> Nav islands with fake dead-ends fixed.
+    <navRoadHM> Same reference to Nav grid with fake dead-ends fixed.
 
 Scope: Any, Global Arguments
 Environment: Scheduled

@@ -1,7 +1,7 @@
 /*
 Maintainer: Caleb Serafin
     Use `[] spawn A3A_fnc_NG_import;` for importing from clipboard.
-    Loads navIslands from localNamespace >> "A3A_NGPP" >> "navGridHM"
+    Loads navGridHM from localNamespace >> "A3A_NGPP" >> "navGridHM"
     (Re)draws new markers according to user settings.
 
 Arguments:
@@ -36,7 +36,7 @@ params [
 ];
 
 if (!canSuspend) exitWith {
-    throw ["NotScheduledEnvironment","Please execute NG_main in a scheduled environment as it is a long process: `[] spawn A3A_fnc_NG_main_draw;`."];
+    throw ["NotScheduledEnvironment","Please execute NG_main in a scheduled environment as it is a long process: `[] spawn A3A_fnc_NG_draw_main;`."];
 };
 
 private _fnc_diag_report = {
@@ -70,4 +70,4 @@ if (_navGridHM isEqualTo []) exitWith {
 [4,"A3A_fnc_NG_draw_dotOnRoads","fn_NG_main_draw"] call A3A_fnc_log;
 [_navGridHM,_dot_size,_islandDot_size] call A3A_fnc_NG_draw_dotOnRoads;
 
-"Done<br/>You can re-run `A3A_fnc_NG_main_draw` as many times as you want to redraw the markers without re-generating the navGrid." call _fnc_diag_report;
+"Done<br/>You can re-run `A3A_fnc_NG_draw_main` as many times as you want to redraw the markers without re-generating the navGrid." call _fnc_diag_report;

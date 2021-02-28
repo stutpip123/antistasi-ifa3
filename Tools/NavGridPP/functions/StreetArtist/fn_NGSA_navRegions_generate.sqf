@@ -1,38 +1,36 @@
 /*
 Maintainer: Caleb Serafin
-    Generates a region lookup table for navGrid. This allows fast fetching of nearMarkers to a map point.
-    The lookup table creates references to the original navGrid.
+    Generates a region lookup table for navGridHM positions. This allows fast fetching of nearMarkers to a map point.
+    The lookup table does not create any references to the original navGridHM.
 
 Arguments:
-    <ARRAY<             navGrid:
-        <OBJECT>            Road
-        <ARRAY<OBJECT>>         Connected roads.
-        <ARRAY<SCALAR>>         True driving distance in meters to connected roads.
-    >>
+    <navGridHM>
 
 Return Value:
-    <LOCATION> same _navRegions as found in localNamespace >> "NavGridPP" >> "NavRegions".
-        Each var element: <ARRAY< <POS2D|POSAGL>Road Pos, <ARRAY>StructReference >>
+    <HASHMAP> same _navRegions as found in localNamespace >> "A3A_NGPP" >> "NavRegions".
+        Each var element: <Array<Pos> navGridHM element pos> bucket
 
 Scope: Client, Global Arguments, Local Effect
-Environment: Unscheduled
+Environment: Any
 Public: Yes
 
 Example:
-    private _navGrid = [_navIslands] call A3A_fnc_NG_convert_navIslands_navGrid;
+    private _navRegions = [_navGridHM] call A3A_fnc_NGSA_navRegions_generate;
 */
 params [
-    ["_navGrid",[],[ [] ]]
+    "_navGridHM"
 ];
 
 private _navRegions = createHashMap;
-[localNamespace,"NavGridPP","NavRegions",_navRegions] call Col_fnc_nestLoc_set;
+[localNamespace,"A3A_NGPP","NavRegions",_navRegions] call Col_fnc_nestLoc_set;
 
 {
-    private _pos = getPosWorld (_x#0);
-    private _region = str [floor (_pos#0 / 100),floor (_pos#1 / 100)];
-    private _items = _navRegions getOrDefault [_region,[]];
-    _items pushBack _x;
-    _navRegions set [_region,_items];
-} forEach _navGrid;
+    private _region = [floor (_x#0 / 100),floor (_x#1 / 100)];
+    if (_region in _navRegions) then {
+        (_navRegions get _region) pushBack _x;
+    } else {
+        _navRegions set [_region,[_x]];
+    };
+} forEach +(keys _navGridHM);
 
+_navRegions

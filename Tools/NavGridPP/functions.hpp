@@ -10,12 +10,8 @@ class A3A {
     class NavGridGen {
         class NG_check_conExists {};
         class NG_check_oneWays {};
-        class NG_convert_navGrid_navIslands {};
         class NG_convert_navGridDB_navGridHM {};
-        class NG_convert_navGridDB_navIslands {};
         class NG_convert_navGridHM_navGridDB {};
-        class NG_convert_navIslands_navGrid {};
-        class NG_convert_navIslands_navGridDB {};
         class NG_convert_navRoadHM_navGridHM {};
         class NG_convert_road_DBPosName {};
         class NG_convert_road_pos {};
@@ -36,10 +32,8 @@ class A3A {
         class NGSA_EH_rem {};
         class NGSA_export {};
         class NGSA_main {};
-        class NGSA_navRegions_add {};
         class NGSA_navRegions_generate {};
-        class NGSA_navRegions_getStruct {};
-        class NGSA_navRegions_rem {};
+        class NGSA_navRegions_getPos {};
         class NGSA_onMouseClick {};
         class NGSA_toggleConnection {};
     };

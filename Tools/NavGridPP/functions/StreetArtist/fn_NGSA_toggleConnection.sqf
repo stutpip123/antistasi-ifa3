@@ -13,7 +13,7 @@ Scope: Client, Local Arguments, Local Effect
 Environment: Unscheduled
 Public: No
 Dependencies:
-    <LOCATION> nestLoc entry at (localNamespace >> "NavGridPP" >> "NavRegions")
+    <LOCATION> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "NavRegions")
 
 Example:
     findDisplay 12 displayAddEventHandler ["MouseButtonDown", {
@@ -40,7 +40,8 @@ private _otherConnections = _otherStruct#1;
 private _myDistances = _myStruct#2;
 private _otherDistances = _otherStruct#2;
 
-private _marker_lines = [localNamespace,"NavGridPP","draw","LinesBetweenRoads",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ + (_myName + _otherName) (we will exclude distance)
+private _marker_lines = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ + (_myName + _otherName) (we will exclude distance)
+private _marker_distances = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ + (_myName + _otherName) (we will exclude distance)
 
 if (_myRoad in _otherConnections) then { // If connected, then disconnect.
     ["Street Artist","Disconnected"] call A3A_fnc_customHint;

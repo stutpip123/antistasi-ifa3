@@ -23,7 +23,7 @@ Environment: Scheduled (Recommended) | Any (If small navGrid like Stratis, Malde
 Public: Yes
 
 Example:
-    [_navIslands] call A3A_fnc_NG_draw_dotOnRoads;
+    [_navGridHM] call A3A_fnc_NG_draw_dotOnRoads;
 */
 params [
     "_navGridHM",
@@ -31,7 +31,7 @@ params [
     ["_islandDot_size",1,[ 0 ]]
 ];
 
-private _markers_old = [localNamespace,"NavGridPP","draw","dotOnRoads_markers", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_old = [localNamespace,"A3A_NGPP","draw","dotOnRoads_markers", createHashMap] call Col_fnc_nestLoc_get;
 private _markers_new = createHashMap;
 [localNamespace,"A3A_NGPP","draw","dotOnRoads_markers",_markers_new] call Col_fnc_nestLoc_set;
 

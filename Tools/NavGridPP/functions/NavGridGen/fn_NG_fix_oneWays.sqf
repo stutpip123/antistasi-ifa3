@@ -8,7 +8,7 @@ Arguments:
     <navRoadHM> Modifies Reference
 
 Return Value:
-    <navRoadHM> Nav islands with one-ways fixed.
+    <navRoadHM> Same reference to nav grid with one-ways fixed.
 
 Scope: Any, Global Arguments
 Environment: Scheduled

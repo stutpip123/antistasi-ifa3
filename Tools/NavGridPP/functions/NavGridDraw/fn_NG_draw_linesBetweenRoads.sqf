@@ -47,25 +47,16 @@ private _fnc_diag_report = {
     _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
 };
 
-/*
-_diag_step_main = "Deleting Old Markers";
-call _fnc_diag_render;
-private _markers = [localNamespace,"NavGridPP","draw","LinesBetweenRoads",[]] call Col_fnc_nestLoc_get;
-{
-    deleteMarker _x;
-} forEach _markers;
-_markers resize 0;  // Preserves reference
-*/
 private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
 private _diag_totalSegments = count _navGridHM;
 
-private _markers_old_line = [localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_line", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_old_line = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line", createHashMap] call Col_fnc_nestLoc_get;
 private _markers_new_line = createHashMap;
-[localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_line", _markers_new_line] call Col_fnc_nestLoc_set;
+[localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line", _markers_new_line] call Col_fnc_nestLoc_set;
 
-private _markers_old_distance = [localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_distance", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_old_distance = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance", createHashMap] call Col_fnc_nestLoc_get;
 private _markers_new_distance = createHashMap;
-[localNamespace,"NavGridPP","draw","linesBetweenRoads_markers_distance", _markers_new_distance] call Col_fnc_nestLoc_set;
+[localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance", _markers_new_distance] call Col_fnc_nestLoc_set;
 
 if (_line_size > 0 || _drawDistance) then {
     private _processedMidPoints = createHashMap;

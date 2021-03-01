@@ -17,19 +17,32 @@ Example:
 
 waitUntil {
     uiSleep 0.5;
-    !isNull findDisplay 12;
+    !isNull findDisplay 12 && !isNull findDisplay 46;
 };
 private _map = findDisplay 12;
+private _gameWindow = findDisplay 46;
 
-
-private _mapEH_down_ID = [localNamespace,"A3A_NGPP","MapEH_down_ID",-1] call Col_fnc_nestLoc_get;
-if (_mapEH_down_ID != -1) then {
-    _map displayRemoveEventHandler ["MouseButtonDown",_mapEH_down_ID];
+private _mapEH_mouseDown = [localNamespace,"A3A_NGPP","mapEH_mouseDown",-1] call Col_fnc_nestLoc_get;
+if (_mapEH_mouseDown != -1) then {
+    _map displayRemoveEventHandler ["MouseButtonDown",_mapEH_mouseDown];
+};
+private _mapEH_mouseUp = [localNamespace,"A3A_NGPP","mapEH_mouseUp",-1] call Col_fnc_nestLoc_get;
+if (_mapEH_mouseUp != -1) then {
+    _map displayRemoveEventHandler ["MouseButtonUp",_mapEH_mouseUp];
 };
 
-private _mapEH_up_ID = [localNamespace,"A3A_NGPP","MapEH_up_ID",-1] call Col_fnc_nestLoc_get;
-if (_mapEH_up_ID != -1) then {
-    _map displayRemoveEventHandler ["MouseButtonUp",_mapEH_up_ID];
+private _mapEH_mouseDown = [localNamespace,"A3A_NGPP","MissionEH_eachFrame_ID",-1] call Col_fnc_nestLoc_get;
+if (_mapEH_mouseDown != -1) then {
+    removeMissionEventHandler ["EachFrame",_mapEH_mouseDown];
 };
 
-_mapEH_down_ID != -1 && _mapEH_up_ID != -1;
+private _mapEH_mouseDown = [localNamespace,"A3A_NGPP","missionEH_keyDown",-1] call Col_fnc_nestLoc_get;
+if (_mapEH_mouseDown != -1) then {
+    _gameWindow displayRemoveEventHandler ["KeyDown",_mapEH_mouseDown];
+};
+private _mapEH_mouseUp = [localNamespace,"A3A_NGPP","missionEH_keyUp",-1] call Col_fnc_nestLoc_get;
+if (_mapEH_mouseUp != -1) then {
+    _gameWindow displayRemoveEventHandler ["KeyUp",_mapEH_mouseUp];
+};
+
+_mapEH_mouseDown != -1 && _mapEH_mouseUp != -1;

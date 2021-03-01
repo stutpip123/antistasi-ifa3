@@ -40,18 +40,16 @@ private _closestDistance = A3A_NGSA_maxSelectionRadius; // max selection
     };
 } forEach ([_navGridPosRegionHM,_worldPos] call A3A_fnc_NGSA_posRegionHM_allAdjacent);
 
-private _targetStruct = [];
-private _targetExists = count _targetPos != 0;
-if (_targetExists) then {
-    _targetStruct = _navGridHM get _targetPos;
+A3A_NGSA_hoverTargetExists = count _targetPos != 0;
+if (A3A_NGSA_hoverTargetExists) then {
+    A3A_NGSA_hoverTargetStruct = _navGridHM get _targetPos;
 };
 
 
 if !(A3A_NGSA_onUIUpdate_refresh || _targetPos isNotEqualTo A3A_NGSA_hoverMarkerCurrentPos) exitWith {};
 A3A_NGSA_onUIUpdate_refresh = false;
 
-A3A_NGSA_hoverMarkerCurrentPos = [[0,0],_targetPos] select _targetExists;
-A3A_NGSA_hoverMarkerCurrentName setMarkerPosLocal A3A_NGSA_hoverMarkerCurrentPos;
+A3A_NGSA_hoverMarkerCurrentPos = [_worldPos,_targetPos] select A3A_NGSA_hoverTargetExists;
 
 switch (A3A_NGSA_clickModeEnum) do {
     case 0: { };    // Nothing
@@ -64,12 +62,30 @@ switch (A3A_NGSA_clickModeEnum) do {
 
         A3A_NGSA_modeConnect_selMarkerName setMarkerType (["Empty","mil_start_noShadow"] select (A3A_NGSA_modeConnect_selectedExists && A3A_NGSA_hoverMarkerCurrentPos isNotEqualTo A3A_NGSA_modeConnect_selMarkerPos));       // Broadcasts for selected marker.
 
-        A3A_NGSA_hoverMarkerCurrentName setMarkerType (switch (true) do {
-            case (!_targetExists && !A3A_NGSA_modeConnect_selectedExists): {"empty"};
-            case (!_targetExists): {A3A_NGSA_hoverMarkerCurrentName setMarkerPosLocal _worldPos; A3A_NGSA_hoverLineEndPos = _worldPos; "waypoint"};
+        A3A_NGSA_hoverMarkerCurrentName setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
+        A3A_NGSA_hoverMarkerCurrentName setMarkerType (switch (true) do {       // Broadcast here.
+            case (A3A_NGSA_depressedKeysHM get "shift"): {
+                A3A_NGSA_hoverMarkerCurrentPos = _worldPos;
+                A3A_NGSA_hoverLineEndPos = _worldPos;
+                "mil_destroy_noShadow";
+            };
+            case (A3A_NGSA_depressedKeysHM get "ctrl"): {
+                A3A_NGSA_hoverLineEnabled = false;
+                "KIA";
+            };
+            case (!A3A_NGSA_hoverTargetExists && !A3A_NGSA_modeConnect_selectedExists): {"empty"};
+            case (!A3A_NGSA_hoverTargetExists): {
+                A3A_NGSA_hoverLineEndPos = _worldPos;
+                A3A_NGSA_hoverMarkerCurrentName setMarkerSizeLocal [1,1];
+                A3A_NGSA_hoverLineBrush = "DiagGrid";
+                "waypoint";
+            };
             case (!A3A_NGSA_modeConnect_selectedExists): {"selector_selectable"};
-            case (A3A_NGSA_hoverMarkerCurrentPos isEqualTo A3A_NGSA_modeConnect_selMarkerPos): { "waypoint"};
-            case ((_targetStruct#3) findIf {(_x#0) isEqualTo (A3A_NGSA_modeConnect_selectedNode#0)} != -1): {
+            case (A3A_NGSA_hoverMarkerCurrentPos isEqualTo A3A_NGSA_modeConnect_selMarkerPos): {
+                A3A_NGSA_hoverMarkerCurrentName setMarkerSizeLocal [1,1];
+                "waypoint"
+            };
+            case ((A3A_NGSA_hoverTargetStruct#3) findIf {(_x#0) isEqualTo (A3A_NGSA_modeConnect_selectedNode#0)} != -1): {
                 A3A_NGSA_hoverLineColour = "ColorRed";
                 A3A_NGSA_hoverLineBrush = "DiagGrid";
                 A3A_NGSA_modeConnect_selMarkerName setMarkerType "mil_objective_noShadow";
@@ -77,11 +93,12 @@ switch (A3A_NGSA_clickModeEnum) do {
             };
             default {"mil_pickup_noShadow"};
         });
+        A3A_NGSA_hoverMarkerCurrentName setMarkerPos A3A_NGSA_hoverMarkerCurrentPos;
     };
     case 2: {       // Create/Delete Nodes
 
     };
-    case 3: {       // Node Deletion brush
+    case 3: {       // Brush Node Deletion/Connection Types
 
     };
     case 4: {       // Toggle Render region

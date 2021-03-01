@@ -26,25 +26,8 @@ Example:
 */
 params ["_worldPos", "_shift", "_ctrl", "_alt"];
 
-private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
-private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
-
-private _targetPos = [];
-private _closestDistance = A3A_NGSA_maxSelectionRadius;
-{
-    private _distance = _x distance2D _worldPos;
-    if (_distance < _closestDistance) then {
-        _closestDistance = _distance;
-        _targetPos = _x;
-    };
-} forEach ([_navGridPosRegionHM,_worldPos] call A3A_fnc_NGSA_posRegionHM_allAdjacent);
-
-private _targetStruct = [];
-if (count _targetPos != 0) then {
-    _targetStruct = _navGridHM get _targetPos;
-};
-
-private _marker_dots = [localNamespace,"A3A_NGPP","draw","markers_road",[]] call Col_fnc_nestLoc_get;             // Prefixed with NGPP_dot_ + _myName
+//private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
+//private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
 
 private _deselect = {
     A3A_NGSA_modeConnect_selectedExists = false;
@@ -62,9 +45,20 @@ private _select = {
     A3A_NGSA_modeConnect_selMarkerName setMarkerType "mil_start_noShadow"; // Broadcasts here
 };
 
-if (_targetStruct isEqualTo A3A_NGSA_modeConnect_selectedNode || count _targetStruct == 0) exitWith { call _deselect; };   // Deselect
-// Select
-if (A3A_NGSA_modeConnect_selectedExists) then {
-    [A3A_NGSA_modeConnect_selectedNode,_targetStruct,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
+switch (true) do {       // Broadcast here.
+    case (A3A_NGSA_depressedKeysHM get "shift"): {
+        // Add
+    };
+    case (!A3A_NGSA_hoverTargetExists): _deselect;
+    case (A3A_NGSA_depressedKeysHM get "ctrl"): {
+        // Remove
+    };
+    case (!A3A_NGSA_modeConnect_selectedExists): {
+        [A3A_NGSA_hoverTargetStruct] call _select;
+    };
+    case (A3A_NGSA_hoverMarkerCurrentPos isEqualTo A3A_NGSA_modeConnect_selMarkerPos): _deselect;
+    default {
+        [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_hoverTargetStruct,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
+        [A3A_NGSA_hoverTargetStruct] call _select;
+    };
 };
-[_targetStruct] call _select;

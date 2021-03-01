@@ -23,7 +23,10 @@ params [
 ];
 
 private _navGridDB = [];
-private _posIndexHM = createHashMapFromArray (keys _navGridHM apply { [_x,_navGridDB pushBack (_navGridHM get _x)] });
+private _posIndexHM = createHashMapFromArray (keys _navGridHM apply {
+    private _struct = _navGridHM get _x;
+    [_x,_navGridDB pushBack [+(_struct#0),_struct#1,_struct#2,+(_struct#3)]] // Copy values, positions will not be copied
+});
 
 {
     {

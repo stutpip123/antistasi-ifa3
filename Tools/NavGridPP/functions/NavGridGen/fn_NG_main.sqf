@@ -104,12 +104,13 @@ try {
 
     ["Done","navGridDB copied to clipboard!<br/><br/>If you have lost your clipboard, you can grab the navGridDB_formatted with<br/>`copyToClipboard ([localNamespace,'A3A_NGPP','navGridDB_formatted',''] call Col_fnc_nestLoc_get)`"] call _fnc_diag_report;
     copyToClipboard _navGridDB_formatted;
-//*
+/*
     ["Unit Test","Converting navGridDB to navGridHM."] call _fnc_diag_report;
     _navGridHM = [_navGridDB] call A3A_fnc_NG_convert_navGridDB_navGridHM;
     [localNamespace,"A3A_NGPP","navGridHM",_navGridHM] call Col_fnc_nestLoc_set;
 //*/
 
+    ["Done","Generation Complete."] call _fnc_diag_report;
     if (_autoEdit) then {
         [] call A3A_fnc_NGSA_main;
     };

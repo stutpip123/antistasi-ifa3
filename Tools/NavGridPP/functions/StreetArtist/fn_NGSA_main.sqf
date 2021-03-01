@@ -26,9 +26,10 @@ if (_navGridHM isEqualType 0) then {
 private _navGridPosRegionHM = [_navGridHM] call A3A_fnc_NGSA_posRegionHM_generate;
 [localNamespace,"A3A_NGPP","navGridPosRegionHM",_navGridPosRegionHM] call Col_fnc_nestLoc_set;
 
-[_navGridHM,_navGridPosRegionHM] call A3A_fnc_NGSA_EH_add;
 if (isNil {A3A_NGSA_dotBaseSize} || isNil {A3A_NGSA_lineBaseSize}) then {
     A3A_NGSA_dotBaseSize = 1.2;
     A3A_NGSA_lineBaseSize = 4;
 };
+[_navGridHM,_navGridPosRegionHM] call A3A_fnc_NGSA_EH_add;
 [A3A_NGSA_lineBaseSize,false,false,A3A_NGSA_dotBaseSize,A3A_NGSA_dotBaseSize*1.6] spawn A3A_fnc_NG_draw_main;
+call A3A_fnc_NGSA_refreshMarkerOrder;

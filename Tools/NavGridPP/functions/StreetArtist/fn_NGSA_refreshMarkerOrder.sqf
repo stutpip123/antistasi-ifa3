@@ -13,6 +13,9 @@ Example:
 
 deleteMarker A3A_NGSA_modeConnect_selMarkerName;
 createMarkerLocal [A3A_NGSA_modeConnect_selMarkerName,A3A_NGSA_modeConnect_selMarkerPos];
+A3A_NGSA_modeConnect_selMarkerName setMarkerTypeLocal "Empty";
+A3A_NGSA_modeConnect_selMarkerName setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
+A3A_NGSA_modeConnect_selMarkerName setMarkerColor "colorBlack"; // Broadcasts here
 
 deleteMarker A3A_NGSA_hoverLineName;
 createMarkerLocal [A3A_NGSA_hoverLineName,A3A_NGSA_hoverLineStartPos];
@@ -25,3 +28,6 @@ if (A3A_NGSA_hoverLineEnabled) then {
 
 deleteMarker A3A_NGSA_hoverMarkerCurrentName;
 createMarkerLocal [A3A_NGSA_hoverMarkerCurrentName,A3A_NGSA_hoverMarkerCurrentPos];
+A3A_NGSA_hoverMarkerCurrentName setMarkerTypeLocal "Empty";
+A3A_NGSA_hoverMarkerCurrentName setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
+A3A_NGSA_hoverMarkerCurrentName setMarkerColor "ColorBlack"; // Broadcasts here

@@ -42,7 +42,6 @@ private _midPoint = _leftPos vectorAdd _rightPos vectorMultiply 0.5 select A3A_N
 private _name = "A3A_NG_Line_"+str _midPoint;
 
 if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If connected, then disconnect.
-    ["Street Artist","Disconnected"] call A3A_fnc_customHint;
     private _rightInLeft = _leftConnections findIf {(_x#0) isEqualTo _rightPos};
     _leftConnections deleteAt _rightInLeft;
 
@@ -52,7 +51,6 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
     deleteMarker _name;
     _marker_lines deleteAt _name;
 } else {    // If not connected, then connect.
-    ["Street Artist","Connected"] call A3A_fnc_customHint;
     private _distance = _leftPos distance2D _rightPos;
     _leftConnections pushBack [_rightPos,_connectionTypeEnum,_distance];
     _rightConnections pushBack [_leftPos,_connectionTypeEnum,_distance];
@@ -63,7 +61,7 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
     [_name,false,_leftPos,_rightPos,_colour,4,"Solid"] call A3A_fnc_NG_draw_line;
 };
 
-private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
+private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get; // Refresh marker junction colour
 if !(_markerStructs isEqualType 0) then {
     call A3A_fnc_NGSA_refreshMarkerOrder;
     private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];

@@ -2,6 +2,7 @@ class A3A {
     class NavGridDraw {
         class NG_draw_deleteAll {};
         class NG_draw_dotOnRoads {};
+        class NG_draw_islands {};
         class NG_draw_line {};
         class NG_draw_linesBetweenRoads {};
         class NG_draw_main {};
@@ -32,9 +33,14 @@ class A3A {
         class NGSA_EH_rem {};
         class NGSA_export {};
         class NGSA_main {};
-        class NGSA_navRegions_generate {};
-        class NGSA_navRegions_getPos {};
+        class NGSA_onModeConnect {};
         class NGSA_onMouseClick {};
+        class NGSA_onUIUpdate {};
+        class NGSA_pos_add {};
+        class NGSA_pos_rem {};
+        class NGSA_posRegionHM_allAdjacent {};
+        class NGSA_posRegionHM_generate {};
+        class NGSA_refreshMarkerOrder {};
         class NGSA_toggleConnection {};
     };
     class UI {

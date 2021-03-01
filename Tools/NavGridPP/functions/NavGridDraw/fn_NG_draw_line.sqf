@@ -29,10 +29,12 @@ private _centre = (_myPos vectorAdd _otherPos) vectorMultiply 0.5;
 
 if !(_exists) then {
     createMarkerLocal [_name, _centre];
-    _name setMarkerDirLocal _azimuth;
-    _name setMarkerShapeLocal "RECTANGLE";
+} else {
+    _name setMarkerPosLocal _centre;
 };
 
+_name setMarkerDirLocal _azimuth;
+_name setMarkerShapeLocal "RECTANGLE";
 _name setMarkerSizeLocal [_line_size, _radius];
 _name setMarkerBrushLocal _line_brush;
 _name setMarkerColor _colour;

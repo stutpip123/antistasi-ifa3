@@ -9,7 +9,7 @@ Arguments:
     <BOOLEAN> False if line partially transparent, true if solid and opaque. (Default = false)
     <BOOLEAN> True to draw distance between road segments. (Only draws if above 5m) (Default = false)
     <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
-    <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1)
+    <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 0.8)
 
 Return Value:
     <ANY> Undefined
@@ -32,7 +32,7 @@ params [
     ["_line_opaque",false,[ false ]],
     ["_drawDistance",false,[ false ]],
     ["_dot_size",0.8,[ 0 ]],
-    ["_islandDot_size",1,[ 0 ]]
+    ["_islandDot_size",0.8,[ 0 ]]
 ];
 
 if (!canSuspend) exitWith {
@@ -68,13 +68,17 @@ if (_navGridHM isEqualTo []) exitWith {
 
 //call A3A_fnc_NG_draw_deleteAll;
 
-"Drawing LinesBetweenRoads" call _fnc_diag_report;
+"Drawing Lines Between Roads" call _fnc_diag_report;
 [4,"A3A_fnc_NG_draw_linesBetweenRoads","fn_NG_main_draw"] call A3A_fnc_log;
 [_navGridHM,_line_size,_line_opaque,_drawDistance] call A3A_fnc_NG_draw_linesBetweenRoads;
 
-"Drawing DotsOnRoads" call _fnc_diag_report;
+"Drawing Dots On Roads" call _fnc_diag_report;
 [4,"A3A_fnc_NG_draw_dotOnRoads","fn_NG_main_draw"] call A3A_fnc_log;
-[_navGridHM,_dot_size,_islandDot_size] call A3A_fnc_NG_draw_dotOnRoads;
+[_navGridHM,_dot_size] call A3A_fnc_NG_draw_dotOnRoads;
+
+"Drawing Island Makers" call _fnc_diag_report;
+[4,"A3A_fnc_NG_draw_islands","fn_NG_main_draw"] call A3A_fnc_log;
+[_navGridHM,_islandDot_size] call A3A_fnc_NG_draw_islands;
 
 "Done<br/>You can re-run `A3A_fnc_NG_draw_main` as many times as you want to redraw the markers without re-generating the navGrid." call _fnc_diag_report;
 

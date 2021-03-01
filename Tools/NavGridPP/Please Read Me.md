@@ -32,10 +32,10 @@ However, you may need to tweak some arguments depending on the simplification le
 ### ⚙ A3A_fnc_NG_main Arguments:
 1.  <SCALAR> Max drift is how far the simplified line segment can stray from the road in metres. (Default = 50)
 2.  <SCALAR> Junctions are only merged if within this distance from each other. (Default = 15)
-3.  <BOOLEAN> True to start the drawing script automatically. (Default = false)
+3.  <BOOLEAN> True to automatically start the StreetArtist Editor. (Default = true)
 
-So running with default settings would also look like this `[50,15] spawn A3A_fnc_NG_main;`<br/>
-To run with default and just draw use `[nil,nil,true] spawn A3A_fnc_NG_main;`<br/>
+So running with default settings would also look like this `[50,15,true] spawn A3A_fnc_NG_main;`<br/>
+To run with default and not edit use `[nil,nil,false] spawn A3A_fnc_NG_main;`<br/>
 Max drift is not the only thing that affects road simplification: It will only simplify if the nearestTerrainObject from its position will still return one of it's neighbouring roads. This prevents virtual convoys that are trying to spawn vehicles from jumping to another nearby road because that is the closest navGrid node.
 
 # 📍 Draw Markers

@@ -48,13 +48,13 @@ private _fnc_diag_report = {
 private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
 private _diag_totalSegments = count _navGridHM;
 
-private _markers_old_line = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_old_line = [localNamespace,"A3A_NGPP","draw","markers_connectionLine", createHashMap] call Col_fnc_nestLoc_get;
 private _markers_new_line = createHashMap;
-[localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line", _markers_new_line] call Col_fnc_nestLoc_set;
+[localNamespace,"A3A_NGPP","draw","markers_connectionLine", _markers_new_line] call Col_fnc_nestLoc_set;
 
-private _markers_old_distance = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance", createHashMap] call Col_fnc_nestLoc_get;
+private _markers_old_distance = [localNamespace,"A3A_NGPP","draw","markers_connectionText", createHashMap] call Col_fnc_nestLoc_get;
 private _markers_new_distance = createHashMap;
-[localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance", _markers_new_distance] call Col_fnc_nestLoc_set;
+[localNamespace,"A3A_NGPP","draw","markers_connectionText", _markers_new_distance] call Col_fnc_nestLoc_set;
 
 if (_line_size > 0 || _drawDistance) then {
     private _processedMidPoints = createHashMap;
@@ -72,6 +72,7 @@ if (_line_size > 0 || _drawDistance) then {
 
             if !(_midPoint in _processedMidPoints) then {
                 _processedMidPoints set [_midPoint,true];
+                //if !(_midPoint inArea [[43000,41000],5000,5000,0,true]) exitWith {};
 
                 private _colour = _const_roadColourClassification #(_x#1);
                 if (_line_size > 0) then {

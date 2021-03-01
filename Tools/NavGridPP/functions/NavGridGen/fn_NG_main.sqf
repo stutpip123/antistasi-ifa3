@@ -22,7 +22,7 @@ Example:
     Tweak parameters:
     [50,35] spawn A3A_fnc_NG_main;
 
-    Or draw when finished:
+    Or edit when finished:
     [nil,nil,true] spawn A3A_fnc_NG_main;
 
     To avoid regenerating the nev grid for drawing, you can omit A3A_fnc_NG_main after running it once. Or import from clipboard if this is a new map load.
@@ -32,7 +32,7 @@ Example:
 params [
     ["_flatMaxDrift",50,[ 0 ]],
     ["_juncMergeDistance",15,[ 0 ]],
-    ["_autoDraw",true,[ true ]]
+    ["_autoEdit",true,[ true ]]
 ];
 
 if (!canSuspend) exitWith {
@@ -110,8 +110,8 @@ try {
     [localNamespace,"A3A_NGPP","navGridHM",_navGridHM] call Col_fnc_nestLoc_set;
 //*/
 
-    if (_autoDraw) then {
-        [] call A3A_fnc_NG_draw_main;
+    if (_autoEdit) then {
+        [] call A3A_fnc_NGSA_main;
     };
 } catch {
     ["NavGrid Error",str _exception] call A3A_fnc_customHint;

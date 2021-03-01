@@ -10,7 +10,7 @@ Environment: Scheduled
 Public: Yes
 
 Example:
-    ["something", player, 2.718281828, 4, nil, ["Tom","Dick","Harry"], ["UID123Money",0], "hint ""Hello World!"""] call A3A_fnc_standardizedHeader; // false
+    [] spawn A3A_fnc_NGSA_main;
 */
 
 
@@ -23,7 +23,12 @@ if (_navGridHM isEqualType 0) then {
     _navGridHM = (call A3A_fnc_NG_import #1);
 };
 
-private _navRegions = [_navGridHM] call A3A_fnc_NGSA_navRegions_generate;
+private _navGridPosRegionHM = [_navGridHM] call A3A_fnc_NGSA_posRegionHM_generate;
+[localNamespace,"A3A_NGPP","navGridPosRegionHM",_navGridPosRegionHM] call Col_fnc_nestLoc_set;
 
-[_navGridHM,_navRegions] call A3A_fnc_NGSA_EH_add;
-[4,false,false,1.2,2] spawn A3A_fnc_NG_draw_main;
+[_navGridHM,_navGridPosRegionHM] call A3A_fnc_NGSA_EH_add;
+if (isNil {A3A_NGSA_dotBaseSize} || isNil {A3A_NGSA_lineBaseSize}) then {
+    A3A_NGSA_dotBaseSize = 1.2;
+    A3A_NGSA_lineBaseSize = 4;
+};
+[A3A_NGSA_lineBaseSize,false,false,A3A_NGSA_dotBaseSize,A3A_NGSA_dotBaseSize*1.6] spawn A3A_fnc_NG_draw_main;

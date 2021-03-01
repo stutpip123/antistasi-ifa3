@@ -1,6 +1,7 @@
 /*
 Maintainer: Caleb Serafin
-    Removes a _roadStruct reference from navRegions
+    Called by event handler
+    Calls specific modes.
 
 Arguments:
     <DISPLAY> _display
@@ -12,14 +13,14 @@ Arguments:
     <BOOLEAN> _alt
 
 Return Value:
-    <BOOLEAN> true if deleted, false if not found.
+    <ANY> nil.
 
 Scope: Client, Local Arguments, Local Effect
 Environment: Unscheduled
 Public: No
+
 Dependencies:
-    <LOCATION> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "NavRegions")
-    <HASHMAP> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "navGridHM")
+    <SCALAR> A3A_NGSA_clickModeEnum Currently select click mode
 
 Example:
     findDisplay 12 displayAddEventHandler ["MouseButtonDown", {
@@ -32,51 +33,28 @@ Example:
 params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
 
 private _leftClick = _button isEqualTo 0;   // Will only be left or right
+if !(_leftClick) exitWith {};
 
-private _map = findDisplay 12;
-private _worldPos = _map displayCtrl 51 ctrlMapScreenToWorld [_xPos, _yPos];
+private _worldPos = findDisplay 12 displayCtrl 51 ctrlMapScreenToWorld [_xPos, _yPos];
 
-
-private _navRegions = [localNamespace,"A3A_NGPP","NavRegions",0] call Col_fnc_nestLoc_get;
-private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
-
-_targetPos = [_navRegions,_worldPos] call A3A_fnc_NGSA_navRegions_getPos;
-private _targetStruct = [];
-if (count _targetPos != 0 && {_targetPos distance2D _worldPos < 50}) then {
-    _targetStruct = _navGridHM get _targetPos;
-};
-
-private _marker_dots = [localNamespace,"A3A_NGPP","draw","dotOnRoads_markers",[]] call Col_fnc_nestLoc_get;             // Prefixed with NGPP_dot_ + _myName
-private _marker_lines = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_line",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ _ (_myName + _otherName) (we will exclude distance)
-private _marker_distances = [localNamespace,"A3A_NGPP","draw","linesBetweenRoads_markers_distance",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ _ (_myName + _otherName) (we will exclude distance)
-
-private _deselect = {
-    A3A_NGSA_selectedStruct = [];
-    deleteMarker A3A_NGSA_selectionMarker;
-    A3A_NGSA_selectionMarker = "";
-};
-private _select = {
-    params ["_struct"];
-    call _deselect;
-    A3A_NGSA_selectedStruct = _struct;
-
-    private _name = str (_struct#0);
-    A3A_NGSA_selectionMarker = createMarkerLocal [_name,_struct#0];
-    _name setMarkerTypeLocal "Select";
-    _name setMarkerSizeLocal [1, 1];
-    _name setMarkerColor "colorRed"; // Broadcasts here
-};
-
-if (_leftClick) then {
-    if (_targetStruct isEqualTo A3A_NGSA_selectedStruct || count _targetStruct == 0) exitWith { call _deselect; };   // Deselect
-    // Select
-    if !(A3A_NGSA_selectedStruct isEqualTo A3A_NG_const_emptyArray) then {
-        [A3A_NGSA_selectedStruct,_targetStruct,2] call A3A_fnc_NGSA_toggleConnection;
+ switch (A3A_NGSA_clickModeEnum) do {
+    case 0: { };    // Nothing
+    case 1: {       // Connections
+        [_worldPos ,_shift, _ctrl, _alt] call A3A_fnc_NGSA_onModeConnect;
     };
-    [_targetStruct] call _select;
+    case 2: {       // Create/Delete Nodes
 
-} else {
-    if (count _targetStruct == 0) exitWith {};
-    ["Street Artist","Re-Drawing and exported."] call A3A_fnc_customHint;
-    [] spawn A3A_fnc_NGSA_export;
+    };
+    case 3: {       // Node Deletion brush
+
+    };
+    case 4: {       // Toggle Render region
+
+    };
+    default {       // Error
+
+    };
 };
+
+A3A_NGSA_onUIUpdate_refresh = true;
+nil;

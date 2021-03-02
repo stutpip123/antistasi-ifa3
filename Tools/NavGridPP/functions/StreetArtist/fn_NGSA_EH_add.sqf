@@ -53,49 +53,40 @@ A3A_NGSA_dotBaseSize = 1.2;
 A3A_NGSA_lineBaseSize = 4;
 A3A_NGSA_nodeOnlyOnRoad = true;
 
-A3A_NGSA_modeConnect_selectedNode = [];
-A3A_NGSA_modeConnect_roadTypeEnum = 2;
-A3A_NGSA_modeConnect_selMarkerPos = [0,0];
-A3A_NGSA_modeConnect_selectedExists = false;
-A3A_NGSA_modeConnect_selMarkerName = "A3A_NG_modeConnect_sel_marker";
-createMarkerLocal [A3A_NGSA_modeConnect_selMarkerName,A3A_NGSA_modeConnect_selMarkerPos];
-A3A_NGSA_modeConnect_selMarkerName setMarkerTypeLocal "Empty";
-A3A_NGSA_modeConnect_selMarkerName setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
-A3A_NGSA_modeConnect_selMarkerName setMarkerColor "colorBlack"; // Broadcasts here
-
 A3A_NGSA_clickModeEnum = 1;
 A3A_NGSA_maxSelectionRadius = 50; // metres
-A3A_NGSA_onUIUpdate_refresh = true;
-A3A_NGSA_hoverTargetExists = false;
-A3A_NGSA_hoverTargetStruct = [];
+A3A_NGSA_fullSelectionRadius = 50; // metres unlimited by region size
 
-A3A_NGSA_hoverLineEnabled = false;
-A3A_NGSA_hoverLineStartPos = [0,0];
-A3A_NGSA_hoverLineEndPos = [0,0];
-A3A_NGSA_hoverLineColour = "colorCivilian";
-A3A_NGSA_hoverLineBrush = "SolidFull";
-A3A_NGSA_hoverLineName = "A3A_NG_UIHover_line";
-createMarkerLocal [A3A_NGSA_hoverLineName,A3A_NGSA_hoverLineStartPos];
+A3A_NGSA_UI_marker0_name = "A3A_NGSA_UI_marker0";
+A3A_NGSA_UI_marker0_pos = [0,0];
+createMarker [A3A_NGSA_UI_marker0_name,A3A_NGSA_UI_marker0_pos];
+A3A_NGSA_UI_marker1_name = "A3A_NGSA_UI_marker1";
+A3A_NGSA_UI_marker1_pos = [0,0];
+createMarker [A3A_NGSA_UI_marker1_name,A3A_NGSA_UI_marker1_pos];
 
-A3A_NGSA_hoverMarkerCurrentPos = [0,0];
-A3A_NGSA_hoverMarkerCurrentName = "A3A_NG_UIHover_marker";
-createMarkerLocal [A3A_NGSA_hoverMarkerCurrentName,A3A_NGSA_hoverMarkerCurrentPos];
-A3A_NGSA_hoverMarkerCurrentName setMarkerTypeLocal "Empty";
-A3A_NGSA_hoverMarkerCurrentName setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
-A3A_NGSA_hoverMarkerCurrentName setMarkerColor "ColorBlack"; // Broadcasts here
+A3A_NGSA_modeConnect_roadTypeEnum = 0;
+A3A_NGSA_modeConnect_targetExists = false;
+A3A_NGSA_modeConnect_targetNode = [];
+A3A_NGSA_modeConnect_selectedExists = false;
+A3A_NGSA_modeConnect_selectedNode = [];
+
+A3A_NGSA_modeConnect_lineName = "A3A_NGSA_UI_modeConnect_line";
+createMarkerLocal [A3A_NGSA_modeConnect_lineName,[0,0]];
 
 
 private _mapEH_mouseDown = _map displayAddEventHandler ["MouseButtonDown", {
+    params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
+    A3A_NGSA_depressedKeysHM set [["LeftMouseButton","RightMouseButton"]#_button,true];
     if (!A3A_NGSA_MouseDown) then {
         A3A_NGSA_MouseDown = true;
-        A3A_NGSA_depressedKeysHM set ["MouseButton",true];
         _this call A3A_fnc_NGSA_onMouseClick;
     };
     nil;
 }];
 private _mapEH_mouseUp = _map displayAddEventHandler ["MouseButtonUp", {
+    params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
+    A3A_NGSA_depressedKeysHM set [["LeftMouseButton","RightMouseButton"]#_button,false];// Will only be left or right
     if (A3A_NGSA_mouseDown) then {
-        A3A_NGSA_depressedKeysHM set ["MouseButton",false];
         A3A_NGSA_mouseDown = false;
     };
     nil;
@@ -115,13 +106,11 @@ private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
 private _missionEH_keyDown = _gameWindow displayAddEventHandler ["KeyDown", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM set [A3A_NGSA_DIKToKeyHM getOrDefault [_key,_key],true];
-    A3A_NGSA_onUIUpdate_refresh = true;
     nil;
 }];
 private _missionEH_keyUp = _gameWindow displayAddEventHandler ["KeyUp", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM set [A3A_NGSA_DIKToKeyHM getOrDefault [_key,_key],false];
-    A3A_NGSA_onUIUpdate_refresh = true;
     nil;
 }];
 [localNamespace,"A3A_NGPP","missionEH_keyDown",_missionEH_keyDown] call Col_fnc_nestLoc_set;

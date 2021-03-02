@@ -23,10 +23,10 @@ private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
     params ["_diag_step_sub"];
     private _customHintParams = [
         "Nav Grid++",
-        "<t align='left'>
-        Converting navGrid to navFlatHM<br/>"+
-        _diag_step_sub+"<br/>
-        </t>",
+        "<t align='left'>"+
+        "Converting navGrid to navFlatHM<br/>"+
+        _diag_step_sub+"<br/>"+
+        "</t>",
         true
     ];
     _customHintParams call A3A_fnc_customHint;

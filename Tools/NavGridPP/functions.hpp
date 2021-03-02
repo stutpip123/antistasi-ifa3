@@ -29,13 +29,14 @@ class A3A {
         class NG_simplify_junc {};
     };
     class StreetArtist {
+        class NGSA_click_modeConnect {};
         class NGSA_EH_add {};
         class NGSA_EH_rem {};
         class NGSA_export {};
+        class NGSA_hover_modeConnect {};
         class NGSA_isValidRoad {};
         class NGSA_main {};
         class NGSA_node_disconnect {};
-        class NGSA_onModeConnect {};
         class NGSA_onMouseClick {};
         class NGSA_onUIUpdate {};
         class NGSA_pos_add {};

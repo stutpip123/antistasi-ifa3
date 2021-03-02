@@ -46,4 +46,4 @@ ARRAY<           navGridDB:
   <STRING|SCALAR>   Road name or 0 if name not needed for finding road (Ie. name is need if roadAt cannot find road). Will be deprecated and removed soon.
 >
 ```
-`[_pos2D,[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`
+`[[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`

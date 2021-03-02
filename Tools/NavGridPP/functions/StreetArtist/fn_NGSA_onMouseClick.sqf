@@ -32,6 +32,7 @@ Example:
 */
 params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
 
+if (!visibleMap) exitWith {};
 private _leftClick = _button isEqualTo 0;   // Will only be left or right
 if !(_leftClick) exitWith {};
 
@@ -40,15 +41,12 @@ private _worldPos = findDisplay 12 displayCtrl 51 ctrlMapScreenToWorld [_xPos, _
  switch (A3A_NGSA_clickModeEnum) do {
     case 0: { };    // Nothing
     case 1: {       // Connections
-        [_worldPos ,_shift, _ctrl, _alt] call A3A_fnc_NGSA_onModeConnect;
+        [_worldPos ,_shift, _ctrl, _alt] call A3A_fnc_NGSA_click_modeConnect;
     };
-    case 2: {       // Create/Delete Nodes
-
+    case 2: {       // Node Deletion brush
+        // All done in onUIUpdate
     };
-    case 3: {       // Node Deletion brush
-
-    };
-    case 4: {       // Toggle Render region
+    case 3: {       // Toggle Render region
 
     };
     default {       // Error
@@ -56,5 +54,4 @@ private _worldPos = findDisplay 12 displayCtrl 51 ctrlMapScreenToWorld [_xPos, _
     };
 };
 
-A3A_NGSA_onUIUpdate_refresh = true;
 nil;

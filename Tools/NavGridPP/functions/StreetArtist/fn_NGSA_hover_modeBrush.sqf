@@ -26,23 +26,37 @@ Example:
 */
 params ["_worldPos"];
 
-
-
 A3A_NGSA_modeConnect_lineName setMarkerAlpha 0;// Broadcasts
 if (A3A_NGSA_depressedKeysHM get "shift") then {
-    A3A_NGSA_fullSelectionRadius = A3A_NGSA_fullSelectionRadius*2;    // Is reset every cycle, so it won't keep growing.
+    A3A_NGSA_brushSelectionRadius = (A3A_NGSA_brushSelectionRadius*2) min 1000;    // Is reset every cycle, so it won't keep growing.
 };
 
 A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ELLIPSE";
-A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_fullSelectionRadius, A3A_NGSA_fullSelectionRadius];
-A3A_NGSA_UI_marker0_name setMarkerBrushLocal "Cross";
+A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_brushSelectionRadius, A3A_NGSA_brushSelectionRadius];
+
+A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ELLIPSE";
+A3A_NGSA_UI_marker1_name setMarkerSizeLocal [A3A_NGSA_brushSelectionRadius, A3A_NGSA_brushSelectionRadius];
+A3A_NGSA_UI_marker1_name setMarkerBrushLocal "Border";
 switch (true) do {
     case (A3A_NGSA_depressedKeysHM get "alt"): {
+        A3A_NGSA_UI_marker0_name setMarkerBrushLocal "FDiagonal";
         A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorRed";
+        A3A_NGSA_UI_marker1_name setMarkerColorLocal "ColorRed";
 
+        if (A3A_NGSA_depressedKeysHM get "LeftMouseButton") then {
+            [_worldPos,A3A_NGSA_depressedKeysHM get "shift", A3A_NGSA_depressedKeysHM get "ctrl", true] call A3A_fnc_NGSA_click_modeBrush;
+        };
     };
     default {
-        A3A_NGSA_UI_marker0_name setMarkerColorLocal (["ColorOrange","ColorYellow","ColorGreen"] select A3A_NGSA_modeConnect_roadTypeEnum);
+        private _roadColour = ["ColorOrange","ColorYellow","ColorGreen"] # A3A_NGSA_modeConnect_roadTypeEnum;
+        A3A_NGSA_UI_marker0_name setMarkerBrushLocal "Cross";
+        A3A_NGSA_UI_marker0_name setMarkerColorLocal _roadColour;
+        A3A_NGSA_UI_marker1_name setMarkerColorLocal _roadColour;
 
+        if (A3A_NGSA_depressedKeysHM get "LeftMouseButton") then {
+            [_worldPos,A3A_NGSA_depressedKeysHM get "shift", A3A_NGSA_depressedKeysHM get "ctrl", false] call A3A_fnc_NGSA_click_modeBrush;
+        };
     };
 };
+A3A_NGSA_UI_marker0_name setMarkerPos _worldPos; // Broadcasts here
+A3A_NGSA_UI_marker1_name setMarkerPos _worldPos; // Broadcasts here

@@ -3,10 +3,7 @@ Maintainer: Caleb Serafin
     Removes a _roadStruct reference from posRegions
 
 Arguments:
-    <DISPLAY> _display
-    <SCALAR> _button
-    <SCALAR> _xPos
-    <SCALAR> _yPos
+    <POS2D> _worldPos
     <BOOLEAN> _shift
     <BOOLEAN> _ctrl
     <BOOLEAN> _alt
@@ -63,6 +60,7 @@ switch (true) do {       // Broadcast here.
             [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
         };
         call _select;
+        call A3A_fnc_NGSA_refreshMarkerOrder;
     };
     case (!A3A_NGSA_modeConnect_targetExists): _deselect;
     case (A3A_NGSA_depressedKeysHM get "alt"): {
@@ -72,7 +70,7 @@ switch (true) do {       // Broadcast here.
         [_navGridHM,_navGridPosRegionHM,A3A_NGSA_UI_marker0_pos] call A3A_fnc_NGSA_pos_rem;    // Island ID will not be accurate.
 
         private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
-        private _name = "A3A_NG_Dot_"+str (A3A_NGSA_modeConnect_targetNode#0);
+        private _name = "A3A_NG_Dot_"+str A3A_NGSA_UI_marker0_pos;
         deleteMarker _name;
         _markerStructs deleteAt _name;
     };

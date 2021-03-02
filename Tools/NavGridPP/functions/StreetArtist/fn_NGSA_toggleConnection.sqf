@@ -63,7 +63,6 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
 
 private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get; // Refresh marker junction colour
 if !(_markerStructs isEqualType 0) then {
-    call A3A_fnc_NGSA_refreshMarkerOrder;
     private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
     {
         private _name = "A3A_NG_Dot_"+str (_x#0);

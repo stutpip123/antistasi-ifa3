@@ -30,9 +30,11 @@ class A3A {
     };
     class StreetArtist {
         class NGSA_click_modeConnect {};
+        class NGSA_click_modeBrush {};
         class NGSA_EH_add {};
         class NGSA_EH_rem {};
         class NGSA_export {};
+        class NGSA_hover_modeBrush {};
         class NGSA_hover_modeConnect {};
         class NGSA_isValidRoad {};
         class NGSA_main {};
@@ -43,6 +45,7 @@ class A3A {
         class NGSA_pos_rem {};
         class NGSA_posRegionHM_allAdjacent {};
         class NGSA_posRegionHM_generate {};
+        class NGSA_posRegionHM_pixelRadius {};
         class NGSA_refreshMarkerOrder {};
         class NGSA_toggleConnection {};
     };

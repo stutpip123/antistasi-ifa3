@@ -43,7 +43,6 @@ ARRAY<           navGridDB:
     <SCALAR>          Road type Enumeration. {TRACK = 0; ROAD = 1; MAIN ROAD = 2} at time of writing.
     <SCALAR>          True driving distance to connection, includes distance of roads swallowed in simplification.
   >>
-  <STRING|SCALAR>   Road name or 0 if name not needed for finding road (Ie. name is need if roadAt cannot find road). Will be deprecated and removed soon.
 >
 ```
 `[[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`

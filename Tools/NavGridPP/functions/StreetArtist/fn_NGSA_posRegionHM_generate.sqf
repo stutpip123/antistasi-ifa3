@@ -12,7 +12,7 @@ Return Value:
         Array<POS2D>    All positions within that region.
     >
 
-Scope: Client, Global Arguments, Local Effect
+Scope: Any
 Environment: Any
 Public: Yes
 

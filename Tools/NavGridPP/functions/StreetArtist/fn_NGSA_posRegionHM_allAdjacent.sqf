@@ -1,6 +1,7 @@
 /*
 Maintainer: Caleb Serafin
-    Gets the closest road struct within 9 regions centred on pos.
+    Gets positions within 9 regions centred on pos.
+    Much faster than fn_NGSA_posRegionHM_pixelRadius with 100m radius.
 
 Arguments:
     <HASHMAP> _posRegionHM
@@ -9,12 +10,12 @@ Arguments:
 Return Value:
     <POS2D> Pos of closest navGridHM element If Found   |  <ARRAY> Empty array if not found.
 
-Scope: Client, Global Arguments, Local Effect
+Scope: Any
 Environment: Any.
 Public: Yes
 
 Example:
-    [_posRegionHM,_pos] call allAdjacent.
+    [_posRegionHM,_pos] call A3A_fnc_NGSA_posRegionHM_allAdjacent.
 */
 params [
     "_posRegionHM",
@@ -22,20 +23,20 @@ params [
 ];
 
 private _region_x = floor (_pos#0 / 100) -1;
-private _centreRegion_y = floor (_pos#1 / 100);
+private _region_y_centre = floor (_pos#1 / 100);
 
 // Unrolled loop since it is small and finite.
 private _structs = [];
-_structs append (_posRegionHM get [_region_x,_centreRegion_y-1]);    // Does not matter if it goes out of map range, append handles nil.
-_structs append (_posRegionHM get [_region_x,_centreRegion_y  ]);
-_structs append (_posRegionHM get [_region_x,_centreRegion_y+1]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre-1]);    // Does not matter if it goes out of map range, append handles nil.
+_structs append (_posRegionHM get [_region_x,_region_y_centre  ]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre+1]);
 _region_x = _region_x +1;
-_structs append (_posRegionHM get [_region_x,_centreRegion_y-1]);
-_structs append (_posRegionHM get [_region_x,_centreRegion_y  ]);
-_structs append (_posRegionHM get [_region_x,_centreRegion_y+1]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre-1]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre  ]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre+1]);
 _region_x = _region_x +1;
-_structs append (_posRegionHM get [_region_x,_centreRegion_y-1]);
-_structs append (_posRegionHM get [_region_x,_centreRegion_y  ]);
-_structs append (_posRegionHM get [_region_x,_centreRegion_y+1]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre-1]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre  ]);
+_structs append (_posRegionHM get [_region_x,_region_y_centre+1]);
 
 _structs;

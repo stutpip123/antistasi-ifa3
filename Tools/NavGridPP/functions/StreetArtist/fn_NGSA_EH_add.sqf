@@ -53,9 +53,9 @@ A3A_NGSA_dotBaseSize = 1.2;
 A3A_NGSA_lineBaseSize = 4;
 A3A_NGSA_nodeOnlyOnRoad = true;
 
-A3A_NGSA_clickModeEnum = 1;
+A3A_NGSA_clickModeEnum = 2;
 A3A_NGSA_maxSelectionRadius = 50; // metres
-A3A_NGSA_fullSelectionRadius = 50; // metres unlimited by region size
+A3A_NGSA_brushSelectionRadius = 50; // meters
 
 A3A_NGSA_UI_marker0_name = "A3A_NGSA_UI_marker0";
 A3A_NGSA_UI_marker0_pos = [0,0];

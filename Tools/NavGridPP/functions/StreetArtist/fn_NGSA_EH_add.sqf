@@ -51,6 +51,7 @@ A3A_NGSA_mouseDown = false;
 
 A3A_NGSA_dotBaseSize = 1.2;
 A3A_NGSA_lineBaseSize = 4;
+A3A_NGSA_nodeOnlyOnRoad = true;
 
 A3A_NGSA_modeConnect_selectedNode = [];
 A3A_NGSA_modeConnect_roadTypeEnum = 2;
@@ -114,11 +115,13 @@ private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
 private _missionEH_keyDown = _gameWindow displayAddEventHandler ["KeyDown", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM set [A3A_NGSA_DIKToKeyHM getOrDefault [_key,_key],true];
+    A3A_NGSA_onUIUpdate_refresh = true;
     nil;
 }];
 private _missionEH_keyUp = _gameWindow displayAddEventHandler ["KeyUp", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM set [A3A_NGSA_DIKToKeyHM getOrDefault [_key,_key],false];
+    A3A_NGSA_onUIUpdate_refresh = true;
     nil;
 }];
 [localNamespace,"A3A_NGPP","missionEH_keyDown",_missionEH_keyDown] call Col_fnc_nestLoc_set;

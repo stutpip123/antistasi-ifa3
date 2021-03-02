@@ -31,5 +31,5 @@ if (isNil {A3A_NGSA_dotBaseSize} || isNil {A3A_NGSA_lineBaseSize}) then {
     A3A_NGSA_lineBaseSize = 4;
 };
 [_navGridHM,_navGridPosRegionHM] call A3A_fnc_NGSA_EH_add;
-[A3A_NGSA_lineBaseSize,false,false,A3A_NGSA_dotBaseSize,A3A_NGSA_dotBaseSize*1.6] spawn A3A_fnc_NG_draw_main;
+[A3A_NGSA_lineBaseSize,false,false,A3A_NGSA_dotBaseSize,A3A_NGSA_dotBaseSize] spawn A3A_fnc_NG_draw_main;
 call A3A_fnc_NGSA_refreshMarkerOrder;

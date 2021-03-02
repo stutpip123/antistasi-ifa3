@@ -26,8 +26,6 @@ Example:
 */
 params ["_worldPos", "_shift", "_ctrl", "_alt"];
 
-//private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
-//private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
 
 private _deselect = {
     A3A_NGSA_modeConnect_selectedExists = false;
@@ -46,12 +44,38 @@ private _select = {
 };
 
 switch (true) do {       // Broadcast here.
-    case (A3A_NGSA_depressedKeysHM get "shift"): {
-        // Add
+    case (_shift && [_worldPos] call A3A_fnc_NGSA_isValidRoad): {
+        A3A_NGSA_hoverTargetStruct = [_worldPos,0,false,[]];
+        A3A_NGSA_hoverTargetExists = true;
+        private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
+        private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
+        [_navGridHM,_navGridPosRegionHM,_worldPos,A3A_NGSA_hoverTargetStruct] call A3A_fnc_NGSA_pos_add;    // Island ID will not be accurate.
+
+        private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
+        private _name = "A3A_NG_Dot_"+str _worldPos;
+        if !(_markerStructs set [_name,true]) then {
+            createMarkerLocal [_name,_worldPos];
+        };
+        _name setMarkerTypeLocal "mil_dot";
+        _name setMarkerSizeLocal [A3A_NGSA_dotBaseSize,A3A_NGSA_dotBaseSize];
+        _name setMarkerColor "ColorBlack";
+
+        if (A3A_NGSA_modeConnect_selectedExists) then {
+            [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_hoverTargetStruct,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
+        };
+        [A3A_NGSA_hoverTargetStruct] call _select;
     };
     case (!A3A_NGSA_hoverTargetExists): _deselect;
-    case (A3A_NGSA_depressedKeysHM get "ctrl"): {
-        // Remove
+    case (_alt): {
+        private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
+        private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
+        [_navGridHM,A3A_NGSA_hoverMarkerCurrentPos] call A3A_fnc_NGSA_node_disconnect;
+        [_navGridHM,_navGridPosRegionHM,A3A_NGSA_hoverMarkerCurrentPos] call A3A_fnc_NGSA_pos_rem;    // Island ID will not be accurate.
+
+        private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
+        private _name = "A3A_NG_Dot_"+str (A3A_NGSA_hoverTargetStruct#0);
+        deleteMarker _name;
+        _markerStructs deleteAt _name;
     };
     case (!A3A_NGSA_modeConnect_selectedExists): {
         [A3A_NGSA_hoverTargetStruct] call _select;
@@ -62,3 +86,4 @@ switch (true) do {       // Broadcast here.
         [A3A_NGSA_hoverTargetStruct] call _select;
     };
 };
+A3A_NGSA_onUIUpdate_refresh = true;

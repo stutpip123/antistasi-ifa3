@@ -32,7 +32,9 @@ class A3A {
         class NGSA_EH_add {};
         class NGSA_EH_rem {};
         class NGSA_export {};
+        class NGSA_isValidRoad {};
         class NGSA_main {};
+        class NGSA_node_disconnect {};
         class NGSA_onModeConnect {};
         class NGSA_onMouseClick {};
         class NGSA_onUIUpdate {};

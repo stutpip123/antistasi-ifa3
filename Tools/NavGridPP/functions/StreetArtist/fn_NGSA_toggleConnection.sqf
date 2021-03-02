@@ -57,7 +57,7 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
 
     private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
     private _colour = _const_roadColourClassification #_connectionTypeEnum;
-
+    _marker_lines set [_name,true];
     [_name,false,_leftPos,_rightPos,_colour,4,"Solid"] call A3A_fnc_NG_draw_line;
 };
 

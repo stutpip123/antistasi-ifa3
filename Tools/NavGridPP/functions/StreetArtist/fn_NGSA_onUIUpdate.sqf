@@ -14,11 +14,8 @@ Dependencies:
     <SCALAR> A3A_NGSA_clickModeEnum Currently select click mode
 
 Example:
-    findDisplay 12 displayAddEventHandler ["MouseButtonDown", {
-        if (!XXX_Slayer_MouseDown) then {
-            XXX_Slayer_MouseDown = true;
-            _this call A3A_fnc_NGSA_onMouseClick;
-        };
+    private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
+        call A3A_fnc_NGSA_onUIUpdate;
     }];
 */
 private _mousePos = getMousePosition;
@@ -64,12 +61,16 @@ switch (A3A_NGSA_clickModeEnum) do {
 
         A3A_NGSA_hoverMarkerCurrentName setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
         A3A_NGSA_hoverMarkerCurrentName setMarkerType (switch (true) do {       // Broadcast here.
-            case (A3A_NGSA_depressedKeysHM get "shift"): {
+            case (A3A_NGSA_depressedKeysHM get "shift" && [_worldPos] call A3A_fnc_NGSA_isValidRoad): {
                 A3A_NGSA_hoverMarkerCurrentPos = _worldPos;
                 A3A_NGSA_hoverLineEndPos = _worldPos;
                 "mil_destroy_noShadow";
             };
-            case (A3A_NGSA_depressedKeysHM get "ctrl"): {
+            case (A3A_NGSA_depressedKeysHM get "alt"): {
+                A3A_NGSA_modeConnect_selectedExists = false;    // Will also deselect current marker.
+                A3A_NGSA_modeConnect_selectedNode = [];
+                A3A_NGSA_modeConnect_selMarkerName setMarkerType "Empty"; // Broadcasts here
+
                 A3A_NGSA_hoverLineEnabled = false;
                 "KIA";
             };
@@ -95,13 +96,10 @@ switch (A3A_NGSA_clickModeEnum) do {
         });
         A3A_NGSA_hoverMarkerCurrentName setMarkerPos A3A_NGSA_hoverMarkerCurrentPos;
     };
-    case 2: {       // Create/Delete Nodes
+    case 2: {       // Brush Node Deletion/Connection Types
 
     };
-    case 3: {       // Brush Node Deletion/Connection Types
-
-    };
-    case 4: {       // Toggle Render region
+    case 3: {       // Toggle Render region
 
     };
     default {       // Error

@@ -29,6 +29,10 @@ class A3A {
         class NG_simplify_junc {};
     };
     class StreetArtist {
+        class NGSA_action_autoRefresh {};
+        class NGSA_action_refresh {};
+        class NGSA_action_save {};
+        class NGSA_action_showHelp {};
         class NGSA_click_modeConnect {};
         class NGSA_click_modeBrush {};
         class NGSA_EH_add {};
@@ -38,7 +42,9 @@ class A3A {
         class NGSA_hover_modeConnect {};
         class NGSA_isValidRoad {};
         class NGSA_main {};
+        class NGSA_navGridHM_refresh_islandID {};
         class NGSA_node_disconnect {};
+        class NGSA_onKeyDown {};
         class NGSA_onMouseClick {};
         class NGSA_onUIUpdate {};
         class NGSA_pos_add {};

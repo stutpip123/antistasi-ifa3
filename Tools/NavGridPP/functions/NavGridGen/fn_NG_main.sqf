@@ -62,7 +62,8 @@ private _halfWorldSize = worldSize/2;
 private _worldCentre = [_halfWorldSize,_halfWorldSize];
 private _worldMaxRadius = sqrt(0.5 * (worldSize^2));
 
-private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_roadTypeEnum, _worldMaxRadius, false, true] select {!isNil{getRoadInfo _x #0}};
+// Further road verification can check if it is in _navRoadHM
+private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_roadTypeEnum, _worldMaxRadius, false, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};
 private _navRoadHM = createHashMapFromArray (_allRoadObjects apply {[str _x,_x]});
 
 ["Extraction","Applying connections and distances"] call _fnc_diag_report;

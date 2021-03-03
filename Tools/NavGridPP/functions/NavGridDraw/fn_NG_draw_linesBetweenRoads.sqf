@@ -75,6 +75,10 @@ if (_line_size > 0 || _drawDistance) then {
                 //if !(_midPoint inArea [[43000,41000],5000,5000,0,true]) exitWith {};
 
                 private _colour = _const_roadColourClassification #(_x#1);
+                if (isNil {_colour}) then {
+                    _colour = "ColourBlack";
+                    ["Error, could not get colour for roadType " + str (_x#1) + " at " + str _midPoint] call _fnc_diag_report;
+                };
                 if (_line_size > 0) then {
                     private _name = "A3A_NG_Line_"+str _midPoint;
                     private _exists = _name in _markers_old_line;

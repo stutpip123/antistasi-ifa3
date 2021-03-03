@@ -26,22 +26,17 @@ params ["_worldPos", "_shift", "_ctrl", "_alt"];
 private _deselect = {
     A3A_NGSA_modeConnect_selectedExists = false;
     A3A_NGSA_modeConnect_selectedNode = [];
-    A3A_NGSA_UI_marker1_name setMarkerType "Empty"; // Broadcasts here
 };
 private _select = {
     A3A_NGSA_modeConnect_selectedNode = A3A_NGSA_modeConnect_targetNode;
     A3A_NGSA_modeConnect_selectedExists = true;
 
     A3A_NGSA_UI_marker1_pos = A3A_NGSA_modeConnect_selectedNode#0;
-    A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ICON";
-    A3A_NGSA_UI_marker1_name setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
-    A3A_NGSA_UI_marker1_name setMarkerColorLocal "ColorBlack";
-    A3A_NGSA_UI_marker1_name setMarkerTypeLocal "mil_start_noShadow";
     A3A_NGSA_UI_marker1_name setMarkerPos A3A_NGSA_UI_marker1_pos; // Broadcasts here
 };
 
 switch (true) do {       // Broadcast here.
-    case (A3A_NGSA_depressedKeysHM get "shift" && [_worldPos] call A3A_fnc_NGSA_isValidRoad): {
+    case ("shift" in A3A_NGSA_depressedKeysHM && [_worldPos] call A3A_fnc_NGSA_isValidRoad): {
         A3A_NGSA_modeConnect_targetNode = [_worldPos,0,false,[]];
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
@@ -57,13 +52,14 @@ switch (true) do {       // Broadcast here.
         _name setMarkerColor "ColorBlack";
 
         if (A3A_NGSA_modeConnect_selectedExists) then {
-            [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
+            [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
         };
         call _select;
         call A3A_fnc_NGSA_refreshMarkerOrder;
+        call A3A_fnc_NGSA_action_autoRefresh;
     };
     case (!A3A_NGSA_modeConnect_targetExists): _deselect;
-    case (A3A_NGSA_depressedKeysHM get "alt"): {
+    case ("alt" in A3A_NGSA_depressedKeysHM): {
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
         [_navGridHM,A3A_NGSA_UI_marker0_pos] call A3A_fnc_NGSA_node_disconnect;
@@ -73,11 +69,14 @@ switch (true) do {       // Broadcast here.
         private _name = "A3A_NG_Dot_"+str A3A_NGSA_UI_marker0_pos;
         deleteMarker _name;
         _markerStructs deleteAt _name;
+        call A3A_fnc_NGSA_action_autoRefresh;
     };
     case (!A3A_NGSA_modeConnect_selectedExists): _select;
     case (A3A_NGSA_modeConnect_selectedNode isEqualTo A3A_NGSA_modeConnect_targetNode): _deselect;
     default {
-        [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
+        [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
         call _select;
+        call A3A_fnc_NGSA_refreshMarkerOrder;
+        call A3A_fnc_NGSA_action_autoRefresh;
     };
 };

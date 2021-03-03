@@ -27,27 +27,28 @@ private _markerStructs_new = createHashMap;
 
 if (_islandDot_size > 0) then {
     private _const_islandDot_size = [_islandDot_size, _islandDot_size];
-    private _islandIDs = [];
+    private _islandIDs = createHashMap;
     {
-        private _islandID = (_navGridHM get _x)#1;
-        if !(_islandID in _islandIDs) then {
-            _islandIDs pushBack _islandID;
+        if (_x in _navGridHM) then {    // may be deleted while re-drawing.
+            private _islandID = (_navGridHM get _x)#1;
+            if (_islandID in _islandIDs) exitWith {};
+            _islandIDs set [_islandID,true];
             private _islandName = "A3A_NG_DotIsland_"+str _islandID;
 
-             private _exists = _islandName in _markerStructs_old;
+            private _exists = _islandName in _markerStructs_old;
             _markerStructs_old deleteAt _islandName;
             _markerStructs_new set [_islandName,true];
 
             if !(_exists) then {
                 createMarkerLocal [_islandName,_x];
-                _islandName setMarkerTypeLocal "mil_flag";
-                _islandName setMarkerTextLocal ("Island <" + str _islandID +">");
-                _islandName setMarkerColor "colorCivilian";
             };
+            _islandName setMarkerTypeLocal "mil_flag";
+            _islandName setMarkerTextLocal ("Island <" + str _islandID +">");
+            _islandName setMarkerColor "colorCivilian";
             _islandName setMarkerSizeLocal _const_islandDot_size;
             _islandName setMarkerPos _x;
         };
-    } forEach _navGridHM;
+    } forEach +(keys _navGridHM);
 };
 
 {

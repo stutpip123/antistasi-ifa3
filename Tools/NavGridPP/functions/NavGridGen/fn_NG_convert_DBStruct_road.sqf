@@ -19,7 +19,7 @@ Environment: Any
 Public: No
 
 Example:
-    private _road = nearestTerrainObjects [getPosWorld player,["MAIN ROAD","ROAD","TRACK"],1000] #0;
+    private _road = nearestTerrainObjects [getPosWorld player,A3A_NG_const_roadTypeEnum,1000] #0;
     private _roadPosName = _road call A3A_NG_convert_road_DBPosName;
     [_roadPosName#0, _roadPosName#1] call A3A_fnc_NG_convert_DBStruct_road;   // original road
 */
@@ -32,7 +32,7 @@ if !(isNull _road) exitWith {
     _road;
 };
 
-private _roadObjects = nearestTerrainObjects [_pos, ["ROAD", "MAIN ROAD", "TRACK"], 10, false, true];
+private _roadObjects = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, 10, false, true];
 private _index = _roadObjects findIf {str _x isEqualTo _name};
 if (_index != -1) exitWith {
     _roadObjects#_index;

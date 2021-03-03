@@ -26,35 +26,44 @@ Example:
 */
 params ["_worldPos"];
 
+
+A3A_NGSA_brushSelectionRadius = _fullSelectionRadius;      // Can be much bigger as it fetches all map regions within a pixelated circle. Too big will still slow down.
 A3A_NGSA_modeConnect_lineName setMarkerAlpha 0;// Broadcasts
-if (A3A_NGSA_depressedKeysHM get "shift") then {
-    A3A_NGSA_brushSelectionRadius = (A3A_NGSA_brushSelectionRadius*2) min 1000;    // Is reset every cycle, so it won't keep growing.
+if ("shift" in A3A_NGSA_depressedKeysHM) then {
+    A3A_NGSA_brushSelectionRadius = (A3A_NGSA_brushSelectionRadius*2) min 2000;    // Is reset every cycle, so it won't keep growing.
 };
 
-A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ELLIPSE";
-A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_brushSelectionRadius, A3A_NGSA_brushSelectionRadius];
+if (A3A_NGSA_toolModeChanged) then {
+    A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ELLIPSE";
+    A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ELLIPSE";
+    A3A_NGSA_UI_marker1_name setMarkerBrushLocal "Border";
+};
 
-A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ELLIPSE";
+A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_brushSelectionRadius, A3A_NGSA_brushSelectionRadius];
 A3A_NGSA_UI_marker1_name setMarkerSizeLocal [A3A_NGSA_brushSelectionRadius, A3A_NGSA_brushSelectionRadius];
-A3A_NGSA_UI_marker1_name setMarkerBrushLocal "Border";
 switch (true) do {
-    case (A3A_NGSA_depressedKeysHM get "alt"): {
+    case ("alt" in A3A_NGSA_depressedKeysHM): {
         A3A_NGSA_UI_marker0_name setMarkerBrushLocal "FDiagonal";
         A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorRed";
         A3A_NGSA_UI_marker1_name setMarkerColorLocal "ColorRed";
 
-        if (A3A_NGSA_depressedKeysHM get "LeftMouseButton") then {
-            [_worldPos,A3A_NGSA_depressedKeysHM get "shift", A3A_NGSA_depressedKeysHM get "ctrl", true] call A3A_fnc_NGSA_click_modeBrush;
+        if ("mbt0" in A3A_NGSA_depressedKeysHM) then {
+            [_worldPos,"shift" in A3A_NGSA_depressedKeysHM, "ctrl" in A3A_NGSA_depressedKeysHM, true] call A3A_fnc_NGSA_click_modeBrush;
+            A3A_NGSA_modeBrush_recentDeletion = true;
+        } else {
+            if !(A3A_NGSA_modeBrush_recentDeletion) exitWith {};
+            A3A_NGSA_modeBrush_recentDeletion = false;
+            call A3A_fnc_NGSA_action_autoRefresh;
         };
     };
     default {
         private _roadColour = ["ColorOrange","ColorYellow","ColorGreen"] # A3A_NGSA_modeConnect_roadTypeEnum;
         A3A_NGSA_UI_marker0_name setMarkerBrushLocal "Cross";
         A3A_NGSA_UI_marker0_name setMarkerColorLocal _roadColour;
-        A3A_NGSA_UI_marker1_name setMarkerColorLocal _roadColour;
+        A3A_NGSA_UI_marker1_name setMarkerColorLocal "ColorBlack";
 
-        if (A3A_NGSA_depressedKeysHM get "LeftMouseButton") then {
-            [_worldPos,A3A_NGSA_depressedKeysHM get "shift", A3A_NGSA_depressedKeysHM get "ctrl", false] call A3A_fnc_NGSA_click_modeBrush;
+        if ("mbt0" in A3A_NGSA_depressedKeysHM) then {
+            [_worldPos,"shift" in A3A_NGSA_depressedKeysHM, "ctrl" in A3A_NGSA_depressedKeysHM, false] call A3A_fnc_NGSA_click_modeBrush;
         };
     };
 };

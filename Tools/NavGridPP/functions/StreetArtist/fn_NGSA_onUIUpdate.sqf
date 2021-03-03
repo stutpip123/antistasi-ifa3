@@ -26,7 +26,6 @@ private _worldPos = _mapTexture ctrlMapScreenToWorld _mousePos;
 private _mapScale = ctrlMapScale _mapTexture;
 private _fullSelectionRadius = worldSize / 16 * _mapScale;
 A3A_NGSA_maxSelectionRadius = _fullSelectionRadius min 150;         // Note, due to 100m edge map regions, the max distance will be between 100m and 282.8m.
-A3A_NGSA_brushSelectionRadius = _fullSelectionRadius min 1000;      // Can be much bigger as it fetches all map regions within a pixelated circle. Too big will still slow down.
 
 A3A_NGSA_modeConnect_lineName setMarkerAlphaLocal 0;
 
@@ -46,4 +45,5 @@ switch (A3A_NGSA_clickModeEnum) do {
     };
 };
 
+A3A_NGSA_toolModeChanged = false;
 nil;

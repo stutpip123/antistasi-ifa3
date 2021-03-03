@@ -44,7 +44,13 @@ private _fnc_convert_NGStruct_NFStructKV = {
     private _roadPos = _namePosHM get str _road;
     private _connections = [];
     {
-        _connections pushBack [_namePosHM get str _x, A3A_NG_const_roadTypeEnum find (getRoadInfo _road #0), _connectedDistances#_forEachIndex];
+        private _roadType = A3A_NG_const_roadTypeEnum find (getRoadInfo _road #0);
+        if (_roadType == -1) then {
+            _roadType = 0;
+            [1,"Road at "+str _roadPos + " had type of following line: (If missing then nil)","fn_NG_convert_navRoadHM_navGridHM"] call A3A_fnc_log;
+            [1,"Road at "+str _roadPos + " had getRoadInfo of "+str (getRoadInfo _road),"fn_NG_convert_navRoadHM_navGridHM"] call A3A_fnc_log;
+        };
+        _connections pushBack [_namePosHM get str _x, _roadType, _connectedDistances#_forEachIndex];
     } forEach _connectedRoads;
 
     [_roadPos, [_roadPos,_islandID,(count _connectedRoads) > 2,_connections]];

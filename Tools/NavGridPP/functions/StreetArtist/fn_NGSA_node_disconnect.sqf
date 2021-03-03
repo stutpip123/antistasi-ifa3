@@ -44,7 +44,6 @@ if (_pos in _navGridHM) then {
 
 
 private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get; // Refresh marker junction colour
-call A3A_fnc_NGSA_refreshMarkerOrder;
 private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
 {
     private _name = "A3A_NG_Dot_"+str (_x#0);

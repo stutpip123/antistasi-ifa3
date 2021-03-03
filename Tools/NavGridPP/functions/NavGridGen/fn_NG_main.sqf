@@ -62,14 +62,16 @@ private _halfWorldSize = worldSize/2;
 private _worldCentre = [_halfWorldSize,_halfWorldSize];
 private _worldMaxRadius = sqrt(0.5 * (worldSize^2));
 
-private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_roadTypeEnum, _worldMaxRadius, false, true];
+private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_roadTypeEnum, _worldMaxRadius, false, true] select {!isNil{getRoadInfo _x #0}};
+private _navRoadHM = createHashMapFromArray (_allRoadObjects apply {[str _x,_x]});
 
 ["Extraction","Applying connections and distances"] call _fnc_diag_report;
-private _navRoadHM = createHashMapFromArray (_allRoadObjects apply {
-    private _road = _x;
-    private _connections = roadsConnectedTo [_road,true] select {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum};
-    [str _road,[_road,_connections,_connections apply {_x distance2D _road}]]
-});
+{
+    private _road = _navRoadHM get _x;
+    private _connections = roadsConnectedTo [_road,true] select {str _x in _navRoadHM};
+    if (isNil {_connections}) then {_connections = [];};
+    _navRoadHM set [_x,[_road,_connections,_connections apply {_x distance2D _road}]]
+} forEach +(keys _navRoadHM);
 
 
 try {

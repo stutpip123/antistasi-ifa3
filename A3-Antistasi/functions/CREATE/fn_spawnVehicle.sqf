@@ -11,12 +11,18 @@
         _type - Type of vehicle [STRING]
         _group - Side or existing group [SIDE or GROUP]
         _precise - (Optional) force precise positioning [BOOL - Default: true]
-        _unitType - unit type to use as crew [STRING, default "loadouts_side_other_crew"]
+        _unitType - unit type to use as crew, recommended to leave as default [STRING, Default: nil]
 
     Returns:
         [new vehicle, all crew, group]
 
     Example(s):
+        [getPosAGL player, 0, "B_T_LSV_01_armed_F", resistance, false] call A3A_fnc_spawnVehicle params ["_vehicle", "_crew", "_group"];
+
+        private _vehicle = [getPosAGL player, 69, "B_Heli_Transport_01_F", group player, true] call A3A_fnc_spawnVehicle #0;
+        _vehicle enableSimulation false; // For inspecting spawn.
+        // Release.
+        cursorObject enableSimulation true;
 */
 
 params ["_pos", "_azi", "_type", "_group", ["_precise", true], "_unitType"];
@@ -60,4 +66,4 @@ if (isNil "_unitType") then {
 //Spawn the crew
 _group = [_group, _veh, _unitType] call A3A_fnc_createVehicleCrew;
 
-[_veh, crew _veh, _group]
+[_veh, crew _veh, _group];

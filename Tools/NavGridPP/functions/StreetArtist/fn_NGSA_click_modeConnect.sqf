@@ -36,7 +36,7 @@ private _select = {
 };
 
 switch (true) do {       // Broadcast here.
-    case ("shift" in A3A_NGSA_depressedKeysHM && [_worldPos] call A3A_fnc_NGSA_isValidRoad): {
+    case ("shift" in A3A_NGSA_depressedKeysHM): {
         A3A_NGSA_modeConnect_targetNode = [_worldPos,0,false,[]];
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;

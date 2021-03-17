@@ -15,20 +15,19 @@ Example:
 
 private _hintData = [
     "Street Artist Help",
-    "<t size='0.7' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Key Binds</t>"+
-    "<t align='left'>" +
-    "'H'-View help."+
-    "'C'-Cycle connection type<br/>"+
-    "'F'-Cycle tool<br/>"+
-    "'ctrl'+'s'-Export changes<br/>"+
-    "</t><t size='0.7' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Connection Tool</t>"+
-    "'click'-Select & connect roads<br/>"+
-    "'shift'-Create new node<br/>"+
-    "'alt'-Delete node<br/>"+
-    "</t><t size='0.7' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Brush Tool</t>"+
-    "'click'-Set connection type<br/>"+
-    "'shift'-Double brush size<br/>"+
-    "'alt'-Delete all nodes<br/>"+
+    "<t size='1' align='left'><t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Key Binds</t><br/>"+
+    "<t color='#f0d498'>'H'</t>-View help.<br/>"+
+    "<t color='#f0d498'>'C'</t>-Cycle connection type.<br/>"+
+    "<t color='#f0d498'>'F'</t>-Cycle tool<br/>"+
+    "<t color='#f0d498'>'ctrl'+'S'</t>-Export changes<br/>"+
+    "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Connection Tool</t><br/>"+
+    "<t color='#f0d498'>'click'</t>-Select &amp; connect roads<br/>"+
+    "<t color='#f0d498'>'shift'</t>-Create new node<br/>"+
+    "<t color='#f0d498'>'alt'</t>-Delete node<br/>"+
+    "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Brush Tool</t><br/>"+
+    "<t color='#f0d498'>'click'</t>-Set connection type<br/>"+
+    "<t color='#f0d498'>'shift'</t>-Double brush size<br/>"+
+    "<t color='#f0d498'>'alt'</t>-Delete all nodes<br/>"+
     "</t>",
     true
 ];

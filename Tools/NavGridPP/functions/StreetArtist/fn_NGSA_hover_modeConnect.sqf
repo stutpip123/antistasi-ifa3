@@ -63,10 +63,10 @@ A3A_NGSA_UI_marker1_name setMarkerColorLocal _lineColour;
 A3A_NGSA_UI_marker0_name setMarkerColorLocal _lineColour;
 A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
 A3A_NGSA_UI_marker0_name setMarkerTypeLocal (switch (true) do {       // Broadcast here.
-    case ("shift" in A3A_NGSA_depressedKeysHM && [_worldPos] call A3A_fnc_NGSA_isValidRoad): {
+    case ("shift" in A3A_NGSA_depressedKeysHM): {
         A3A_NGSA_UI_marker0_pos = _worldPos;
         _lineEndPos = _worldPos;
-        A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorBlack";
+        A3A_NGSA_UI_marker0_name setMarkerColorLocal (["ColorRed","ColorBlack"] select ([_worldPos] call A3A_fnc_NGSA_isValidRoad));
         "mil_destroy_noShadow";
     };
     case ("alt" in A3A_NGSA_depressedKeysHM): {

@@ -18,6 +18,7 @@ Scope: Client, Local Arguments, Local Effect
 Environment: Unscheduled
 Public: No
 Dependencies:
+    scalar _fullSelectionRadius in parent scope
     <HASHMAP> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "posRegionHM")
     <HASHMAP> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "navGridHM")
 

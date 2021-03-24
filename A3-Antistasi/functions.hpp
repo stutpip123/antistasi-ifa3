@@ -688,4 +688,9 @@ class A3A
         class vehicleWillCollideAtPosition {};
         class getRoadDirection {};
     };
+
+    class WeaponDealer
+    {
+        class spawnShop {};
+    };
 };

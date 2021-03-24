@@ -29,6 +29,28 @@ if (_markerX in destroyedSites) then
 	}
 else
 	{
+        private _citySupportRatio = 0;
+        private _citiesUnderControl = 0;
+        {
+            if(sidesX getVariable (_x) == teamPlayer && {!(_x in destroyedSites)}) then
+            {
+                _citiesUnderControl = _citiesUnderControl + 1;
+            };
+        } forEach citiesX;
+        _citySupportRatio = _citiesUnderControl / (count citiesX);
+        private _garageIndex = server getVariable [format ["%1_storeIndex", _markerX], -1];
+        if(_garageIndex == -1) then
+        {
+            _garageIndex = round (random 1000);
+            server setVariable [format ["%1_storeIndex", _markerX], _garageIndex];
+        };
+        private _garages = nearestObjects [getMarkerPos _markerX, ["Land_i_Garage_V1_F", "Land_i_Garage_V2_F"], 250, true];
+        if(count _garages != 0) then
+        {
+            private _garage = _garages select (_garageIndex % (count _garages));
+            [_garage, _citySupportRatio] spawn A3A_fnc_spawnShop;
+        };
+
 	if (_sideX == Occupants) then
 		{
 		_num = round (_num * (_prestigeOPFOR + _prestigeBLUFOR)/100);

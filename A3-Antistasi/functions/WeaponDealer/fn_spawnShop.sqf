@@ -2,6 +2,21 @@
 #define SHOP_SIZE_MEDIUM    2
 #define SHOP_SIZE_LARGE     3
 
+#define PISTOLS             0
+#define RIFLES              1
+#define LAUNCHERS           2
+#define EXPLOSIVES          3
+#define AMMUNITION          4
+#define ATTACHMENT          5
+#define VESTS               6
+#define BACKPACKS           7
+#define NVG                 8
+#define ITEM                9
+#define GRENADES            10
+#define HELMET              11
+
+
+
 params
 [
     ["_garage", objNull, [objNull]],
@@ -59,7 +74,7 @@ private _fnc_getSlotPositions =
         {
             private _pos = (getPosWorld _asset) vectorAdd [0, 0, 0.45];
             private _rot = [150 + (getDir _asset), 0, 0];
-            _result pushBack [_asset, _pos, _rot];
+            _result pushBack [_asset, _pos, _rot, [LAUNCHERS, RIFLES, EXPLOSIVES, VESTS, BACKPACKS, NVG, GRENADES, HELMET]];
         };
         case ("Land_CampingTable_F"):
         {
@@ -67,18 +82,51 @@ private _fnc_getSlotPositions =
             private _tableSide = _tableForward vectorCrossProduct [0, 0, 1];
             private _pos = (getPosWorld _asset) vectorAdd (_tableSide vectorMultiply -0.5) vectorAdd [0, 0, 0.45];
             private _rot = [150 + (getDir _asset), 0, 0];
-            _result pushBack [_asset, _pos, _rot];
+            _result pushBack [_asset, _pos, _rot, [LAUNCHERS, EXPLOSIVES, PISTOLS, ITEM, GRENADES]];
             _pos = (getPosWorld _asset) vectorAdd (_tableSide vectorMultiply 0.5) vectorAdd [0, 0, 0.45];
-            _result pushBack [_asset, _pos, _rot];
+            _result pushBack [_asset, _pos, _rot, []];
         };
         case ("Land_MapBoard_01_Wall_F"):
         {
             private _pos = (getPosWorld _asset) vectorAdd ((vectorDir _asset) vectorMultiply 0.05);
             private _rot = [getDir _asset + 180, 270, 0];
-            _result pushBack [_asset, _pos, _rot];
+            _result pushBack [_asset, _pos, _rot, [LAUNCHERS, AMMUNITION, ATTACHMENT, VESTS, BACKPACKS, NVG, GRENADES, HELMET, ITEM]];
         };
     };
     _result;
+};
+
+private _fnc_chooseSpawnItem =
+{
+    params ["_chooseArray", "_blockArray", "_supportPoint"];
+    private _arrayCopy = +_chooseArray;
+
+    {
+        _arrayCopy set [_x, 0];
+    } forEach _blockArray;
+
+    private _selection =
+    [
+        [allHandguns, 0],
+        [allRifles + allSniperRifles + allMachineGuns + allSMGs + allShotguns, 1],
+        [allMissileLaunchers + allRocketLaunchers, 2],
+        [lootExplosive, 3],
+        [allMagBullet + allMagShotgun + allMagMissile + allMagRocket, 4],
+        [lootAttachment, 5],
+        [lootVest, 6],
+        [lootBackpack, 7],
+        [lootNVG, 8],
+        [allUAVTerminals + allMineDetectors + allGPS + allRadios + allLaserDesignators + allBinoculars + allLaserBatteries + allGadgets, 9],
+        [lootGrenade, 10],
+        [lootHelmet, 11]
+    ] selectRandomWeighted _arrayCopy;
+
+    private _itemCount = (count (_selection#0)) - 1;
+    private _spawnItemIndex = random [0, round (_supportPoint * _itemCount), _itemCount];
+    private _spawnItem = (_selection#0)#_spawnItemIndex;
+
+    _chooseArray set [_selection#1, (_chooseArray#(_selection#1)) - 1];
+    [_selection#1, _spawnItem, _chooseArray];
 };
 
 private _garageRight = vectorDir _garage;
@@ -98,7 +146,14 @@ private _slots = [];
     _slots append ([_asset] call _fnc_getSlotPositions);
 } forEach _assets;
 
+private _chooseArray = [4, 6, 2, 2, 4, 4, 1, 1, 1, 1, 2, 1];
 {
+    private _itemData = [_chooseArray, _x#3, _citySupportRatio] call _fnc_chooseSpawnItem;
+    private _itemType = _itemData#0;
+    private _item = _itemData#1;
+    _chooseArray = _itemData#2;
+    diag_log format ["Selected %1 of type %2", _item, _itemType];
+    /*
     private _arrow = (format ["Weapon_%1", (selectRandom lootWeapon)]) createVehicle _garagePos;
     _arrow setPosWorld (_x#1);
     [_arrow, _x#2] call BIS_fnc_setObjectRotation;
@@ -106,4 +161,5 @@ private _slots = [];
     _arrow addAction ["Buy weapon for 250", {hint "Weapon bought!";}];
     _arrow addAction ["Buy weapon supply for 15000", {hint "Weapon bought!";}];
     _arrow addAction ["Steal weapon", {hint "Weapon bought!";}];
+    */
 } forEach _slots;

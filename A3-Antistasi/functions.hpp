@@ -691,6 +691,8 @@ class A3A
 
     class WeaponDealer
     {
+        class shopLoot {};
+        class sortWeaponArray {};
         class spawnShop {};
     };
 };

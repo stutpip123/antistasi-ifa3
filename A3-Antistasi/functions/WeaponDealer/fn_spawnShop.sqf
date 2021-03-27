@@ -105,25 +105,18 @@ private _fnc_chooseSpawnItem =
         _arrayCopy set [_x, 0];
     } forEach _blockArray;
 
-    private _selection =
-    [
-        [allHandguns, 0],
-        [allRifles + allSniperRifles + allMachineGuns + allSMGs + allShotguns, 1],
-        [allMissileLaunchers + allRocketLaunchers, 2],
-        [lootExplosive, 3],
-        [allMagBullet + allMagShotgun + allMagMissile + allMagRocket, 4],
-        [lootAttachment, 5],
-        [lootVest, 6],
-        [lootBackpack, 7],
-        [lootNVG, 8],
-        [allUAVTerminals + allMineDetectors + allGPS + allRadios + allLaserDesignators + allBinoculars + allLaserBatteries + allGadgets, 9],
-        [lootGrenade, 10],
-        [lootHelmet, 11]
-    ] selectRandomWeighted _arrayCopy;
-
-    private _itemCount = (count (_selection#0)) - 1;
-    private _spawnItemIndex = random [0, round (_supportPoint * _itemCount), _itemCount];
-    private _spawnItem = (_selection#0)#_spawnItemIndex;
+    private _selection = shopArrayComplete selectRandomWeighted _arrayCopy;
+    private _spawnItem = "";
+    if(_selection#2) then
+    {
+        _spawnItem = selectRandom (_selection#0);
+    }
+    else
+    {
+        private _itemCount = (count (_selection#0)) - 1;
+        private _spawnItemIndex = random [0, round (_supportPoint * _itemCount), _itemCount];
+        _spawnItem = (_selection#0)#_spawnItemIndex;
+    };
 
     _chooseArray set [_selection#1, (_chooseArray#(_selection#1)) - 1];
     [_selection#1, _spawnItem, _chooseArray];

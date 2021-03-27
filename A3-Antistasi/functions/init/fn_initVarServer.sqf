@@ -608,6 +608,8 @@ Info("Sorting grouped class categories");
 [] call A3A_fnc_itemSort;
 Info("Building loot lists");
 [] call A3A_fnc_loot;
+Info("Building shop lists");
+[] call A3A_fnc_shopLoot;
 
 ////////////////////////////////////
 //   CLASSING TEMPLATE VEHICLES  ///

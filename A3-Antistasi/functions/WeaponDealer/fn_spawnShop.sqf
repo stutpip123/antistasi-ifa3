@@ -98,6 +98,17 @@ private _fnc_getSlotPositions =
 
 private _fnc_chooseSpawnItem =
 {
+    private _fnc_getRandomNumber =
+    {
+        //Returns a number between 0 and 1
+        params ["_meanValue", "_derivation"];
+
+        private _result = _meanValue + sin (random 360) * _derivation;
+        _result = (_result max 0) min 1;
+
+        _result;
+    };
+
     params ["_chooseArray", "_blockArray", "_supportPoint", "_alreadySelected"];
     private _arrayCopy = +_chooseArray;
 
@@ -119,7 +130,7 @@ private _fnc_chooseSpawnItem =
         while {(_spawnItem == "") || (_spawnItem in _alreadySelected)} do
         {
             private _itemCount = (count (_selection#0)) - 1;
-            private _spawnItemIndex = random [0, round (_supportPoint * _itemCount), _itemCount];
+            private _spawnItemIndex = ([_supportPoint, 0.1] call _fnc_getRandomNumber) * _itemCount; 
             _spawnItem = (_selection#0)#_spawnItemIndex;
         };
     };

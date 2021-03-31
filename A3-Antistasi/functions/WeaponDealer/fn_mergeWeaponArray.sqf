@@ -47,20 +47,19 @@ Debug("Weapons sorted result is:");
 Debug_1("%1", _result apply {getText (configFile >> "CfgWeapons" >> _x >> "displayName");});
 /*
 [
-"Vermin SMG .45 ACP","PDW2000 9 mm","Sting 9 mm",
-"Mk20 EGLM 5.56 mm (Camo)","Mk20 EGLM 5.56 mm",
-"Mk20C 5.56 mm (Camo)","Mk20C 5.56 mm","TRG-20 5.56 mm",
-"CAR-95 5.8 mm (Black)","Mk20 5.56 mm (Camo)",
-"Mk20 5.56 mm","TRG-21 5.56 mm","TRG-21 EGLM 5.56 mm",
-"CAR-95 GL 5.8 mm (Black)","MXC 6.5 mm (Black)",
-"MXC 6.5 mm","Katiba Carbine 6.5 mm","CAR-95-1 5.8mm (Black)",
-"MX SW 6.5 mm (Black)","MX SW 6.5 mm","Katiba GL 6.5 mm",
-"MX 6.5 mm (Black)","MX 6.5 mm","MX 3GL 6.5 mm (Black)",
-"MX 3GL 6.5 mm","Katiba 6.5 mm","Mk200 6.5 mm","SDAR 5.56 mm",
-"MXM 6.5 mm (Black)","MXM 6.5 mm","Zafir 7.62 mm",
-"CMR-76 6.5 mm (Black)","Rahim 7.62 mm","Mk18 ABR 7.62 mm",
-"M320 LRR .408 (Camo)","M320 LRR .408","GM6 Lynx 12.7 mm (Camo)",
-"GM6 Lynx 12.7 mm"
+"Sting 9 mm","Vermin SMG .45 ACP","Mk20C 5.56 mm (Camo)",
+"Mk20C 5.56 mm","CAR-95 5.8 mm (Black)","PDW2000 9 mm",
+"Mk20 EGLM 5.56 mm (Camo)","Mk20 EGLM 5.56 mm","TRG-20 5.56 mm",
+"Mk20 5.56 mm (Camo)","Mk20 5.56 mm","TRG-21 5.56 mm",
+"Mk200 6.5 mm","MXC 6.5 mm (Black)","MXC 6.5 mm",
+"Katiba Carbine 6.5 mm","TRG-21 EGLM 5.56 mm",
+"CAR-95 GL 5.8 mm (Black)","MX SW 6.5 mm (Black)","MX SW 6.5 mm",
+"MX 3GL 6.5 mm (Black)","MX 3GL 6.5 mm","CAR-95-1 5.8mm (Black)",
+"MX 6.5 mm (Black)","MX 6.5 mm","Katiba 6.5 mm",
+"Katiba GL 6.5 mm","SDAR 5.56 mm","MXM 6.5 mm (Black)",
+"MXM 6.5 mm","Zafir 7.62 mm","CMR-76 6.5 mm (Black)",
+"Rahim 7.62 mm","Mk18 ABR 7.62 mm","M320 LRR .408 (Camo)",
+"M320 LRR .408","GM6 Lynx 12.7 mm (Camo)","GM6 Lynx 12.7 mm"
 ]
 */
 _result;

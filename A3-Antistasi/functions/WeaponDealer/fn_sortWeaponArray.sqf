@@ -35,6 +35,7 @@ private _weaponsData = [];
     private _dispersionY = getNumber (_weaponConfig >> "aiDispersionCoefY");
     private _maxRange = getNumber (_weaponConfig >> "maxZeroing");
     private _weight = getNumber (_weaponConfig >> "WeaponSlotsInfo" >> "mass");
+    private _hasGL = "EGLM" in (getArray (_weaponConfig >> "muzzles"));
 
     //Get the used magazine and the related config
     private _weaponMag = (getArray (_weaponConfig >> "magazines")) select 0;
@@ -56,6 +57,10 @@ private _weaponsData = [];
 
     //Calculating damage per minute score
     private _DPM = _caliber * _hit * (_ammoCount / (_timeBetweenShots * _ammoCount + 2));
+    if(_hasGL) then
+    {
+        _DPM = _DPM + 10;
+    };
     if(_DPM != 0) then
     {
         _DPM = _DPM / 25;

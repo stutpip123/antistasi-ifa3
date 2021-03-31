@@ -34,6 +34,7 @@ private _weaponsData = [];
     private _dispersionX = getNumber (_weaponConfig >> "aiDispersionCoefX");
     private _dispersionY = getNumber (_weaponConfig >> "aiDispersionCoefY");
     private _maxRange = getNumber (_weaponConfig >> "maxZeroing");
+    private _weight = getNumber (_weaponConfig >> "WeaponSlotsInfo" >> "mass");
 
     //Get the used magazine and the related config
     private _weaponMag = (getArray (_weaponConfig >> "magazines")) select 0;
@@ -51,6 +52,7 @@ private _weaponsData = [];
     private _caliber = getNumber (_ammoConfig >> "caliber");
     private _hit = getNumber (_ammoConfig >> "hit");
     private _airFriction = getNumber (_ammoConfig >> "airFriction");
+
 
     //Calculating damage per minute score
     private _DPM = _caliber * _hit * (_ammoCount / (_timeBetweenShots * _ammoCount + 2));
@@ -94,18 +96,22 @@ private _weaponsData = [];
         _maxRange = _maxRange / 800;
     };
 
-    [4, format ["Weapon data: %1", [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange]], _fileName] call A3A_fnc_log;
-    _weaponsData pushBack [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange];
+    //Get score in comparison to Katiba standard weight
+    private _weightRating = 100/_weight;
+
+    //[4, format ["Weapon data: %1", [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange, _weightRating]], _fileName] call A3A_fnc_log;
+    _weaponsData pushBack [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange, _weightRating];
 } forEach (missionNamespace getVariable _weaponsArrayName);
 
 private _fnc_calculateWeaponScore =
 {
-    params ["_weaponsArray", "_DPMFactor", "_velocityFactor", "_dispersionFactor", "_rangeFactor"];
+    params ["_weaponsArray", "_DPMFactor", "_velocityFactor", "_dispersionFactor", "_rangeFactor", "_weightFactor"];
 
     private _score = (_weaponsArray select 1) * _DPMFactor +
                      (_weaponsArray select 2) * _velocityFactor +
                      (_weaponsArray select 3) * _dispersionFactor +
-                     (_weaponsArray select 4) * _rangeFactor;
+                     (_weaponsArray select 4) * _rangeFactor +
+                     (_weaponsArray select 5) * _weightFactor;
 
     [_score, _weaponsArray select 0];
 };
@@ -116,40 +122,40 @@ switch (_weaponsType) do
 {
     switch ("Rifles") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 1, 1, 1, 1] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 1, 1, 1, 1, 1] call _fnc_calculateWeaponScore;};
     };
     switch ("Handguns") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 3, 0.5, 0.5, 1] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 3, 0.5, 0.5, 1, 0.5] call _fnc_calculateWeaponScore;};
     };
     switch ("MachineGuns") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 5, 2, 0.5, 2] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 5, 2, 0.5, 2, 2] call _fnc_calculateWeaponScore;};
     };
     switch ("MissileLaunchers") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 5, 0, 0.5, 2] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 5, 0, 0.5, 2, 1.5] call _fnc_calculateWeaponScore;};
     };
     //What is this for a case?
     switch ("Mortars") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 1, 1, 1, 1] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 1, 1, 1, 1, 1] call _fnc_calculateWeaponScore;};
     };
     switch ("RocketLaunchers") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 5, 1, 2, 0.5] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 5, 1, 2, 0.5, 2] call _fnc_calculateWeaponScore;};
     };
     switch ("Shotguns") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 1, 1, 1, 0.5] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 1, 1, 1, 0.5, 1] call _fnc_calculateWeaponScore;};
     };
     switch ("SMGs") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 3, 5, 1, 0.5] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 3, 5, 1, 0.5, 3] call _fnc_calculateWeaponScore;};
     };
     switch ("SniperRifles") do
     {
-        _weaponsScore = _weaponsData apply {[_x, 3, 1, 3, 5] call _fnc_calculateWeaponScore;};
+        _weaponsScore = _weaponsData apply {[_x, 3, 1, 3, 5, 2] call _fnc_calculateWeaponScore;};
     };
 };
 
@@ -159,6 +165,7 @@ private _sortedArray = [];
 {
     _sortedArray pushBack (_x select 1);
     [4, format ["%1 array index %2: %3", _weaponsArrayName, _forEachIndex, _x select 1], _fileName] call A3A_fnc_log;
+    missionNamespace setVariable [format ["%1_data", _x select 1], [_x select 0, 0, 0]];
 } forEach _weaponsScore;
 
 missionNamespace setVariable [_weaponsArrayName, _sortedArray];

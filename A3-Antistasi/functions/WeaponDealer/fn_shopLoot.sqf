@@ -8,12 +8,12 @@
 ["allSMGs", "SMGs"] call A3A_fnc_sortWeaponArray;
 ["allShotguns", "Shotguns"] call A3A_fnc_sortWeaponArray;
 //Mash all arrays into one big one
-allRiflesShop = allRifles + allSniperRifles + allMachineGuns + allSMGs + allShotguns;
+allRiflesShop = [+allRifles, +allSniperRifles, +allMachineGuns, +allSMGs, +allShotguns] call A3A_fnc_mergeWeaponArray;
 
 ["allMissileLaunchers", "MissileLaunchers"] call A3A_fnc_sortWeaponArray;
 ["allRocketLaunchers", "RocketLaunchers"] call A3A_fnc_sortWeaponArray;
 //Mash all arrays into one big one
-allLaunchersShop = allMissileLaunchers + allRocketLaunchers;
+allLaunchersShop = [+allMissileLaunchers, +allRocketLaunchers] call A3A_fnc_mergeWeaponArray;
 
 //Sort explosives by damage, explosion radius and maybe weight
 allExplosiveShop = +lootExplosive;

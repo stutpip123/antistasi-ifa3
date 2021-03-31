@@ -142,55 +142,45 @@ private _fnc_spawnItem =
             _object setPosWorld _slotPos;
             [_object, _orientation] call BIS_fnc_setObjectRotation;
             _object setDamage 1;
-            _object addAction ["Buy weapon for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy weapon supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal weapon", {hint "Weapon bought!";}];
+            [_object, "CfgWeapons", _item] call A3A_fnc_addShopActions;
         };
         case (AMMUNITION):
         {
             _object = "Box_NATO_Ammo_F" createVehicle _slotPos;
-            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.25]);
+            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.35]);
             _object setDir ((_orientation#0) - 60);
             _object setDamage 1;
             _object enableSimulation false;
-            _object addAction ["Buy ammo for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy ammo supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal ammo", {hint "Weapon bought!";}];
+            [_object, "CfgMagazines", _item] call A3A_fnc_addShopActions;
         };
         case (GRENADES):
         {
             _object = "Box_NATO_Grenades_F" createVehicle _slotPos;
-            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.3]);
+            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.35]);
             _object setDir ((_orientation#0) - 60);
             _object setDamage 1;
             _object enableSimulation false;
-            _object addAction ["Buy grenade for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy grenade supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal grenade", {hint "Weapon bought!";}];
+            [_object, "CfgMagazines", _item] call A3A_fnc_addShopActions;
         };
         case (EXPLOSIVES):
         {
             //These are bitches, maybe find a better way
             _object = "Box_NATO_AmmoOrd_F" createVehicle _slotPos;
-            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.25]);
+            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.35]);
             _object setDir ((_orientation#0) - 60);
             _object setDamage 1;
             _object enableSimulation false;
-            _object addAction ["Buy explosive for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy explosive supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal explosive", {hint "Weapon bought!";}];
+            [_object, "CfgMagazines", _item] call A3A_fnc_addShopActions;
         };
         case (ITEM);
         case (NVG);
         case (ATTACHMENT):
         {
             _object = (format ["Item_%1", _item]) createVehicle _slotPos;
-            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.65]);
+            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.7]);
             [_object, _orientation] call BIS_fnc_setObjectRotation;
             _object setDamage 1;
-            _object addAction ["Buy attachment for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy attachment supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal attachment", {hint "Weapon bought!";}];
+            [_object, "CfgWeapons", _item] call A3A_fnc_addShopActions;
         };
         case (VESTS):
         {
@@ -198,19 +188,16 @@ private _fnc_spawnItem =
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.65]);
             [_object, _orientation] call BIS_fnc_setObjectRotation;
             _object setDamage 1;
-            _object addAction ["Buy vest for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy vest supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal vest", {hint "Weapon bought!";}];
+            [_object, "CfgWeapons", _item] call A3A_fnc_addShopActions;
         };
         case (BACKPACKS):
         {
             _object = _item createVehicle _slotPos;
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.65]);
-            [_object, _orientation] call BIS_fnc_setObjectRotation;
-            _object setDamage 1;
-            _object addAction ["Buy backpack for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy backpack supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal backpack", {hint "Weapon bought!";}];
+            //[_object, _orientation] call BIS_fnc_setObjectRotation;
+            //_object setDamage 1;
+            _object enableSimulation false;
+            [_object, "CfgVehicles", _item] call A3A_fnc_addShopActions;
         };
         case (HELMET):
         {
@@ -218,9 +205,7 @@ private _fnc_spawnItem =
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.65]);
             [_object, _orientation] call BIS_fnc_setObjectRotation;
             _object setDamage 1;
-            _object addAction ["Buy helmet for 250", {hint "Weapon bought!";}];
-            _object addAction ["Buy helmet supply for 15000", {hint "Weapon bought!";}];
-            _object addAction ["Steal helmet", {hint "Weapon bought!";}];
+            [_object, "CfgWeapons", _item] call A3A_fnc_addShopActions;
         };
     };
 };

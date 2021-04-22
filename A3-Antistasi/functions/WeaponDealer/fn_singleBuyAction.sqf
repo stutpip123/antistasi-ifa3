@@ -1,3 +1,30 @@
+/*
+Author: Wurzel0701
+    The action of buying an item from the weapon dealer, handles money and the equipment process
+
+Arguments:
+    <OBJECT> The object this action is added, currently unused
+    <STRING> The classname of the item which is bought
+    <INT> The class of the item, as defines in the defines
+    <STRING> The human readable name of the item
+    <NUMBER> The price to pay for the item
+
+Return Value:
+    <NIL>
+
+Scope: Local
+Environment: Any
+Public: No
+Dependencies:
+    <NIL>
+
+Example:
+    [objNull, "SMG_02_F", 1, "Stinger 9 mm", 150] call A3A_fnc_singleBuyAction;
+*/
+
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
+
 #define PISTOLS             0
 #define RIFLES              1
 #define LAUNCHERS           2
@@ -15,10 +42,10 @@ params ["_object", "_item", "_class", "_name", "_price"];
 
 if(!local player) exitWith {};
 
-//if(player getVariable ["moneyX", 0] < _price) exitWith
-//{
-//    ["Weapon Shop", "You dont have enough money to buy this"] call A3A_fnc_customHint;
-//};
+if(player getVariable ["moneyX", 0] < _price) exitWith
+{
+    ["Weapon Shop", "You dont have enough money to buy this"] call A3A_fnc_customHint;
+};
 
 if (player != player getVariable["owner", player]) exitWith
 {
@@ -30,6 +57,7 @@ if(!(isNull (objectParent player))) exitWith
     ["Weapon Shop", "You cannot buy something from inside a vehicle"] call A3A_fnc_customHint;
 };
 
+ServerInfo_3("%1 is about to buy a single %2 for %3", player, _item, _price);
 
 private _fnc_addWeapon =
 {
@@ -313,5 +341,10 @@ switch (_class) do
 
 if(_bought) then
 {
-    //Decrease money here
+    ServerInfo_3("%1 successful bought a single %2 for %3", player, _item, _price);
+    [-_price] call A3A_fnc_resourcesPlayer;
+}
+else
+{
+    ServerInfo_4("%1 failed to buy a single %2 for %3 (Type was %4)", player, _item, _price, _class);
 };

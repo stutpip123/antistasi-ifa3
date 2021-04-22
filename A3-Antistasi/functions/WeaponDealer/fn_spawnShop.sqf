@@ -241,6 +241,10 @@ private _fnc_spawnItem =
             [_object, "CfgWeapons", _item, _type] call A3A_fnc_addShopActions;
         };
     };
+    if(!(isNull _object)) then
+    {
+        _object setVariable ["DoNotGarbageClean", true, true];
+    };
 };
 
 private _garageRight = vectorDir _garage;

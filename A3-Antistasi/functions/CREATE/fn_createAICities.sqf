@@ -28,7 +28,10 @@ if (_markerX in destroyedSites) then
 	_params = [_positionX,Invaders,CSATSpecOp];
 	}
 else
-	{
+{
+    private _storeCooldown = server getVariable [format ["%1_storeCooldown"], -1];
+    if(_storeCooldown < time) then
+    {
         private _citySupportRatio = 0;
         private _citiesUnderControl = 0;
         {
@@ -48,8 +51,11 @@ else
         if(count _garages != 0) then
         {
             private _garage = _garages select (_garageIndex % (count _garages));
-            [_garage, _citySupportRatio] spawn A3A_fnc_spawnShop;
+            [_garage, _citySupportRatio, _markerX] spawn A3A_fnc_spawnShop;
         };
+    };
+
+
 
 	if (_sideX == Occupants) then
 		{

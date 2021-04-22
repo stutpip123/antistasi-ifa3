@@ -19,7 +19,8 @@
 params
 [
     ["_garage", objNull, [objNull]],
-    ["_citySupportRatio", 0, [0]]
+    ["_citySupportRatio", 0, [0]],
+    ["_marker", "", [""]]
 ];
 
 private _shopSize = SHOP_SIZE_LARGE;//(round (_citySupportRatio * 2)) + 1;
@@ -245,7 +246,10 @@ private _fnc_spawnItem =
     {
         _object setVariable ["DoNotGarbageClean", true, true];
     };
+    _object;
 };
+
+private _allObjects = [];
 
 private _garageRight = vectorDir _garage;
 private _garageUp = vectorUp _garage;
@@ -263,10 +267,12 @@ private _slots = [];
     _asset enableSimulation false;
     clearItemCargoGlobal _asset;
     _slots append ([_asset] call _fnc_getSlotPositions);
+    _allObjects pushBack _asset;
 } forEach _assets;
 
 private _chooseArray = [4, 8, 3, 3, 6, 6, 3, 3, 1, 6, 4, 3];
 private _alreadySelected = [];
+private _selectedItems = [];
 {
     private _itemData = [_chooseArray, _x#3, _citySupportRatio, _alreadySelected] call _fnc_chooseSpawnItem;
     private _itemType = _itemData#0;
@@ -282,6 +288,18 @@ private _alreadySelected = [];
         _chooseArray = _itemData#2;
         diag_log format ["Selected %1 of type %2", _item, _itemType];
         diag_log format ["Slot was %1", _x];
-        [_itemType, _item, _x#1, _x#2, _x#0] call _fnc_spawnItem;
+        _allObjects pushBack ([_itemType, _item, _x#1, _x#2, _x#0] call _fnc_spawnItem);
     };
+    _selectedItems pushBack [_itemType, _item];
 } forEach _slots;
+
+
+
+[_allObjects, _marker] spawn
+{
+    params ["_allObjects", "_marker"];
+    waitUntil {sleep 10; (spawner getVariable _marker == 2)};
+    {
+        deleteVehicle _x;
+    } forEach _allObjects;
+};

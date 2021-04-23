@@ -21,7 +21,9 @@ lootWeapon append allRifles + allSniperRifles + allHandguns + allMachineGuns + a
 /////////////////////////////
 //   Weapon Attachments   ///
 /////////////////////////////
-lootAttachment append allBipods + allOptics + allMuzzleAttachments + allPointerAttachments;
+//lootAttachment append allBipods + allOptics + allMuzzleAttachments + allPointerAttachments;
+//Does what the commented line does, but sorts the attachments based on value
+[] call A3A_fnc_sortAttachments;
 
 ////////////////////
 //    Grenades   ///

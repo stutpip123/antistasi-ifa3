@@ -261,10 +261,10 @@ private _slots = [];
 {
     private _assetPos = _garagePos vectorAdd (_garageForward vectorMultiply _x#1#0) vectorAdd (_garageRight vectorMultiply _x#1#1) vectorAdd (_garageUp vectorMultiply _x#1#2);
     private _asset = (_x#0) createVehicle _garagePos;
-    _asset setDir (_x#2 + _garageDir);
-    _asset setPosWorld (_assetPos vectorAdd [0,0,0.3]);
     _asset allowDamage false;
     _asset enableSimulation false;
+    _asset setDir (_x#2 + _garageDir);
+    _asset setPosWorld (_assetPos vectorAdd [0,0,0.3]);
     clearItemCargoGlobal _asset;
     _slots append ([_asset] call _fnc_getSlotPositions);
     _allObjects pushBack _asset;

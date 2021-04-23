@@ -23,7 +23,7 @@ params
     ["_marker", "", [""]]
 ];
 
-private _shopSize = SHOP_SIZE_LARGE;//(round (_citySupportRatio * 2)) + 1;
+private _shopSize = (((round (_citySupportRatio * 2)) + 1) min 3) max 1;
 private _assets = [];
 
 switch (_shopSize) do

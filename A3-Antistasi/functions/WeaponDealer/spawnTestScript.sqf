@@ -1,6 +1,6 @@
 private _garage = garage;
 
-private _shopSize = 3;//(round (_citySupportRatio * 2)) + 1;
+private _shopSize = (round (_citySupportRatio * 2)) + 1;
 private _assets = [];
 
 switch (_shopSize) do

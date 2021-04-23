@@ -695,6 +695,7 @@ class A3A
         class mergeWeaponArray {};
         class shopLoot {};
         class singleBuyAction {};
+        class sortAttachments {};
         class sortWeaponArray {};
         class spawnShop {};
     };

@@ -21,6 +21,8 @@ allExplosiveShop = +lootExplosive;
 //Ammo is getting randomised (or shouldnt it? Look out for balancing issues)
 allAmmunitionShop = +lootMagazine;
 
+[] call A3A_fnc_sortAttachments;
+
 //Sort by armor level, weight, load, and resistance
 allVestsShop = +lootVest;
 

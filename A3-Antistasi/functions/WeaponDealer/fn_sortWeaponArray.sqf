@@ -117,6 +117,7 @@ private _fnc_calculateWeaponScore =
                      (_weaponsArray select 3) * _dispersionFactor +
                      (_weaponsArray select 4) * _rangeFactor +
                      (_weaponsArray select 5) * _weightFactor;
+    _score = _score / (_DPMFactor + _velocityFactor + _dispersionFactor + _rangeFactor + _weightFactor);
 
     [_score, _weaponsArray select 0];
 };
@@ -169,7 +170,7 @@ _weaponsScore sort true;
 private _sortedArray = [];
 {
     _sortedArray pushBack (_x select 1);
-    [4, format ["%1 array index %2: %3", _weaponsArrayName, _forEachIndex, _x select 1], _fileName] call A3A_fnc_log;
+    //[4, format ["%1 array index %2: %3", _weaponsArrayName, _forEachIndex, _x select 1], _fileName] call A3A_fnc_log;
     missionNamespace setVariable [format ["%1_data", _x select 1], [_x select 0, 0, 0]];
 } forEach _weaponsScore;
 

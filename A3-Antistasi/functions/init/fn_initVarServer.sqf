@@ -98,11 +98,12 @@ DECLARE_SERVER_VAR(bombRuns, 0);
 DECLARE_SERVER_VAR(revealX, false);
 //Whether the players have Nightvision unlocked
 DECLARE_SERVER_VAR(haveNV, false);
-DECLARE_SERVER_VAR(missionsX, []);
+DECLARE_SERVER_VAR(A3A_activeTasks, []);
+DECLARE_SERVER_VAR(A3A_taskCount, 0);
 //List of statics (MGs, AA, etc) that will be saved and loaded.
 DECLARE_SERVER_VAR(staticsToSave, []);
 //Whether the players have access to radios.
-DECLARE_SERVER_VAR(haveRadio, hasTFAR || hasACRE);
+DECLARE_SERVER_VAR(haveRadio, A3A_hasTFAR || A3A_hasACRE || A3A_hasTFARBeta);
 //List of vehicles that are reported (I.e - Players can't go undercover in them)
 DECLARE_SERVER_VAR(reportedVehs, []);
 //Currently destroyed buildings.
@@ -143,6 +144,8 @@ savedPlayers = [];
 destroyedBuildings = [];		// synced only on join, to avoid spam on change
 
 testingTimerIsActive = false;
+
+A3A_tasksData = [];
 
 ///////////////////////////////////////////
 //     INITIALISING ITEM CATEGORIES     ///
@@ -204,7 +207,7 @@ DECLARE_SERVER_VAR(customUnitTypes, [true] call A3A_fnc_createNamespace);
 Info("Setting mod configs");
 
 //TFAR config
-if (hasTFAR) then
+if (A3A_hasTFAR) then
 {
 	if (isServer) then
 	{
@@ -376,6 +379,7 @@ private _templateVariables = [
 	"staticATOccupants",
 	"staticAAOccupants",
 	"NATOMortar",
+	"NATOmortarMagazineHE",
 
 	//Invaders
 	"nameInvaders",
@@ -391,6 +395,7 @@ private _templateVariables = [
 	"CSATOfficer",
 	"CSATBodyG",
 	"CSATCrew",
+	"CSATUnarmed",
 	"CSATMarksman",
 	"staticCrewInvaders",
 	"CSATPilot",
@@ -441,7 +446,8 @@ private _templateVariables = [
 	"CSATMG",
 	"staticATInvaders",
 	"staticAAInvaders",
-	"CSATMortar"
+	"CSATMortar",
+	"CSATmortarMagazineHE"
 ];
 
 {
@@ -686,7 +692,7 @@ DECLARE_SERVER_VAR(A3A_vehClassToCrew,_vehClassToCrew);
 ///////////////////////////
 //Please respect the order in which these are called,
 //and add new entries to the bottom of the list.
-if (hasACE) then {
+if (A3A_hasACE) then {
 	[] call A3A_fnc_aceModCompat;
 };
 if (A3A_hasRHS) then {
@@ -699,7 +705,7 @@ if (A3A_hasIFA) then {
 ////////////////////////////////////
 //     ACRE ITEM MODIFICATIONS   ///
 ////////////////////////////////////
-if (hasACRE) then {initialRebelEquipment append ["ACRE_PRC343","ACRE_PRC148","ACRE_PRC152","ACRE_PRC77","ACRE_PRC117F"];};
+if (A3A_hasACRE) then {initialRebelEquipment append ["ACRE_PRC343","ACRE_PRC148","ACRE_PRC152","ACRE_PRC77","ACRE_PRC117F"];};
 
 ////////////////////////////////////
 //    UNIT AND VEHICLE PRICES    ///

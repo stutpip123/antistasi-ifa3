@@ -42,7 +42,7 @@ if ((toLower worldName) in ["altis", "chernarus_summer"]) then {
 	};
 };  //this only for Altis and Cherno
 if (debug) then {
-	diag_log format ["%1: [Antistasi] | DEBUG | initZones | Setting Spawn Points for %2.", servertime, worldname];
+    Debug_1("Setting Spawn Points for %1.", worldname);
 };
 //We're doing it this way, because Dedicated servers world name changes case, depending on how the file is named.
 //And weirdly, == is not case sensitive.
@@ -55,7 +55,7 @@ destroyedSites = [];
 garrison setVariable ["Synd_HQ", [], true];
 markersX = airportsX + resourcesX + factories + outposts + seaports + controlsX + ["Synd_HQ"];
 if (debug) then {
-	diag_log format ["%1: [Antistasi] | DEBUG | initZones | Building roads for %2.",servertime,worldname];
+    Debug_1("Building roads for %1.",worldname);
 };
 markersX apply {
 	_x setMarkerAlpha 0;
@@ -134,7 +134,6 @@ configClasses (configfile >> "CfgWorlds" >> worldName >> "Names") apply {
 	_size = [_sizeY, _sizeX] select (_sizeX > _sizeY);
 	_pos = getArray (_x >> "position");
 	_size = [_size, 400] select (_size < 400);
-	_roads = [];
 	_numCiv = 0;
 
 	if (_hardcodedPop) then
@@ -150,15 +149,12 @@ configClasses (configfile >> "CfgWorlds" >> worldName >> "Names") apply {
 		_numCiv = (count (nearestObjects [_pos, ["house"], _size]));
 	};
 
-	_numVeh = round (_numCiv / 3);
-	_nroads = count _roads;
-	if(_nroads > 0) then
-	{
-		//Fixed issue with a town on tembledan having no roads
-		_nearRoadsFinalSorted = [_roads, [], { _pos distance _x }, "ASCEND"] call BIS_fnc_sortBy;
-		_pos = _nearRoadsFinalSorted select 0;
+	_roads = nearestTerrainObjects [_pos, ["MAIN ROAD", "ROAD", "TRACK"], _size, true, true];
+	if (count _roads > 0) then {
+		// Move marker position to the nearest road, if any
+		_pos = _roads select 0;
 	};
-	if (_nroads < _numVeh) then {_numVeh = _nroads};
+	_numVeh = (count _roads) min (_numCiv / 3);
 
 	_mrk = createmarker [format ["%1", _nameX], _pos];
 	_mrk setMarkerSize [_size, _size];
@@ -179,7 +175,7 @@ configClasses (configfile >> "CfgWorlds" >> worldName >> "Names") apply {
 	server setVariable [_nameX, _info, true];
 };	//find in congigs faster then find location in 25000 radius
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Roads built in %2.",servertime,worldname];
+    Debug_1("Roads built in %1.", worldName);
 };
 
 
@@ -196,7 +192,7 @@ private _blacklistPos = [];
 private _posBank = [];
 private ["_antenna", "_mrkFinal", "_antennaProv"];
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Setting up Radio Towers.",servertime];
+    Debug("Setting up Radio Towers.");
 };
 
 // Land_A_TVTower_base can't be destroyed, Land_Communication_F and Land_Vysilac_FM are not replaced with "Ruins" when destroyed.
@@ -338,8 +334,8 @@ switch (toLower worldName) do {
 	};
 };
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Radio Tower built.", servertime];
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Finding broken Radio Towers.", servertime];
+    Debug("Radio Tower built.");
+    Debug("Finding broken Radio Towers.");
 };
 if (count _posAntennas > 0) then {
 	for "_i" from 0 to (count _posAntennas - 1) do {
@@ -387,7 +383,7 @@ if (count _posAntennas > 0) then {
 	};
 };
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Broken Radio Towers identified.",servertime];
+	Error("Broken Radio Towers identified.");
 };
 if (count _posBank > 0) then {
 	for "_i" from 0 to (count _posBank - 1) do {

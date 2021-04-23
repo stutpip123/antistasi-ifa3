@@ -1,9 +1,40 @@
+/*
+Author: Wurzel0701
+    Sorts all attachments into a single array sorted by the value of each attachment
+
+Arguments:
+    <NIL>
+
+Return Value:
+    <NIL>
+
+Scope: Server
+Environment: Any
+Public: No
+Dependencies:
+    <ARRAY> allMuzzleAttachments
+    <ARRAY> allBipods
+    <ARRAY> allPointerAttachments
+    <ARRAY> allOptics
+
+Example:
+    [] call A3A_fnc_sortAttachments;
+*/
+
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
+
 //Would be nice to sort them by size of the weapon, but that is sadly not easily possible
 //There might be a way over the MuzzleSlot class, but not sure
-//Maybe also with mass, but its not really good neither
-private _silencers = allMuzzleAttachments apply {[1 + random 1, _x]};
+private _silencers = allMuzzleAttachments apply
+{
+    private _mass = getNumber (configFile >> "CfgWeapons" >> _x >> "ItemInfo" >> "mass");
+    [1 + (0.1 * _mass), _x]
+};
+Debug_1("Sorted %1 silencers", count _silencers);
 
 private _bipods = allBipods apply {[0.9 + random 0.2, _x]};
+Debug_1("Sorted %1 bipods", count _bipods);
 
 private _flashlights = [];
 private _IRPointer = [];
@@ -14,9 +45,10 @@ private _IRPointer = [];
     }
     else
     {
-        _flashlights pushBack [0.5 + random 0.5, _x];
+        _flashlights pushBack [0.2 + random 0.3, _x];
     };
 } forEach allPointerAttachments;
+Debug_2("Sorted %1 lights and %2 lasers", count _flashlights, count _IRPointer);
 
 private _optics = [];
 {
@@ -51,14 +83,15 @@ private _optics = [];
 
     if(_hasNightVision) then
     {
-        _score = _score * 1.5;
+        _score = _score * 2.5;
     };
     if(_hasThermal) then
     {
-        _score = _score * 2;
+        _score = _score * 3;
     };
     _optics pushBack [_score, _optic];
 } forEach allOptics;
+Debug_1("Sorted %1 optics", count _optics);
 
 _allAttachments = _optics + _bipods + _silencers + _flashlights + _IRPointer;
 _allAttachments sort true;
@@ -69,5 +102,5 @@ private _newOrder = [];
     missionNamespace setVariable [format ["%1_data", _x select 1], [_x select 0, 0, 0]];
 } forEach _allAttachments;
 
-diag_log str (_newOrder apply {getText (configFile >> "CfgWeapons" >> _x >> "displayName")});
+Debug_1("%1", _newOrder apply {getText (configFile >> "CfgWeapons" >> _x >> "displayName")});
 missionNamespace setVariable ["lootAttachment", _newOrder];

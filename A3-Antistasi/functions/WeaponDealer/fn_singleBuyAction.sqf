@@ -310,9 +310,26 @@ switch (_class) do
         }
         else
         {
-            player linkItem _item;
-            ["Weapon Shop", format ["%1 bought and equipped", _name]] call A3A_fnc_customHint;
-            _bought = true;
+            if(player canAdd _item) then
+            {
+                player addItem _item;
+                player assignItem _item;
+                if(_item in (assignedItems player)) then
+                {
+                    ["Weapon Shop", format ["%1 bought and equipped", _name]] call A3A_fnc_customHint;
+                    _bought = true;
+                }
+                else
+                {
+                    player addItem _item;
+                    ["Weapon Shop", format ["%1 bought and stashed in your inventory", _name]] call A3A_fnc_customHint;
+                    _bought = true;
+                };
+            }
+            else
+            {
+                ["Weapon Shop", "You do not have enough space in your inventory to buy this!"] call A3A_fnc_customHint;
+            };
         };
     };
     case (HELMET):

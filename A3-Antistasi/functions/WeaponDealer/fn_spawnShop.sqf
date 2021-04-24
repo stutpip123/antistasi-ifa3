@@ -23,7 +23,7 @@ params
     ["_marker", "", [""]]
 ];
 
-private _shopSize = 3;//(((round (_citySupportRatio * 2)) + 1) min 3) max 1;
+private _shopSize = (((round (_citySupportRatio * 2)) + 1) min 3) max 1;
 private _assets = [];
 
 switch (_shopSize) do
@@ -178,29 +178,29 @@ private _fnc_spawnItem =
         case (AMMUNITION):
         {
             _object = "Box_NATO_Ammo_F" createVehicle _slotPos;
+            _object enableSimulation false;
+            _object setDamage 1;
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.26]);
             _object setDir ((_orientation#0) - 60);
-            _object setDamage 1;
-            _object enableSimulation false;
             [_object, "CfgMagazines", _item, _type] call A3A_fnc_addShopActions;
         };
         case (GRENADES):
         {
             _object = "Box_NATO_Grenades_F" createVehicle _slotPos;
+            _object enableSimulation false;
+            _object setDamage 1;
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.26]);
             _object setDir ((_orientation#0) - 60);
-            _object setDamage 1;
-            _object enableSimulation false;
             [_object, "CfgMagazines", _item, _type] call A3A_fnc_addShopActions;
         };
         case (EXPLOSIVES):
         {
             //These are bitches, maybe find a better way
             _object = "Box_NATO_AmmoOrd_F" createVehicle _slotPos;
+            _object enableSimulation false;
+            _object setDamage 1;
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.26]);
             _object setDir ((_orientation#0) - 60);
-            _object setDamage 1;
-            _object enableSimulation false;
             [_object, "CfgMagazines", _item, _type] call A3A_fnc_addShopActions;
         };
         case (ITEM);

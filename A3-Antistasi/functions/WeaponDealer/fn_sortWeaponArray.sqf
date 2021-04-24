@@ -23,7 +23,7 @@ private _weaponsData = [];
 
 {
     private _weaponName = _x;
-
+    //diag_log format ["Checking weapon %1 now", _x];
     //Get the weapon config file
     private _weaponConfig = configFile >> "CfgWeapons" >> _weaponName;
 
@@ -39,73 +39,85 @@ private _weaponsData = [];
 
     //Get the used magazine and the related config
     private _weaponMag = (getArray (_weaponConfig >> "magazines")) select 0;
-    private _magConfig = configFile >> "CfgMagazines" >> _weaponMag;
-
-    //Get the needed variables for calculation
-    private _initSpeedMag = getNumber (_magConfig >> "initSpeed");
-    private _ammoCount = getNumber (_magConfig >> "count");
-
-    //Get the used ammo and the related config
-    private _weaponAmmo = getText (_magConfig >> "ammo");
-    private _ammoConfig = configFile >> "CfgAmmo" >> _weaponAmmo;
-
-    //Get the needed variables for calculation
-    private _caliber = getNumber (_ammoConfig >> "caliber");
-    private _hit = getNumber (_ammoConfig >> "hit");
-    private _airFriction = getNumber (_ammoConfig >> "airFriction");
-
-
-    //Calculating damage per minute score
-    private _DPM = _caliber * _hit * (_ammoCount / (_timeBetweenShots * _ammoCount + 2));
-    if(_hasGL) then
+    //Filtering out weapons without mags, cause these most likely are not wanted anyways
+    if !(isNil "_weaponMag") then
     {
-        _DPM = _DPM + 10;
-    };
-    if(_DPM != 0) then
-    {
-        _DPM = _DPM / 25;
-    };
+        private _magConfig = configFile >> "CfgMagazines" >> _weaponMag;
 
-    //Get the initial velocity (thanks for that one arma)
-    if(_initSpeed < 0) then
-    {
-        _initSpeed = _initSpeedMag * (-1) * _initSpeed;
-    };
-    if(_initSpeed == 0) then
-    {
-        _initSpeed = _initSpeedMag;
-    };
+        //diag_log format ["Mag is %1, config found %2", _weaponMag, !(isNil "_magConfig")];
 
-    //Calculates the time a bullet needs to reach 100 meters distance
-    private _timeTo100Meters = 0;
-    if(_initSpeed != 0) then
-    {
-        _timeTo100Meters = (-(exp (100 * _airFriction) + 1))/(_airFriction * _initSpeed);
-    };
-    //Get score by comparision with norminal value
-    if(_timeTo100Meters != 0) then
-    {
-        _timeTo100Meters = 1.5 / _timeTo100Meters;
-    };
 
-    _dispersion = _dispersion * ((_dispersionX + _dispersionY)/2);
-    //Get score by comparision with norminal value
-    if(_dispersion != 0) then
+        //Get the needed variables for calculation
+        private _initSpeedMag = getNumber (_magConfig >> "initSpeed");
+        private _ammoCount = getNumber (_magConfig >> "count");
+
+        //Get the used ammo and the related config
+        private _weaponAmmo = getText (_magConfig >> "ammo");
+        private _ammoConfig = configFile >> "CfgAmmo" >> _weaponAmmo;
+
+        //Get the needed variables for calculation
+        private _caliber = getNumber (_ammoConfig >> "caliber");
+        private _hit = getNumber (_ammoConfig >> "hit");
+        private _airFriction = getNumber (_ammoConfig >> "airFriction");
+
+
+        //Calculating damage per minute score
+        private _DPM = _caliber * _hit * (_ammoCount / (_timeBetweenShots * _ammoCount + 2));
+        if(_hasGL) then
+        {
+            _DPM = _DPM + 10;
+        };
+        if(_DPM != 0) then
+        {
+            _DPM = _DPM / 25;
+        };
+
+        //Get the initial velocity (thanks for that one arma)
+        if(isNil "_initSpeedMag") then {_initSpeedMag = 1;};
+        if(_initSpeed < 0) then
+        {
+            _initSpeed = _initSpeedMag * (-1) * _initSpeed;
+        };
+        if(_initSpeed == 0) then
+        {
+            _initSpeed = _initSpeedMag;
+        };
+
+        //Calculates the time a bullet needs to reach 100 meters distance
+        private _timeTo100Meters = 1;
+        if(_initSpeed != 0 && _airFriction != 0) then
+        {
+            _timeTo100Meters = (-(exp (100 * _airFriction) + 1))/(_airFriction * _initSpeed);
+        };
+        //Get score by comparision with norminal value
+        if(_timeTo100Meters != 0) then
+        {
+            _timeTo100Meters = 1.5 / _timeTo100Meters;
+        };
+
+        _dispersion = _dispersion * ((_dispersionX + _dispersionY)/2);
+        //Get score by comparision with norminal value
+        if(_dispersion != 0) then
+        {
+            _dispersion =  (0.0015 * 0.0015) / (_dispersion * _dispersion);
+        };
+
+        //Get score by comparision with norminal value
+        if(_maxRange != 0) then
+        {
+            _maxRange = _maxRange / 800;
+        };
+
+        //Get score in comparison to Katiba standard weight
+        private _weightRating = 100/_weight;
+
+        //[4, format ["Weapon data: %1", [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange, _weightRating]], _fileName] call A3A_fnc_log;
+        _weaponsData pushBack [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange, _weightRating];
+    }
+    else
     {
-        _dispersion =  (0.0015 * 0.0015) / (_dispersion * _dispersion);
+        diag_log format ["Weapon %1 has been filtered out as it has no magazine", _weaponName];
     };
-
-    //Get score by comparision with norminal value
-    if(_maxRange != 0) then
-    {
-        _maxRange = _maxRange / 800;
-    };
-
-    //Get score in comparison to Katiba standard weight
-    private _weightRating = 100/_weight;
-
-    //[4, format ["Weapon data: %1", [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange, _weightRating]], _fileName] call A3A_fnc_log;
-    _weaponsData pushBack [_weaponName, _DPM, _timeTo100Meters, _dispersion, _maxRange, _weightRating];
 } forEach (missionNamespace getVariable _weaponsArrayName);
 
 private _fnc_calculateWeaponScore =

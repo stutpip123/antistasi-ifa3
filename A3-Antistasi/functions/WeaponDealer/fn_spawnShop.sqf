@@ -229,7 +229,7 @@ private _fnc_spawnItem =
         case (BACKPACKS):
         {
             _asset enableSimulation true;
-            _asset addBackpack _item;
+            _asset addBackpackGlobal _item;
             _asset enableSimulation false;
             [_asset, "CfgVehicles", _item, _type] call A3A_fnc_addShopActions;
         };

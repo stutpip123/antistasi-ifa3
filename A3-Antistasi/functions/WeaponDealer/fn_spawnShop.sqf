@@ -23,7 +23,7 @@ params
     ["_marker", "", [""]]
 ];
 
-private _shopSize = (((round (_citySupportRatio * 2)) + 1) min 3) max 1;
+private _shopSize = 3;//(((round (_citySupportRatio * 2)) + 1) min 3) max 1;
 private _assets = [];
 
 switch (_shopSize) do
@@ -270,7 +270,7 @@ private _slots = [];
     _allObjects pushBack _asset;
 } forEach _assets;
 
-private _chooseArray = [4, 8, 3, 3, 6, 6, 3, 3, 1, 6, 4, 3];
+private _chooseArray = [4, 8, 3, 3, 6, 6, 4, 5, 1, 6, 4, 3];
 private _alreadySelected = [];
 private _selectedItems = [];
 {

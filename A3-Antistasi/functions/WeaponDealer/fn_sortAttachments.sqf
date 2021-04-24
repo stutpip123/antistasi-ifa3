@@ -39,13 +39,20 @@ Debug_1("Sorted %1 bipods", count _bipods);
 private _flashlights = [];
 private _IRPointer = [];
 {
-    if(isClass (configFile >> "CfgWeapons" >> _x >> "ItemInfo" >> "Pointer")) then
+    if(isClass (configFile >> "CfgVehicles" >> format ["Item_%1", _x])) then
     {
-        _IRPointer pushBack [0.75 + random 0.5, _x];
+        if(isClass (configFile >> "CfgWeapons" >> _x >> "ItemInfo" >> "Pointer")) then
+        {
+            _IRPointer pushBack [0.75 + random 0.5, _x];
+        }
+        else
+        {
+            _flashlights pushBack [0.2 + random 0.3, _x];
+        };
     }
     else
     {
-        _flashlights pushBack [0.2 + random 0.3, _x];
+        Info_1("%1 does not have model attached and will be filtered out!", _x);
     };
 } forEach allPointerAttachments;
 Debug_2("Sorted %1 lights and %2 lasers", count _flashlights, count _IRPointer);

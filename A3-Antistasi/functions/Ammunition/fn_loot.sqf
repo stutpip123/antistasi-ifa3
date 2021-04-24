@@ -60,7 +60,9 @@ lootHelmet append allArmoredHeadgear;
 ///////////////
 //   Vests  ///
 ///////////////
-lootVest append allArmoredVests + allCivilianVests;
+//lootVest append allArmoredVests + allCivilianVests;
+//Does what the commented line does, but sorts the vests based on value
+[] call A3A_fnc_sortVests;
 
 /////////////////////
 //   Device Bags  ///

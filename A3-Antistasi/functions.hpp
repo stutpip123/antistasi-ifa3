@@ -698,6 +698,7 @@ class A3A
         class singleBuyAction {};
         class sortAttachments {};
         class sortBackpacks {};
+        class sortMagazines {};
         class sortVests {};
         class sortWeaponArray {};
         class spawnShop {};

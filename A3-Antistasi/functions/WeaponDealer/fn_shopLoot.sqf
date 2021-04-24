@@ -18,8 +18,9 @@ allLaunchersShop = [+allMissileLaunchers, +allRocketLaunchers] call A3A_fnc_merg
 //Sort explosives by damage, explosion radius and maybe weight
 allExplosiveShop = +lootExplosive;
 
-//Ammo is getting randomised (or shouldnt it? Look out for balancing issues)
-allAmmunitionShop = +lootMagazine;
+//Ammo sorted so ammo and weapons match
+allAmmunitionShop = [];
+[] call A3A_fnc_sortMagazines;
 
 //Sort by armor level, weight, load, and resistance
 allVestsShop = +lootVest;

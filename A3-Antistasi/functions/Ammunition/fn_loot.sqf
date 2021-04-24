@@ -50,7 +50,9 @@ lootExplosive deleteAt (lootExplosive find "IEDUrbanBig_Remote_Mag");
 ///////////////////
 //   Backpacks  ///
 ///////////////////
-lootBackpack append allBackpacksEmpty;
+//lootBackpack append allBackpacksEmpty;
+//Does what the commented line does, but sorts the vests based on value
+[] call A3A_fnc_sortBackpacks;
 
 /////////////////
 //   Helmets  ///

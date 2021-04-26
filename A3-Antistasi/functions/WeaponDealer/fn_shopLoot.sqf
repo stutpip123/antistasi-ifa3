@@ -16,7 +16,7 @@ allRiflesShop = [+allRifles, +allSniperRifles, +allMachineGuns, +allSMGs, +allSh
 allLaunchersShop = [+allMissileLaunchers, +allRocketLaunchers] call A3A_fnc_mergeWeaponArray;
 
 //Sort explosives by damage, explosion radius and maybe weight
-allExplosiveShop = +lootExplosive;
+[] call A3A_fnc_sortExplosives;
 
 //Ammo sorted so ammo and weapons match
 [] call A3A_fnc_sortMagazines;

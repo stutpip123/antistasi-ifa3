@@ -29,6 +29,14 @@ allBackpacksShop = +lootBackpack;
 
 //Sorted by the order here
 allItemsShop = lootBasicItem + allBinoculars + allRadios + allGPS + allMineDetectors + allLaserBatteries + allLaserDesignators + allUAVTerminals  + allGadgets;
+{
+    missionNamespace setVariable [format ["%1_data", _x], [1, 0, 0]];
+} forEach allItemsShop;
+
+//Fix NVG not having a value
+{
+    missionNamespace setVariable [format ["%1_data", _x], [1, 0, 0]];
+} forEach lootNVG;
 
 //Sort by protection and weight
 [] call A3A_fnc_sortHelmets;

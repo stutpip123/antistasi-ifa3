@@ -79,7 +79,7 @@ private _fnc_getSlotPositions =
         {
             private _pos = (getPosWorld _asset) vectorAdd [0, 0, 0.45];
             private _rot = [150 + (getDir _asset), 0, 0];
-            _result pushBack [_asset, _pos, _rot, [RIFLES, EXPLOSIVES, GRENADES, HELMET, VESTS, BACKPACKS, NVG]];
+            _result pushBack [_asset, _pos, _rot, [EXPLOSIVES, GRENADES, HELMET, VESTS, BACKPACKS, NVG]];
         };
         case ("Land_CampingTable_F"):
         {
@@ -87,9 +87,9 @@ private _fnc_getSlotPositions =
             private _tableSide = _tableForward vectorCrossProduct [0, 0, 1];
             private _pos = (getPosWorld _asset) vectorAdd (_tableSide vectorMultiply -0.5) vectorAdd [0, 0, 0.45];
             private _rot = [150 + (getDir _asset), 0, 0];
-            _result pushBack [_asset, _pos, _rot, [RIFLES, LAUNCHERS, EXPLOSIVES, PISTOLS, ITEM, GRENADES, VESTS, BACKPACKS, NVG, ATTACHMENT]];
+            _result pushBack [_asset, _pos, _rot, [RIFLES, LAUNCHERS, PISTOLS, ITEM, GRENADES, VESTS, BACKPACKS, NVG, ATTACHMENT]];
             _pos = (getPosWorld _asset) vectorAdd (_tableSide vectorMultiply 0.5) vectorAdd [0, 0, 0.45];
-            _result pushBack [_asset, _pos, _rot, [LAUNCHERS, VESTS, BACKPACKS, NVG]];
+            _result pushBack [_asset, _pos, _rot, [LAUNCHERS, PISTOLS, ITEM, VESTS, BACKPACKS, NVG]];
         };
         case ("Land_MapBoard_01_Wall_F"):
         {
@@ -145,7 +145,7 @@ private _fnc_chooseSpawnItem =
         while {(_spawnItem == "") || (_spawnItem in _alreadySelected)} do
         {
             private _itemCount = (count (_selection#0)) - 1;
-            private _spawnItemIndex = ([_supportPoint, 0.1] call _fnc_getRandomNumber) * _itemCount;
+            private _spawnItemIndex = ([_supportPoint, 0.2] call _fnc_getRandomNumber) * _itemCount;
             _spawnItem = (_selection#0)#_spawnItemIndex;
             _abort = _abort - 1;
             if(_abort < 0) exitWith
@@ -270,7 +270,7 @@ private _slots = [];
     _allObjects pushBack _asset;
 } forEach _assets;
 
-private _chooseArray = [4, 8, 2, 3, 6, 6, 4, 5, 1, 6, 4, 3];
+private _chooseArray = [3, 8, 1, 3, 6, 6, 5, 7, 1, 6, 4, 3];
 private _alreadySelected = [];
 private _selectedItems = [];
 {

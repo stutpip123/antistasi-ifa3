@@ -42,4 +42,4 @@ allItemsShop = lootBasicItem + allBinoculars + allRadios + allGPS + allMineDetec
 [] call A3A_fnc_sortHelmets;
 
 //The complete array
-shopArrayComplete = [[allHandguns, 0, false], [allRiflesShop, 1, false], [allLaunchersShop, 2, false], [allExplosiveShop, 3, false], [allAmmunitionShop, 4, true], [lootAttachment, 5, false], [allVestsShop, 6, false], [allBackpacksShop, 7, false], [lootNVG, 8, true], [allItemsShop, 9, false], [lootGrenade, 10, true], [allHelmetsShop, 11, false]];
+shopArrayComplete = [[allHandguns, 0, false], [allRiflesShop, 1, false], [allLaunchersShop, 2, false], [allExplosiveShop, 3, false], [allAmmunitionShop, 4, false], [lootAttachment, 5, false], [allVestsShop, 6, false], [allBackpacksShop, 7, false], [lootNVG, 8, true], [allItemsShop, 9, false], [lootGrenade, 10, true], [allHelmetsShop, 11, false]];

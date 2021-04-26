@@ -1,3 +1,30 @@
+/*
+Author: Wurzel0701
+    Sorts all magazines into the allAmmunitionShop array from worst to best
+
+Arguments:
+    <NIL>
+
+Return Value:
+    <NIL>
+
+Scope: Server
+Environment: Any
+Public: No
+Dependencies:
+    <ARRAY> allMagShotgun
+    <ARRAY> allMagBullet
+    <ARRAY> allMagRocket
+    <ARRAY> allMagMissile
+    <ARRAY> allAmmunitionShop
+
+Example:
+    [] call A3A_fnc_sortMagazines;
+*/
+
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
+
 private _list = [];
 
 {
@@ -65,4 +92,4 @@ _list sort true;
     allAmmunitionShop pushBack (_x select 1);
 } forEach _list;
 
-diag_log format ["Ammo sorted to %1", allAmmunitionShop apply {getText (configFile >> "CfgMagazines" >> _x >> "displayName")}];
+[allAmmunitionShop apply {getText (configFile >> "CfgMagazines" >> _x >> "displayName")}, "Ammo"] call A3A_fnc_logArray;

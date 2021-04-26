@@ -1,24 +1,35 @@
+/*
+Author: Wurzel0701
+    Sorts a given array from worst to best weapon
+
+Arguments:
+    <STRING> The name of the array which needs to be sorted
+    <STRING> The type of weapon this array contains
+
+Return Value:
+    <NIL>
+
+Scope: Server
+Environment: Any
+Public: No
+Dependencies:
+    <ARRAY> allCivilianVests
+    <ARRAY> allArmoredVests
+
+Example:
+    [] call A3A_fnc_sortVests;
+*/
+
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
+
 params
 [
     ["_weaponsArrayName", "", [""]],
     ["_weaponsType", "", [""]]
 ];
 
-/*  Sorts the weapon arrays from worst to best weapon
-
-    Execution on: Server
-
-    Call by: Any
-
-    Params:
-        _weaponsArrayName : STRING : The name of the array, how it is called in the missionNamespace
-        _weaponsType : STRING : The classname of the weapon (e.g. "Rifle")
-
-    Returns:
-        Nothing
-*/
-
-private _fileName = "sortWeaponArrays";
+private _weaponIndex = 1;
 private _weaponsData = [];
 
 {
@@ -144,6 +155,7 @@ switch (_weaponsType) do
     };
     switch ("Handguns") do
     {
+        _weaponIndex = 0;
         _weaponsScore = _weaponsData apply {[_x, 3, 0.5, 0.5, 1, 0.5] call _fnc_calculateWeaponScore;};
     };
     switch ("MachineGuns") do
@@ -152,15 +164,17 @@ switch (_weaponsType) do
     };
     switch ("MissileLaunchers") do
     {
+        _weaponIndex = 2;
         _weaponsScore = _weaponsData apply {[_x, 5, 0, 0.5, 2, 1.5] call _fnc_calculateWeaponScore;};
     };
-    //What is this for a case?
+    //This case does not seems to be used in vanilla
     switch ("Mortars") do
     {
         _weaponsScore = _weaponsData apply {[_x, 1, 1, 1, 1, 1] call _fnc_calculateWeaponScore;};
     };
     switch ("RocketLaunchers") do
     {
+        _weaponIndex = 2;
         _weaponsScore = _weaponsData apply {[_x, 5, 1, 2, 0.5, 2] call _fnc_calculateWeaponScore;};
     };
     switch ("Shotguns") do
@@ -183,7 +197,7 @@ private _sortedArray = [];
 {
     _sortedArray pushBack (_x select 1);
     //[4, format ["%1 array index %2: %3", _weaponsArrayName, _forEachIndex, _x select 1], _fileName] call A3A_fnc_log;
-    missionNamespace setVariable [format ["%1_data", _x select 1], [_x select 0, 0, 0]];
+    missionNamespace setVariable [format ["%1_data", _x select 1], [_x select 0, _weaponIndex, 0, 0]];
 } forEach _weaponsScore;
 
 missionNamespace setVariable [_weaponsArrayName, _sortedArray];

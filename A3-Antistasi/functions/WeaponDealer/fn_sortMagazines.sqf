@@ -46,7 +46,6 @@ private _list = [];
     private _score = 2 * (_damage / 10) + _offsetPercentage;
     _score = _score / 3;
 
-    missionNamespace setVariable [format ["%1_data", _x], [_score, 0, 0]];
     _list pushBack [_score, _x];
 } forEach allMagBullet + allMagShotgun;
 
@@ -64,7 +63,6 @@ private _list = [];
     private _damage = _caliber * _hit;
     private _score = (_damage / 100) + (_mass /50);
 
-    missionNamespace setVariable [format ["%1_data", _x], [_score, 0, 0]];
     _list pushBack [_score, _x];
 } forEach allMagRocket;
 
@@ -82,13 +80,13 @@ private _list = [];
     private _damage = _caliber * _hit;
     private _score = ((_damage / 100) + (_mass /50)) * 2;
 
-    missionNamespace setVariable [format ["%1_data", _x], [_score, 0, 0]];
     _list pushBack [_score, _x];
 } forEach allMagMissile;
 
 _list sort true;
 allAmmunitionShop = [];
 {
+    missionNamespace setVariable [format ["%1_data", (_x select 1)], [(_x select 0), 4, 0, 0]];
     allAmmunitionShop pushBack (_x select 1);
 } forEach _list;
 

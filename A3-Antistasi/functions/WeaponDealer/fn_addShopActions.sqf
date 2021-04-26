@@ -69,7 +69,7 @@ switch (_class) do
 };
 
 //Maybe get the score of the item in too
-private _itemValue = (missionNamespace getVariable [format ["%1_data", _item], [1, 0, 0]]) select 0;
+private _itemValue = (missionNamespace getVariable [format ["%1_data", _item], [1]]) select 0;
 
 private _basePrice = round (10 * _priceModifier * _itemValue) * 5;
 private _supplyPrice = round (_basePrice * exp (7/20)) * 10; //Replace 7 by the amount of already done purchases

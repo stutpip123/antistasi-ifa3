@@ -23,7 +23,7 @@ params
     ["_marker", "", [""]]
 ];
 
-private _shopSize = (((round (_citySupportRatio * 2)) + 1) min 3) max 1;
+private _shopSize = (floor (_citySupportRatio / 0.34) + 1) min 3;
 private _assets = [];
 
 switch (_shopSize) do
@@ -36,7 +36,7 @@ switch (_shopSize) do
             ["C_Soldier_VR_F", [-2, 2, -0.4], 180],
             ["Land_CampingTable_F", [-1, -2.2, 0], 0],
             ["Land_CampingTable_small_F", [2, 2.3, 0], 180],
-            ["Box_NATO_Equip_F", [-3, -2.2, 0], 90]
+            ["Box_NATO_Equip_F", [-3, -2.2, 0.2], 90]
         ];
     };
     case (SHOP_SIZE_MEDIUM):
@@ -49,7 +49,7 @@ switch (_shopSize) do
             ["Land_CampingTable_small_F", [4.5, -2.2, 0], 0],
             ["C_Soldier_VR_F", [3.5, -1.9, -0.4], 0],
             ["Land_CampingTable_small_F", [2, 2.3, 0], 180],
-            ["Box_NATO_Equip_F", [-3, -2.2, 0], 90]
+            ["Box_NATO_Equip_F", [-3, -2.2, 0.2], 90]
         ];
     };
     case (SHOP_SIZE_LARGE):
@@ -64,7 +64,7 @@ switch (_shopSize) do
             ["Land_CampingTable_small_F", [2, 2.3, 0], 180],
             ["Land_MapBoard_01_Wall_F", [0, 2.7, 1.25], 180],
             ["Land_MapBoard_01_Wall_F", [1.5, -2.6, 1.25], 0],
-            ["Box_NATO_Equip_F", [-3, -2.2, 0], 90]
+            ["Box_NATO_Equip_F", [-3, -2.2, 0.2], 90]
         ];
     };
 };
@@ -268,6 +268,16 @@ private _slots = [];
     clearItemCargoGlobal _asset;
     _slots append ([_asset] call _fnc_getSlotPositions);
     _allObjects pushBack _asset;
+    if((_x#0) == "Box_NATO_Equip_F") then
+    {
+        //The sell box
+        _asset spawn
+        {
+            sleep 1;
+            _this enableSimulation true;
+        };
+        [_asset, ["Sell content of box", {[_this select 0] call A3A_fnc_sellBoxContent;}]] remoteExec ["addAction", [civilian, teamplayer], true];
+    };
 } forEach _assets;
 
 private _chooseArray = [3, 8, 1, 3, 6, 6, 5, 7, 1, 6, 4, 3];

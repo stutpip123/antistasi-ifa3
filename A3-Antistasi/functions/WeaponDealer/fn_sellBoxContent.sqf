@@ -94,7 +94,7 @@ if(count _allContent > 0) then
     clearBackpackCargoGlobal _box;
     ["Selling", "The vendor is checking your offer!"] call A3A_fnc_customHint;
 
-    //sleep 5;
+    sleep 5;
     ServerInfo_2("%1 sends request to sell %2 items", player, count _allContent);
     [_hashMap, _allUniqueTypes, _box, player] remoteExec ["A3A_fnc_calculateSellPrice", 2];
 }

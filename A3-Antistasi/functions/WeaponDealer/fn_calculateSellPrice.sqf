@@ -124,7 +124,7 @@ private _money = 0;
         private _amount = _hashMap get _item;
         private _factor = [_itemIndex # 1] call _fnc_getSellFactor;
         private _price = round (10 * _factor * (_itemIndex # 0)) * 5;
-        Debug_3("Item: %1 || Price: %2 || Amount: %3", _item, _prices, _amount);
+        Debug_3("Item: %1 || Price: %2 || Amount: %3", _item, _price, _amount);
         _money = _money + (_price * _amount);
     };
 } forEach (_list);

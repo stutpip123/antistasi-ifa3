@@ -1,3 +1,29 @@
+/*
+Author: Wurzel0701
+    Spawns a shop location on the given marker if possible
+
+Arguments:
+    <OBJECT> The garage the shop should be spawned in
+    <NUMBER> The support value
+    <STRING> The marker the shop should spawn on
+
+Return Value:
+    <NIL>
+
+Scope: Server
+Environment: Any
+Public: Yes
+Dependencies:
+    <ARRAY> shopArrayComplete
+    <NAMESPACE> spawner
+
+Example:
+    [_mygarage, 0.5, "testMarker"] call A3A_fnc_spawnShop;
+*/
+
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
+
 #define SHOP_SIZE_SMALL     1
 #define SHOP_SIZE_MEDIUM    2
 #define SHOP_SIZE_LARGE     3
@@ -15,7 +41,6 @@
 #define GRENADES            10
 #define HELMET              11
 
-
 params
 [
     ["_garage", objNull, [objNull]],
@@ -24,6 +49,7 @@ params
 ];
 
 private _shopSize = (floor (_citySupportRatio / 0.34) + 1) min 3;
+Info_1("Selected shop size is %1", _shopSize);
 private _assets = [];
 
 switch (_shopSize) do
@@ -136,7 +162,7 @@ private _fnc_chooseSpawnItem =
             _abort = _abort - 1;
             if(_abort < 0) exitWith
             {
-                diag_log "Selection aborted, run into endless loop!";
+                Info("Selection aborted, run into endless loop!");
             };
         };
     }
@@ -150,7 +176,7 @@ private _fnc_chooseSpawnItem =
             _abort = _abort - 1;
             if(_abort < 0) exitWith
             {
-                diag_log "Selection aborted, run into endless loop!";
+                Info("Selection aborted, run into endless loop!");
             };
         };
     };
@@ -249,6 +275,8 @@ private _fnc_spawnItem =
     _object;
 };
 
+Info_1("Started spawn of shop on %1", _marker);
+
 private _allObjects = [];
 
 private _garageRight = vectorDir _garage;
@@ -280,6 +308,8 @@ private _slots = [];
     };
 } forEach _assets;
 
+Info("Assets spawned in!");
+
 private _chooseArray = [3, 8, 1, 3, 6, 6, 5, 7, 1, 6, 4, 3];
 private _alreadySelected = [];
 private _selectedItems = [];
@@ -289,15 +319,13 @@ private _selectedItems = [];
     private _item = _itemData#1;
     if(_item == "") then
     {
-        diag_log format ["No selection done, staying empty"];
-        diag_log format ["Slot was %1", _x];
+        Info_1("No selection done on slot %1, staying empty", _x);
     }
     else
     {
         _alreadySelected pushBack _item;
         _chooseArray = _itemData#2;
-        diag_log format ["Selected %1 of type %2", _item, _itemType];
-        diag_log format ["Slot was %1", _x];
+        Info_3("Selected %1 of type %2 for slot %3", _item, _itemType, _x);
         _allObjects pushBack ([_itemType, _item, _x#1, _x#2, _x#0] call _fnc_spawnItem);
     };
     _selectedItems pushBack [_itemType, _item];
@@ -312,4 +340,5 @@ private _selectedItems = [];
     {
         deleteVehicle _x;
     } forEach _allObjects;
+    Info_1("Shop despawned on %1", _marker);
 };

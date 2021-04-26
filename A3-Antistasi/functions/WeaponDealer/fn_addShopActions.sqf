@@ -20,15 +20,15 @@ switch (_class) do
 {
     case (PISTOLS):
     {
-        _priceModifier = 0.8;
+        _priceModifier = 1.4;
     };
     case (RIFLES):
     {
-        _priceModifier = 3;
+        _priceModifier = 3.8;
     };
     case (LAUNCHERS):
     {
-        _priceModifier = 7;
+        _priceModifier = 7.8;
     };
     case (EXPLOSIVES):
     {
@@ -60,7 +60,7 @@ switch (_class) do
     };
     case (GRENADES):
     {
-        _priceModifier = 3.5;
+        _priceModifier = 0.4;
     };
     case (HELMET):
     {

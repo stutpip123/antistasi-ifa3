@@ -44,7 +44,7 @@ while {count _arraysToMerge > 0} do
 };
 
 Debug("Weapons sorted result is:");
-Debug_1("%1", _result apply {getText (configFile >> "CfgWeapons" >> _x >> "displayName");});
+[_result apply {"[" + getText (configFile >> "CfgWeapons" >> _x >> "displayName") + ":" + str (missionNamespace getVariable [format ["%1_data", _x], []]) + "]"}, "Weapons"] call A3A_fnc_logArray;
 /*
 [
 "Sting 9 mm","Vermin SMG .45 ACP","Mk20C 5.56 mm (Camo)",

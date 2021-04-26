@@ -693,6 +693,7 @@ class A3A
     class WeaponDealer
     {
         class addShopActions {};
+        class calculateSellPrice {};
         class mergeWeaponArray {};
         class sellBoxContent {};
         class shopLoot {};

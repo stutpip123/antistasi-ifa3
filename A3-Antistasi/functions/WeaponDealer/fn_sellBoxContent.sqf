@@ -1,80 +1,44 @@
+/*
+Author: Wurzel0701
+    The action of selling the inventory of the box in the shop
+
+Arguments:
+    <OBJECT> The box which inventory will be sold
+
+Return Value:
+    <NIL>
+
+Scope: Local
+Environment: Scheduled
+Public: No
+Dependencies:
+    <NIL>
+
+Example:
+    [_mybox] call A3A_fnc_sellBoxContent;
+*/
+
 #include "..\..\Includes\common.inc"
 FIX_LINE_NUMBERS()
 
-#define PISTOLS             0
-#define RIFLES              1
-#define LAUNCHERS           2
-#define EXPLOSIVES          3
-#define AMMUNITION          4
-#define ATTACHMENT          5
-#define VESTS               6
-#define BACKPACKS           7
-#define NVG                 8
-#define ITEM                9
-#define GRENADES            10
-#define HELMET              11
-
 params ["_box"];
+
+if(!local player) exitWith {};
+
+if (player != player getVariable["owner", player]) exitWith
+{
+    ["Selling", "You cannot sell something while you are controlling AI"] call A3A_fnc_customHint;
+};
+
+if(!(isNull (objectParent player))) exitWith
+{
+    ["Selling", "You cannot sell something from inside a vehicle"] call A3A_fnc_customHint;
+};
+
+ServerInfo_1("%1 is about to sell the box to the vendor", player);
 
 waitUntil {!(_box getVariable ["CurrentlySelling", false])};
 _box setVariable ["CurrentlySelling", true, true];
-
-private _fnc_getSellFactor =
-{
-    params ["_type"];
-    private _priceModifier =0.5;
-    switch (_type) do
-    {
-        case (PISTOLS):
-        {
-            _priceModifier = 0.5;
-        };
-        case (RIFLES):
-        {
-            _priceModifier = 1.2;
-        };
-        case (LAUNCHERS):
-        {
-            _priceModifier = 3;
-        };
-        case (EXPLOSIVES):
-        {
-            _priceModifier = 1.2;
-        };
-        case (AMMUNITION):
-        {
-            _priceModifier = 0.1;
-        };
-        case (ATTACHMENT):
-        {
-            _priceModifier = 1.2;
-        };
-        case (VESTS):
-        {
-            _priceModifier = 2;
-        };
-        case (BACKPACKS):
-        {
-            _priceModifier = 0.3;
-        };
-        case (NVG):
-        {
-            _priceModifier = 2.5;
-        };
-        case (ITEM):
-        {
-            _priceModifier = 0.03;
-        };
-        case (GRENADES):
-        {
-            _priceModifier = 1.7;
-        };
-        case (HELMET):
-        {
-            _priceModifier = 3.2;
-        };
-    };
-};
 
 private _fnc_sortIntoHashmap =
 {
@@ -98,7 +62,6 @@ _allContent append (itemCargo _box);
 _allContent append ((backpackCargo _box) apply {[_x] call A3A_fnc_basicBackpack;});
 //Gets all vest and backpacks with stuff inside them and adds them
 {
-    diag_log format ["Container is %1", _x];
     private _object = _x select 1;
     _allContent append (magazineCargo _object);
     _allContent append (itemCargo _object);
@@ -113,7 +76,6 @@ _allContent append (magazineCargo _box);
 
 if(count _allContent > 0) then
 {
-    ServerInfoArray("Content of the box:", _allContent);
     private _hashMap = createHashMap;
     private _allUniqueTypes = [];
     {
@@ -130,20 +92,16 @@ if(count _allContent > 0) then
     clearMagazineCargoGlobal _box;
     clearWeaponCargoGlobal _box;
     clearBackpackCargoGlobal _box;
-    ["Selling", "The vender is checking your offer!"] call A3A_fnc_customHint;
+    ["Selling", "The vendor is checking your offer!"] call A3A_fnc_customHint;
+
+    //sleep 5;
+    ServerInfo_2("%1 sends request to sell %2 items", player, count _allContent);
+    [_hashMap, _allUniqueTypes, _box, player] remoteExec ["A3A_fnc_calculateSellPrice", 2];
 }
 else
 {
     ["Selling", "There is nothing in the box which can be sold!"] call A3A_fnc_customHint;
+    ServerInfo_1("%1 requested selling without anything in the box", player);
 };
 
 _box setVariable ["CurrentlySelling", false, true];
-
-/*
-{
-    private _itemIndex = missionNamespace getVariable (format ["%1_data", _x]);
-
-    private _price = round (10 * ([_itemIndex # 1] call _priceModifier) * (_itemIndex # 0)) * 5;
-    if(_)
-} forEach (itemCargo _box);
-*/

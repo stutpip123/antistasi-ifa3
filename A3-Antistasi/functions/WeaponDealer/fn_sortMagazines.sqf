@@ -87,7 +87,7 @@ private _list = [];
 } forEach allMagMissile;
 
 _list sort true;
-
+allAmmunitionShop = [];
 {
     allAmmunitionShop pushBack (_x select 1);
 } forEach _list;

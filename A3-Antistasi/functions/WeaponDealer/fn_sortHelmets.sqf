@@ -37,7 +37,7 @@ private _list = [];
 } forEach lootHelmet;
 
 _list sort true;
-
+allHelmetsShop = [];
 {
     allHelmetsShop pushBack (_x select 1);
 } forEach _list;

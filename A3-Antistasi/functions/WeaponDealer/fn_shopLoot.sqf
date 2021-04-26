@@ -19,7 +19,6 @@ allLaunchersShop = [+allMissileLaunchers, +allRocketLaunchers] call A3A_fnc_merg
 allExplosiveShop = +lootExplosive;
 
 //Ammo sorted so ammo and weapons match
-allAmmunitionShop = [];
 [] call A3A_fnc_sortMagazines;
 
 //Sort by armor level, weight, load, and resistance
@@ -32,7 +31,6 @@ allBackpacksShop = +lootBackpack;
 allItemsShop = lootBasicItem + allBinoculars + allRadios + allGPS + allMineDetectors + allLaserBatteries + allLaserDesignators + allUAVTerminals  + allGadgets;
 
 //Sort by protection and weight
-allHelmetsShop = [];
 [] call A3A_fnc_sortHelmets;
 
 //The complete array

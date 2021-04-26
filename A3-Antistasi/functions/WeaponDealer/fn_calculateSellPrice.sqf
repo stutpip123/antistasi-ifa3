@@ -39,6 +39,17 @@ FIX_LINE_NUMBERS()
 
 params ["_hashMap", "_list", "_box", "_player"];
 
+Info_1("Recieved request to sell item, parameters: %1", _this);
+
+if(isNil "currentlySelling") then
+{
+    currentlySelling = false;
+};
+waitUntil {!currentlySelling};
+currentlySelling = true;
+
+Info_1("Lock set, now working on sell order from %1", _player);
+
 private _fnc_getSellFactor =
 {
     params ["_type"];
@@ -106,14 +117,14 @@ private _money = 0;
     if(count _itemIndex == 0 || {_itemIndex # 2 > 0 || {_item in _unlocked}}) then
     {
         _rejected pushBack _item;
+        Debug_2("Item %1 rejected, amount was %2", _item, _hashMap get _item);
     }
     else
     {
         private _amount = _hashMap get _item;
         private _factor = [_itemIndex # 1] call _fnc_getSellFactor;
-        Info_3("Data:%1    Factor:%2    Value:%3", _itemIndex, _factor, _itemIndex # 0);
-
         private _price = round (10 * _factor * (_itemIndex # 0)) * 5;
+        Debug_3("Item: %1 || Price: %2 || Amount: %3", _item, _prices, _amount);
         _money = _money + (_price * _amount);
     };
 } forEach (_list);
@@ -126,11 +137,16 @@ private _rejectedAmount = 0;
 
 if(_rejectedAmount == 0) then
 {
+    Info_2("All items sold, rewarding %1 with %2€", _player, _money);
     ["Selling", format ["Sold all items for %1", _money]] remoteExec ["A3A_fnc_customHint", _player];
     [_money] remoteExec ["A3A_fnc_resourcesPlayer", _player];
 }
 else
 {
+    Info_3("%1 items rejected, rewarding %2 with %3€", _rejectedAmount, _player, _money);
     ["Selling", format ["Rejected %2 items, sold the rest for %1", _money, _rejectedAmount]] remoteExec ["A3A_fnc_customHint", _player];
     [_money] remoteExec ["A3A_fnc_resourcesPlayer", _player];
 };
+
+Info("Sell order completled, disengaging lock!");
+currentlySelling = false;

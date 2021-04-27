@@ -69,6 +69,8 @@ _allContent append ((backpackCargo _box) apply {[_x] call A3A_fnc_basicBackpack;
 } forEach (everyContainer _box);
 
 {
+    private _weapon = _x deleteAt 0;
+    _allContent pushBack ([_weapon] call BIS_fnc_baseWeapon);
     _allContent append (_x select {count _x != 0});
 } forEach (weaponsItemsCargo _box);
 

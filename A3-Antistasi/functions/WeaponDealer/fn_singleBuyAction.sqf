@@ -321,7 +321,7 @@ switch (_class) do
                 }
                 else
                 {
-                    player addItem _item;
+                    //player addItem _item;
                     ["Weapon Shop", format ["%1 bought and stashed in your inventory", _name]] call A3A_fnc_customHint;
                     _bought = true;
                 };

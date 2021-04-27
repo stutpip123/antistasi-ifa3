@@ -36,6 +36,7 @@ if (LTCLootUnlocked) then {
 
 _targets = nearestObjects [getposATL _container, ["Man"], 10];
 _weaponHolders = nearestObjects [getposATL _container, ["WeaponHolder","WeaponHolderSimulated"], 10];
+_weaponHolders = _weaponHolders select {!(_x getVariable ["DoNotGarbageClean", false])};
 
 _container setVariable ["stopPostmortem", true, true]; //block postmortem on surrender crates
 

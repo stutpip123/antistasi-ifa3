@@ -289,6 +289,11 @@ class A3A
         class unit_recruit {};
     };
 
+    class EventHandler
+    {
+        class addArtilleryTrailEH {};
+    };
+
     class Garage
     {
         class addToPersonalGarage {};
@@ -686,6 +691,7 @@ class A3A
         class log {};
         class setPos {};
         class systemTime_format_S {};
+        class vehicleTextureSync {};
         class vehicleWillCollideAtPosition {};
         class getRoadDirection {};
     };

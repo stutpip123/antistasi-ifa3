@@ -34,6 +34,9 @@ if (_side == teamPlayer) then
 	clearBackpackCargoGlobal _veh;
 };
 
+// Sync the vehicle textures if necessary
+_veh call A3A_fnc_vehicleTextureSync;
+
 private _typeX = typeOf _veh;
 if ((_typeX in vehNormal) or (_typeX in vehAttack) or (_typeX in vehBoats) or (_typeX in vehAA)) then
 {
@@ -163,6 +166,11 @@ if (_side == civilian) then
 			_veh removeEventHandler ["HandleDamage", _thisEventHandler];
 		};
 	}];
+};
+
+if(_typeX in vehMRLS + [CSATMortar, NATOMortar, SDKMortar]) then
+{
+    [_veh] call A3A_fnc_addArtilleryTrailEH;
 };
 
 // EH behaviour:

@@ -46,4 +46,4 @@ _list sort true;
     lootBackpack pushBack (_x select 1);
 } forEach _list;
 
-Debug_1("Backpack sorted to %1", lootBackpack apply {getText (configFile >> "CfgVehicles" >> _x >> "displayName")});
+Info_1("Backpack sorted to %1", lootBackpack apply {getText (configFile >> "CfgVehicles" >> _x >> "displayName")});

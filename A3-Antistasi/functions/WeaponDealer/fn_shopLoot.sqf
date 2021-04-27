@@ -28,10 +28,11 @@ allVestsShop = +lootVest;
 allBackpacksShop = +lootBackpack;
 
 //Sorted by the order here
-allItemsShop = lootBasicItem + allBinoculars + allRadios + allGPS + allMineDetectors + allLaserBatteries + allLaserDesignators + allUAVTerminals  + allGadgets;
+allItemsShop = lootBasicItem + allRadios + allBinoculars + allGPS + allMineDetectors + allLaserBatteries + allLaserDesignators + allUAVTerminals  + allGadgets;
 {
     missionNamespace setVariable [format ["%1_data", _x], [1, 9, 0, 0]];
 } forEach allItemsShop;
+[allItemsShop, "Items"] call A3A_fnc_logArray;
 
 //Fix NVG not having a value
 {

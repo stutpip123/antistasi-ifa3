@@ -54,4 +54,4 @@ _list sort true;
     lootVest pushBack (_x select 1);
 } forEach _list;
 
-Debug_1("Vests sorted to %1", lootVest apply {getText (configFile >> "CfgWeapons" >> _x >> "displayName")});
+Info_1("Vests sorted to %1", lootVest apply {getText (configFile >> "CfgWeapons" >> _x >> "displayName")});

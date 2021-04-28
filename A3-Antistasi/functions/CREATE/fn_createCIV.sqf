@@ -19,6 +19,34 @@ if (count _roads == 0) exitWith
     Error_1("Roads not found for marker %1", _markerX);
 };
 
+private _storeCooldown = server getVariable [format ["%1_storeCooldown"], -1];
+if(_storeCooldown < time) then
+{
+    private _citySupportRatio = 0;
+    private _citiesUnderControl = 0;
+    {
+        if(sidesX getVariable (_x) == teamPlayer && {!(_x in destroyedSites)}) then
+        {
+            _citiesUnderControl = _citiesUnderControl + 1;
+        };
+    } forEach citiesX;
+    _citySupportRatio = _citiesUnderControl / (count citiesX);
+    private _garageIndex = server getVariable [format ["%1_storeIndex", _markerX], -1];
+    if(_garageIndex == -1) then
+    {
+        _garageIndex = round (random 1000);
+        server setVariable [format ["%1_storeIndex", _markerX], _garageIndex];
+    };
+    private _garageTypes = ["Land_i_Garage_V1_F", "Land_i_Garage_V2_F"];
+    private _garages = nearestObjects [getMarkerPos _markerX, _garageTypes, 250, true];
+    _garages = _garages select {(typeOf _x) in _garageTypes};
+    if(count _garages != 0) then
+    {
+        private _garage = _garages select (_garageIndex % (count _garages));
+        [_garage, _citySupportRatio, _markerX] remoteExec ["A3A_fnc_spawnShop", 2];
+    };
+};
+
 _prestigeOPFOR = _dataX select 2;
 _prestigeBLUFOR = _dataX select 3;
 

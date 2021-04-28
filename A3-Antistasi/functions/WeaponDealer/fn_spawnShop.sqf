@@ -196,9 +196,10 @@ private _fnc_spawnItem =
         case (LAUNCHERS):
         {
             _object = (format ["Weapon_%1", _item]) createVehicle _slotPos;
+            _object setDamage 1;
+            _object enableSimulation false;
             _object setPosWorld _slotPos;
             [_object, _orientation] call BIS_fnc_setObjectRotation;
-            _object setDamage 1;
             [_object, "CfgWeapons", _item, _type] call A3A_fnc_addShopActions;
         };
         case (AMMUNITION):

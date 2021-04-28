@@ -49,11 +49,13 @@ else
             _garageIndex = round (random 1000);
             server setVariable [format ["%1_storeIndex", _markerX], _garageIndex];
         };
-        private _garages = nearestObjects [getMarkerPos _markerX, ["Land_i_Garage_V1_F", "Land_i_Garage_V2_F"], 250, true];
+        private _garageTypes = ["Land_i_Garage_V1_F", "Land_i_Garage_V2_F"];
+        private _garages = nearestObjects [getMarkerPos _markerX, _garageTypes, 250, true];
+        _garages = _garages select {(typeOf _x) in _garageTypes};
         if(count _garages != 0) then
         {
             private _garage = _garages select (_garageIndex % (count _garages));
-            [_garage, _citySupportRatio, _markerX] spawn A3A_fnc_spawnShop;
+            [_garage, _citySupportRatio, _markerX] remoteExec ["A3A_fnc_spawnShop", 2];
         };
     };
 

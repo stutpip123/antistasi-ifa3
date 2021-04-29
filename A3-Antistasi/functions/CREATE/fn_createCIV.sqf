@@ -39,7 +39,7 @@ if(_storeCooldown < time) then
     };
     private _garageTypes = ["Land_i_Garage_V1_F", "Land_i_Garage_V2_F"];
     private _garages = nearestObjects [getMarkerPos _markerX, _garageTypes, 250, true];
-    _garages = _garages select {(typeOf _x) in _garageTypes};
+    _garages = _garages select {(damage _x != 1) && (typeOf _x) in _garageTypes};
     if(count _garages != 0) then
     {
         private _garage = _garages select (_garageIndex % (count _garages));

@@ -11,7 +11,7 @@ Return Value:
     <NIL>
 
 Scope: Server
-Environment: Any
+Environment: Scheduled
 Public: Yes
 Dependencies:
     <ARRAY> shopArrayComplete
@@ -197,7 +197,7 @@ private _fnc_spawnItem =
         {
             _object = (format ["Weapon_%1", _item]) createVehicle _slotPos;
             _object setDamage 1;
-            _object enableSimulation false;
+            _object enableSimulationGlobal false;
             _object setPosWorld _slotPos;
             [_object, _orientation] call BIS_fnc_setObjectRotation;
             [_object, "CfgWeapons", _item, _type] call A3A_fnc_addShopActions;
@@ -205,7 +205,7 @@ private _fnc_spawnItem =
         case (AMMUNITION):
         {
             _object = "Box_NATO_Ammo_F" createVehicle _slotPos;
-            _object enableSimulation false;
+            _object enableSimulationGlobal false;
             _object setDamage 1;
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.26]);
             _object setDir ((_orientation#0) - 60);
@@ -214,7 +214,7 @@ private _fnc_spawnItem =
         case (GRENADES):
         {
             _object = "Box_NATO_Grenades_F" createVehicle _slotPos;
-            _object enableSimulation false;
+            _object enableSimulationGlobal false;
             _object setDamage 1;
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.26]);
             _object setDir ((_orientation#0) - 60);
@@ -224,7 +224,7 @@ private _fnc_spawnItem =
         {
             //These are bitches, maybe find a better way
             _object = "Box_NATO_AmmoOrd_F" createVehicle _slotPos;
-            _object enableSimulation false;
+            _object enableSimulationGlobal false;
             _object setDamage 1;
             _object setPosWorld (_slotPos vectorAdd [0, 0, 0.26]);
             _object setDir ((_orientation#0) - 60);
@@ -234,30 +234,33 @@ private _fnc_spawnItem =
         case (ATTACHMENT):
         {
             _object = (format ["Item_%1", _item]) createVehicle _slotPos;
-            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.63]);
+            _object setPosWorld (_slotPos vectorAdd [0, 0, 0.64]);
             [_object, _orientation] call BIS_fnc_setObjectRotation;
             _object setDamage 1;
             [_object, "CfgWeapons", _item, _type] call A3A_fnc_addShopActions;
         };
         case (NVG):
         {
-            _asset enableSimulation true;
+            _asset enableSimulationGlobal true;
             _asset linkItem _item;
-            _asset enableSimulation false;
+            sleep 0.1;
+            _asset enableSimulationGlobal false;
             [_asset, "CfgWeapons", _item, _type] call A3A_fnc_addShopActions;
         };
         case (VESTS):
         {
-            _asset enableSimulation true;
+            _asset enableSimulationGlobal true;
             _asset addVest _item;
-            _asset enableSimulation false;
+            sleep 0.1;
+            _asset enableSimulationGlobal false;
             [_asset, "CfgWeapons", _item, _type] call A3A_fnc_addShopActions;
         };
         case (BACKPACKS):
         {
-            _asset enableSimulation true;
+            _asset enableSimulationGlobal true;
             _asset addBackpackGlobal _item;
-            _asset enableSimulation false;
+            sleep 0.1;
+            _asset enableSimulationGlobal false;
             [_asset, "CfgVehicles", _item, _type] call A3A_fnc_addShopActions;
         };
         case (HELMET):
@@ -291,7 +294,7 @@ private _slots = [];
     private _assetPos = _garagePos vectorAdd (_garageForward vectorMultiply _x#1#0) vectorAdd (_garageRight vectorMultiply _x#1#1) vectorAdd (_garageUp vectorMultiply _x#1#2);
     private _asset = (_x#0) createVehicle _garagePos;
     _asset allowDamage false;
-    _asset enableSimulation false;
+    _asset enableSimulationGlobal false;
     _asset setDir (_x#2 + _garageDir);
     _asset setPosWorld (_assetPos vectorAdd [0,0,0.3]);
     clearItemCargoGlobal _asset;
@@ -303,7 +306,7 @@ private _slots = [];
         _asset spawn
         {
             sleep 1;
-            _this enableSimulation true;
+            _this enableSimulationGlobal true;
         };
         [_asset, ["Sell content of box", {[_this select 0] call A3A_fnc_sellBoxContent;}]] remoteExec ["addAction", [civilian, teamplayer], true];
     };

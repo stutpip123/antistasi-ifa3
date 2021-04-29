@@ -33,7 +33,7 @@ private _silencers = allMuzzleAttachments apply
 };
 Debug_1("Sorted %1 silencers", count _silencers);
 
-private _bipods = allBipods apply {[0.9 + random 0.2, _x]};
+private _bipods = allBipods apply {[0.4 + random 0.2, _x]};
 Debug_1("Sorted %1 bipods", count _bipods);
 
 private _flashlights = [];

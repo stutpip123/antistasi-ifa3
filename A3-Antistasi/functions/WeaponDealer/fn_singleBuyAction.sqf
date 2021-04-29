@@ -259,16 +259,7 @@ switch (_class) do
         }
         else
         {
-            if(player canAddItemToBackpack _item) then
-            {
-                player addItemToBackpack _item;
-                ["Weapon Shop", format ["%1 bought and stashed in your backpack", _name]] call A3A_fnc_customHint;
-                _bought = true;
-            }
-            else
-            {
-                ["Weapon Shop", "You cannot buy this backpack as you are already wearing one and have no backpack inventory space"] call A3A_fnc_customHint;
-            };
+            ["Weapon Shop", "You cannot buy this backpack as you are already wearing one and backpacks cannot be stashed somewhere"] call A3A_fnc_customHint;
         };
     };
     case (NVG):

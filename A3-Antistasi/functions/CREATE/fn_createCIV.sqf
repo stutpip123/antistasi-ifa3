@@ -19,7 +19,7 @@ if (count _roads == 0) exitWith
     Error_1("Roads not found for marker %1", _markerX);
 };
 
-private _storeCooldown = server getVariable [format ["%1_storeCooldown"], -1];
+private _storeCooldown = server getVariable [format ["%1_storeCooldown", _markerX], -1];
 if(_storeCooldown < time) then
 {
     private _citySupportRatio = 0;
@@ -44,7 +44,15 @@ if(_storeCooldown < time) then
     {
         private _garage = _garages select (_garageIndex % (count _garages));
         [_garage, _citySupportRatio, _markerX] remoteExec ["A3A_fnc_spawnShop", 2];
+    }
+    else
+    {
+        Info_1("Store in %1 wont be spawned as there are no suitable buildings left", _markerX);
     };
+}
+else
+{
+    Info_1("Store in %1 wont be spawned as it is on cooldown", _markerX);
 };
 
 _prestigeOPFOR = _dataX select 2;

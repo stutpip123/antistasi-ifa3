@@ -1,11 +1,11 @@
 /*
 Author: Wurzel0701
-    Spawns a shop location on the given marker if possible
+    Spawns a store location on the given marker if possible
 
 Arguments:
-    <OBJECT> The garage the shop should be spawned in
+    <OBJECT> The garage the store should be spawned in
     <NUMBER> The support value
-    <STRING> The marker the shop should spawn on
+    <STRING> The marker the store should spawn on
 
 Return Value:
     <NIL>
@@ -24,9 +24,9 @@ Example:
 #include "..\..\Includes\common.inc"
 FIX_LINE_NUMBERS()
 
-#define SHOP_SIZE_SMALL     1
-#define SHOP_SIZE_MEDIUM    2
-#define SHOP_SIZE_LARGE     3
+#define STORE_SIZE_SMALL     1
+#define STORE_SIZE_MEDIUM    2
+#define STORE_SIZE_LARGE     3
 
 #define PISTOLS             0
 #define RIFLES              1
@@ -48,13 +48,14 @@ params
     ["_marker", "", [""]]
 ];
 
-private _shopSize = (floor (_citySupportRatio / 0.34) + 1) min 3;
-Info_1("Selected shop size is %1", _shopSize);
+Info_1("Spawning store in %1 now", _marker);
+private _storeSize = (floor (_citySupportRatio / 0.34) + 1) min 3;
+Info_1("Selected store size is %1", _storeSize);
 private _assets = [];
 
-switch (_shopSize) do
+switch (_storeSize) do
 {
-    case (SHOP_SIZE_SMALL):
+    case (STORE_SIZE_SMALL):
     {
         _assets =
         [
@@ -65,7 +66,7 @@ switch (_shopSize) do
             ["Box_NATO_Equip_F", [-3, -2.2, 0.2], 90]
         ];
     };
-    case (SHOP_SIZE_MEDIUM):
+    case (STORE_SIZE_MEDIUM):
     {
         _assets =
         [
@@ -78,7 +79,7 @@ switch (_shopSize) do
             ["Box_NATO_Equip_F", [-3, -2.2, 0.2], 90]
         ];
     };
-    case (SHOP_SIZE_LARGE):
+    case (STORE_SIZE_LARGE):
     {
         _assets =
         [
@@ -279,8 +280,6 @@ private _fnc_spawnItem =
     _object;
 };
 
-Info_1("Started spawn of shop on %1", _marker);
-
 private _allObjects = [];
 
 private _garageRight = vectorDir _garage;
@@ -312,7 +311,7 @@ private _slots = [];
     };
 } forEach _assets;
 
-Info("Assets spawned in!");
+Info_1("Assets spawned in for store in %1", _marker);
 
 private _chooseArray = [3, 8, 1, 3, 6, 6, 5, 7, 1, 6, 4, 3];
 private _alreadySelected = [];
@@ -334,6 +333,31 @@ private _selectedItems = [];
     };
     _selectedItems pushBack [_itemType, _item];
 } forEach _slots;
+server setVariable [format ["%1_storeObjects", _marker], _allObjects];
+
+if(!(_garage getVariable ["storeEventHandlerDone", false])) then
+{
+    _garage setVariable ["storeMarker", _marker];
+    _garage addEventhandler
+    [
+        "Killed",
+        {
+            params ["_garage"];
+            private _marker = _garage getVariable ["storeMarker", ""];
+            private _objects = server getVariable [format ["%1_storeObjects", _marker], []];
+            {
+                deleteVehicle _x;
+            } forEach _objects;
+            _garage removeEventHandler ["Killed", _thisEventHandler];
+            _garage setVariable ["storeEventHandlerDone", nil];
+            //Activates a cooldown of 30 minutes
+            server setVariable [format ["%1_storeCooldown", _marker], time + 1800];
+            Info_1("Store in %1 destroyed, setting 30 minutes countdown", _marker);
+        }
+    ];
+    _garage setVariable ["storeEventHandlerDone", true];
+    Info_1("EventHandler for store in %1 set", _marker);
+};
 
 
 
@@ -344,5 +368,5 @@ private _selectedItems = [];
     {
         deleteVehicle _x;
     } forEach _allObjects;
-    Info_1("Shop despawned on %1", _marker);
+    Info_1("Store despawned on %1", _marker);
 };

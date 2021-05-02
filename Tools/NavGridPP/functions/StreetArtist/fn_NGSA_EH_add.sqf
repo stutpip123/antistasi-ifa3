@@ -47,7 +47,8 @@ A3A_NGSA_DIKToKeyName = createHashMapFromArray [
     [DIK_F,"f"],
     [DIK_H,"h"],
     [DIK_R,"r"],
-    [DIK_S,"s"]
+    [DIK_S,"s"],
+    [DIK_V,"v"]
 ];
 A3A_NGSA_depressedKeysHM = createHashMap;    // Will always be sorted, this allows direct array comparison
 
@@ -105,10 +106,11 @@ private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
 
 private _missionEH_keyDown = _gameWindow displayAddEventHandler ["KeyDown", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
+    private _return = false;
     if !(A3A_NGSA_depressedKeysHM set [A3A_NGSA_DIKToKeyName getOrDefault [_key,_key],[_shift, _ctrl, _alt]]) then {
-        _this call A3A_fnc_NGSA_onKeyDown;   // Only fires on new keys.
+        _return = _this call A3A_fnc_NGSA_onKeyDown;   // Only fires on new keys.
     };
-    nil;
+    _return;
 }];
 private _missionEH_keyUp = _gameWindow displayAddEventHandler ["KeyUp", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];

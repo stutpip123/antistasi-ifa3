@@ -32,7 +32,7 @@ private _select = {
     A3A_NGSA_modeConnect_selectedExists = true;
 
     A3A_NGSA_UI_marker1_pos = A3A_NGSA_modeConnect_selectedNode#0;
-    A3A_NGSA_UI_marker1_name setMarkerPos A3A_NGSA_UI_marker1_pos; // Broadcasts here
+    A3A_NGSA_UI_marker1_name setMarkerPos A3A_NGSA_UI_marker1_pos; // Broadcasts marker attributes here
 };
 
 switch (true) do {       // Broadcast here.

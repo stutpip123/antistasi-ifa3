@@ -30,11 +30,11 @@ private _allPositions = ([_navGridPosRegionHM,_worldPos,A3A_NGSA_brushSelectionR
 
 switch (true) do {
     case (_alt): {
+        private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
         {
             [_navGridHM,_x] call A3A_fnc_NGSA_node_disconnect;
             [_navGridHM,_navGridPosRegionHM,_x] call A3A_fnc_NGSA_pos_rem;    // Island ID will not be accurate.
 
-            private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
             private _name = "A3A_NG_Dot_"+str _x;
             deleteMarker _name;
             _markerStructs deleteAt _name;

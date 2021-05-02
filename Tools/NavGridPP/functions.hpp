@@ -32,7 +32,6 @@ class A3A {
         class NGSA_action_autoRefresh {};
         class NGSA_action_refresh {};
         class NGSA_action_save {};
-        class NGSA_action_showHelp {};
         class NGSA_click_modeConnect {};
         class NGSA_click_modeBrush {};
         class NGSA_EH_add {};

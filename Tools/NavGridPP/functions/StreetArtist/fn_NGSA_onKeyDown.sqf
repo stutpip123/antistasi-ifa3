@@ -29,14 +29,11 @@ if (!visibleMap) exitWith {};
 // Non-cancelling/conflicting items
 
 if ("f" in A3A_NGSA_depressedKeysHM) then {
-    A3A_NGSA_clickModeEnum = ((A3A_NGSA_clickModeEnum + 1) mod (3)) max 1;  // 1 or 2
+    A3A_NGSA_clickModeEnum = ((A3A_NGSA_clickModeEnum + 1) mod 3) max 1;  // 1 or 2
     A3A_NGSA_toolModeChanged = true;
 };
 if ("c" in A3A_NGSA_depressedKeysHM) then {
-    A3A_NGSA_modeConnect_roadTypeEnum = (A3A_NGSA_modeConnect_roadTypeEnum + 1) mod (3); // 0, 1 ,2
-};
-if ("h" in A3A_NGSA_depressedKeysHM) then {
-    call A3A_fnc_NGSA_action_showHelp;
+    A3A_NGSA_modeConnect_roadTypeEnum = (A3A_NGSA_modeConnect_roadTypeEnum + 1) mod 3; // 0, 1 ,2
 };
 
 switch (true) do {

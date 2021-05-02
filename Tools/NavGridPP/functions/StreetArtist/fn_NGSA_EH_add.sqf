@@ -118,6 +118,4 @@ private _missionEH_keyUp = _gameWindow displayAddEventHandler ["KeyUp", {
 [localNamespace,"A3A_NGPP","missionEH_keyDown",_missionEH_keyDown] call Col_fnc_nestLoc_set;
 [localNamespace,"A3A_NGPP","missionEH_keyUp",_missionEH_keyUp] call Col_fnc_nestLoc_set;
 
-call A3A_fnc_NGSA_action_showHelp;
-
 true;

@@ -23,7 +23,7 @@ HASHMAP<          NavFlatHM
     <SCALAR>          Island ID.
     <BOOLEAN>         isJunction.
     <ARRAY<           Connections:
-      <POS2D>         Connected road position.
+      <POS2D>           Connected road position.
       <SCALAR>          Road type Enumeration. {TRACK = 0; ROAD = 1; MAIN ROAD = 2} at time of writing.
       <SCALAR>          True driving distance to connection, includes distance of roads swallowed in simplification.
     >>

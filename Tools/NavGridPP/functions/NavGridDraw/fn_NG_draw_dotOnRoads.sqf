@@ -32,12 +32,27 @@ params [
 //    ["_posRegionHMelection",[],[ [] ]],
     ["_dot_size",0.8,[ 0 ]]
 ];
-
 //private _useposRegionHM = ! isNil{_posRegionHM};
 
 private _markerStructs_old = [localNamespace,"A3A_NGPP","draw","markers_road", createHashMap] call Col_fnc_nestLoc_get;
 private _markerStructs_new = createHashMap;
 [localNamespace,"A3A_NGPP","draw","markers_road",_markerStructs_new] call Col_fnc_nestLoc_set;
+
+private _specialColouring = [localNamespace,"A3A_NGPP","draw","specialColouring", "none"] call Col_fnc_nestLoc_get;
+private _colourDelegate = switch (_specialColouring) do {
+    case "islandID": {  // select by island ID
+        {A3A_NGSA_const_allMarkerColours # ((_struct #1) mod A3A_NGSA_const_allMarkerColoursCount)};
+    };
+    case "islandIDDeadEnd": {  // select by island ID
+        {
+            if (count (_struct#3) < 2) exitWith {A3A_NGSA_const_markerColourHighLight}; // MarkDeadEnds or islands
+            A3A_NGSA_const_allMarkerColours # ((_struct #1) mod A3A_NGSA_const_allMarkerColoursCount);
+        };
+    };
+    default { // none
+       {_const_countColours getOrDefault [count (_struct#3) ,"ColorBlue"]};
+    };
+};
 
 if (_dot_size > 0) then {
     private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
@@ -57,7 +72,7 @@ if (_dot_size > 0) then {
             _name setMarkerTypeLocal "mil_dot";
         };
         _name setMarkerSizeLocal _const_dot_size;
-        _name setMarkerColor (_const_countColours getOrDefault [count (_struct#3) ,"ColorBlue"]);
+        _name setMarkerColor call _colourDelegate;
         //};
     } forEach _navGridHM;
 };

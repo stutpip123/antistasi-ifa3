@@ -19,13 +19,13 @@ Example:
 */
 
 private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
-if (A3A_NGSA_autoRefresh_busy) exitWith {};
-A3A_NGSA_autoRefresh_busy = true;
+if (A3A_NGSA_refresh_busy) exitWith {};
+A3A_NGSA_refresh_busy = true;
 [_navGridHM] spawn {
     params ["_navGridHM"];
     isNil {_navGridHM call A3A_fnc_NGSA_navGridHM_refresh_islandID;};   // Run before any further changes occur.
     [_navGridHM,A3A_NGSA_dotBaseSize] call A3A_fnc_NG_draw_islands;
 
-    A3A_NGSA_autoRefresh_busy = false;
+    A3A_NGSA_refresh_busy = false;
 }
 

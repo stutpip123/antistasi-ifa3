@@ -44,7 +44,6 @@ private _fnc_diag_report = {
     _hintData call A3A_fnc_customHint;
     _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
 };
-
 private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
 private _diag_totalSegments = count _navGridHM;
 
@@ -56,6 +55,19 @@ private _markers_old_distance = [localNamespace,"A3A_NGPP","draw","markers_conne
 private _markers_new_distance = createHashMap;
 [localNamespace,"A3A_NGPP","draw","markers_connectionText", _markers_new_distance] call Col_fnc_nestLoc_set;
 
+private _specialColouring = [localNamespace,"A3A_NGPP","draw","specialColouring", "none"] call Col_fnc_nestLoc_get;
+private _colourDelegate = switch (_specialColouring) do {
+    case "islandID": {  // select by island ID
+        {A3A_NGSA_const_allMarkerColours # ((_myStruct #1) mod A3A_NGSA_const_allMarkerColoursCount)};
+    };
+    case "islandIDDeadEnd": {  // select by island ID, no dead end marking involved
+        {A3A_NGSA_const_allMarkerColours # ((_myStruct #1) mod A3A_NGSA_const_allMarkerColoursCount)};
+    };
+    default { // none
+       {_const_roadColourClassification #(_x#1)};
+    };
+};
+
 if (_line_size > 0 || _drawDistance) then {
     private _processedMidPoints = createHashMap;
 
@@ -66,6 +78,7 @@ if (_line_size > 0 || _drawDistance) then {
         };
 
         private _myPos = _x;
+        private _myStruct = _navGridHM get _x;
         {
             private _otherPos = _x#0;
             private _midPoint = _myPos vectorAdd _otherPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
@@ -74,18 +87,13 @@ if (_line_size > 0 || _drawDistance) then {
                 _processedMidPoints set [_midPoint,true];
                 //if !(_midPoint inArea [[43000,41000],5000,5000,0,true]) exitWith {};
 
-                private _colour = _const_roadColourClassification #(_x#1);
-                if (isNil {_colour}) then {
-                    _colour = "ColourBlack";
-                    ["Error, could not get colour for roadType " + str (_x#1) + " at " + str _midPoint] call _fnc_diag_report;
-                };
                 if (_line_size > 0) then {
                     private _name = "A3A_NG_Line_"+str _midPoint;
                     private _exists = _name in _markers_old_line;
                     _markers_old_line deleteAt _name;
                     _markers_new_line set [_name,true];
 
-                    [_name,_exists,_myPos,_otherPos,_colour,_line_size,_line_brush] call A3A_fnc_NG_draw_line;
+                    [_name,_exists,_myPos,_otherPos,call _colourDelegate,_line_size,_line_brush] call A3A_fnc_NG_draw_line;
                 };
 
                 private _realDistance = _x#2;
@@ -95,11 +103,10 @@ if (_line_size > 0 || _drawDistance) then {
                     _markers_old_distance deleteAt _name;
                     _markers_new_distance set [_name,true];
 
-                    [_name,_exists,_midPoint,_colour,(_realDistance toFixed 0) + "m"] call A3A_fnc_NG_draw_text;
+                    [_name,_exists,_midPoint,call _colourDelegate,(_realDistance toFixed 0) + "m"] call A3A_fnc_NG_draw_text;
                 };
             };
-
-        } forEach ( (_navGridHM get _x) #3);
+        } forEach (_myStruct #3);
     } forEach keys _navGridHM;
 };
 {

@@ -69,9 +69,10 @@ if (A3A_NGSA_toolModeChanged) then {
         "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Node Connections</t><br/>"+   // The titles use a special space for the underlining to work.
         "Black:0  Red:1  Orange:2  Yellow:3  Green:4  Blue:5+<br/>"+
         "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>General</t><br/>"+
-        "<t color='#f0d498'>'C'</t>-Cycle connection type.<br/>"+
         "<t color='#f0d498'>'F'</t>-Cycle tool<br/>"+
         "<t color='#f0d498'>'ctrl'+'S'</t>-Export changes<br/>"+
+        "<t color='#f0d498'>'ctrl'+'D'</t>-Cycle Island Colour Division.<br/>"+
+        "<t color='#f0d498'>'ctrl'+'R'</t>-Refresh Markers<br/>"+
         "</t>",
         true
     ] call A3A_fnc_customHint;

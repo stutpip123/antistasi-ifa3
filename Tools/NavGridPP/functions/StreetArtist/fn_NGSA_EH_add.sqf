@@ -44,6 +44,7 @@ A3A_NGSA_DIKToKeyName = createHashMapFromArray [
     [DIK_LALT,"alt"],
     [DIK_RALT,"alt"],
     [DIK_C,"c"],
+    [DIK_D,"d"],
     [DIK_F,"f"],
     [DIK_H,"h"],
     [DIK_R,"r"],
@@ -78,7 +79,7 @@ A3A_NGSA_modeConnect_lineName = "A3A_NGSA_UI_modeConnect_line";
 createMarkerLocal [A3A_NGSA_modeConnect_lineName,[0,0]];
 
 A3A_NGSA_modeBrush_recentDeletion = false;
-A3A_NGSA_autoRefresh_busy = false;
+A3A_NGSA_refresh_busy = false;
 
 private _mapEH_mouseDown = _map displayAddEventHandler ["MouseButtonDown", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];

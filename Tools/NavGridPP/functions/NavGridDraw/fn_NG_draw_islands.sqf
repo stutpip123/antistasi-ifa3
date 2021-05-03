@@ -25,6 +25,19 @@ private _markerStructs_old = [localNamespace,"A3A_NGPP","draw","markers_island",
 private _markerStructs_new = createHashMap;
 [localNamespace,"A3A_NGPP","draw","markers_island",_markerStructs_new] call Col_fnc_nestLoc_set;
 
+private _specialColouring = [localNamespace,"A3A_NGPP","draw","specialColouring", "none"] call Col_fnc_nestLoc_get;
+private _colourDelegate = switch (_specialColouring) do {
+    case "islandID": {  // select by island ID
+        {A3A_NGSA_const_allMarkerColours # (_islandID mod A3A_NGSA_const_allMarkerColoursCount)};
+    };
+    case "islandIDDeadEnd": {  // select by island ID, no dead end for island marking.
+        {A3A_NGSA_const_allMarkerColours # (_islandID mod A3A_NGSA_const_allMarkerColoursCount)};
+    };
+    default { // none
+       {"colorCivilian"};
+    };
+};
+
 if (_islandDot_size > 0) then {
     private _const_islandDot_size = [_islandDot_size, _islandDot_size];
     private _islandIDs = createHashMap;
@@ -44,7 +57,7 @@ if (_islandDot_size > 0) then {
             };
             _islandName setMarkerTypeLocal "mil_flag";
             _islandName setMarkerTextLocal ("Island <" + str _islandID +">");
-            _islandName setMarkerColor "colorCivilian";
+            _islandName setMarkerColor call _colourDelegate;
             _islandName setMarkerSizeLocal _const_islandDot_size;
             _islandName setMarkerPos _x;
         };

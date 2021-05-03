@@ -1,4 +1,4 @@
-See Please Read Me.md for starting up the editor.
+See `Please Read Me.md` for starting up the editor.
 
 # Connection Tool<br/>
 'click'-Select &amp; connect roads<br/>
@@ -24,7 +24,13 @@ Black: 0  Red: 1  Orange: 2  Yellow: 3  Green: 4  Blue: 5+
 'C'-Cycle connection type.<br/>
 'F'-Cycle tool<br/>
 'ctrl'+'S'-Export changes<br/>
+'ctrl'+'D'-Cycle Island Colour Division.<br/>
+'ctrl'+'R'-Refresh Markers<br/>
 
+# Colour Divisions<br/>
+'none'-Road by type, Nodes by connections.<br/>
+'islandID'-Road &amp; Nodes by islandID.<br/>
+'islandIDDeadEnd'-islandID with red dead ends.<br/>
 
 # GIFs
 Street Artist- Set Road Types<br/>
@@ -37,3 +43,5 @@ Street Artist- Deletion brush<br/>
 ![Street Artist- Deletion brush](https://media.giphy.com/media/EYPzlX5Q1pIg5eU9qL/giphy.gif)<br/>
 Street Artist- Re Route Roads<br/>
 ![Street Artist- Re Route Roads](https://media.giphy.com/media/KAtVRE2XGuXlRrdANi/giphy.gif)<br/>
+Street Artist- Change Colour Division Mode<br/>
+![Street Artist- Change Colour Division Mode](https://media.giphy.com/media/BpBRHPPRoMP9n9V0lH/giphy.gif)<br/>

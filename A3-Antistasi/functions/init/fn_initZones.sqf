@@ -7,8 +7,9 @@
 //deletion of a marker in the array will require deletion of the corresponding marker in the editor
 //only touch the commented arrays
 scriptName "initZones.sqf";
-private _fileName = "initZones.sqf";
-[2,"initZones started",_fileName] call A3A_fnc_log;
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
+Info("initZones started");
 
 forcedSpawn = [];
 citiesX = [];
@@ -41,20 +42,20 @@ if ((toLower worldName) in ["altis", "chernarus_summer"]) then {
 	};
 };  //this only for Altis and Cherno
 if (debug) then {
-	diag_log format ["%1: [Antistasi] | DEBUG | initZones | Setting Spawn Points for %2.", servertime, worldname];
+    Debug_1("Setting Spawn Points for %1.", worldname);
 };
 //We're doing it this way, because Dedicated servers world name changes case, depending on how the file is named.
 //And weirdly, == is not case sensitive.
 //this comments has not an information about the code
 
-(seaMarkers + seaSpawn + seaAttackSpawn + spawnPoints + detectionAreas + islands) apply {_x setMarkerAlpha 0};
+(seaMarkers + seaSpawn + seaAttackSpawn + spawnPoints + detectionAreas) apply {_x setMarkerAlpha 0};
 defaultControlIndex = (count controlsX) - 1;
 outpostsFIA = [];
 destroyedSites = [];
 garrison setVariable ["Synd_HQ", [], true];
 markersX = airportsX + resourcesX + factories + outposts + seaports + controlsX + ["Synd_HQ"];
 if (debug) then {
-	diag_log format ["%1: [Antistasi] | DEBUG | initZones | Building roads for %2.",servertime,worldname];
+    Debug_1("Building roads for %1.",worldname);
 };
 markersX apply {
 	_x setMarkerAlpha 0;
@@ -132,32 +133,15 @@ configClasses (configfile >> "CfgWorlds" >> worldName >> "Names") apply {
 	_sizeY = getNumber (_x >> "radiusB");
 	_size = [_sizeY, _sizeX] select (_sizeX > _sizeY);
 	_pos = getArray (_x >> "position");
-	_size = [_size, 400] select (_size < 400);		// Different from generateRoadsDB. Maybe not good.
-	_roads = [];
+	_size = [_size, 400] select (_size < 400);
 	_numCiv = 0;
-
-	_roads = roadsX getVariable [_nameX, []];
-	if (count _roads == 0) then
-	{
-		[2, format ["No roads found for marker %1, generating...", _nameX], _fileName] call A3A_fnc_log;
-		_roadsProv = _pos nearRoads _size;
-		_roadsProv apply
-		{
-			_roadcon = roadsConnectedto _x;
-			if (count _roadcon == 2) then
-			{
-				_roads pushBack (getPosATL _x);
-			};
-		};
-		roadsX setVariable [_nameX, _roads, true];
-	};
 
 	if (_hardcodedPop) then
 	{
 		_numCiv = server getVariable _nameX;
 		if (isNil "_numCiv" || {!(_numCiv isEqualType 0)}) then
 		{
-			[1, format ["Bad population count data for %1", _nameX], _fileName] call A3A_fnc_log;
+            Error_1("Bad population count data for %1", _nameX);
 			_numCiv = (count (nearestObjects [_pos, ["house"], _size]));
 		};
 	}
@@ -165,15 +149,12 @@ configClasses (configfile >> "CfgWorlds" >> worldName >> "Names") apply {
 		_numCiv = (count (nearestObjects [_pos, ["house"], _size]));
 	};
 
-	_numVeh = round (_numCiv / 3);
-	_nroads = count _roads;
-	if(_nroads > 0) then
-	{
-		//Fixed issue with a town on tembledan having no roads
-		_nearRoadsFinalSorted = [_roads, [], { _pos distance _x }, "ASCEND"] call BIS_fnc_sortBy;
-		_pos = _nearRoadsFinalSorted select 0;
+	_roads = nearestTerrainObjects [_pos, ["MAIN ROAD", "ROAD", "TRACK"], _size, true, true];
+	if (count _roads > 0) then {
+		// Move marker position to the nearest road, if any
+		_pos = _roads select 0;
 	};
-	if (_nroads < _numVeh) then {_numVeh = _nroads};
+	_numVeh = (count _roads) min (_numCiv / 3);
 
 	_mrk = createmarker [format ["%1", _nameX], _pos];
 	_mrk setMarkerSize [_size, _size];
@@ -194,7 +175,7 @@ configClasses (configfile >> "CfgWorlds" >> worldName >> "Names") apply {
 	server setVariable [_nameX, _info, true];
 };	//find in congigs faster then find location in 25000 radius
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Roads built in %2.",servertime,worldname];
+    Debug_1("Roads built in %1.", worldName);
 };
 
 
@@ -211,7 +192,7 @@ private _blacklistPos = [];
 private _posBank = [];
 private ["_antenna", "_mrkFinal", "_antennaProv"];
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Setting up Radio Towers.",servertime];
+    Debug("Setting up Radio Towers.");
 };
 
 // Land_A_TVTower_base can't be destroyed, Land_Communication_F and Land_Vysilac_FM are not replaced with "Ruins" when destroyed.
@@ -301,6 +282,16 @@ switch (toLower worldName) do {
 		_blacklistPos = [];
 		antennas = [];
 	};
+	case "sara": {
+		_posAntennas =
+		[[3142.96,2739.15,0.18647], [8514.74,7996.98,0.0240936], [11464.1,6307.43,-0.0322723], [11885.1,6210.11,-15.4125],
+		[9617.11,9829.03,0], [10214.7,9348.09,0.0702515], [9738.74,9966.7,-0.226944], [10415.5,9761.01,-0.0189056],
+		[12621.4,7490.31,0.1297], [12560.1,8362.11,-0.157566], [13328.6,9055.83,0.350442], [4940.89,15457.6,-0.18277],
+		[12327.2,15031.4,0], [14788,12762.9,-15.4287], [11068.1,16903.5,-0.0132771], [13964.6,15752.9,-15.429],
+		[17263.3,14160.1,-0.1]];
+		_blackListPos = [1, 3, 4, 5, 9, 11, 13, 16, 17];
+		antennas = [];
+	};
 	default {
 		antennas = nearestObjects [[worldSize /2, worldSize/2], ["Land_TTowerBig_1_F", "Land_TTowerBig_2_F", "Land_Communication_F", "Land_Vysilac_FM","Land_A_TVTower_base", "Land_Telek1"], worldSize];
 
@@ -343,8 +334,8 @@ switch (toLower worldName) do {
 	};
 };
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Radio Tower built.", servertime];
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Finding broken Radio Towers.", servertime];
+    Debug("Radio Tower built.");
+    Debug("Finding broken Radio Towers.");
 };
 if (count _posAntennas > 0) then {
 	for "_i" from 0 to (count _posAntennas - 1) do {
@@ -392,7 +383,7 @@ if (count _posAntennas > 0) then {
 	};
 };
 if (debug) then {
-diag_log format ["%1: [Antistasi] | DEBUG | initZones | Broken Radio Towers identified.",servertime];
+	Error("Broken Radio Towers identified.");
 };
 if (count _posBank > 0) then {
 	for "_i" from 0 to (count _posBank - 1) do {
@@ -436,11 +427,9 @@ publicVariable "seaSpawn";
 publicVariable "seaAttackSpawn";
 publicVariable "defaultControlIndex";
 publicVariable "detectionAreas";
-publicVariable "islands";
-publicVariable "roadsMrk";
 
 if (isMultiplayer) then {
 	[petros, "hint","Zones Init Completed"] remoteExec ["A3A_fnc_commsMP", -2]
 };
 
-[2,"initZones completed",_fileName] call A3A_fnc_log;
+Info("initZones completed");

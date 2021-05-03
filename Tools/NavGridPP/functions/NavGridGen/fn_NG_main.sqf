@@ -71,6 +71,7 @@ private _navRoadHM = createHashMapFromArray (_allRoadObjects apply {[str _x,_x]}
     private _road = _navRoadHM get _x;
     private _connections = roadsConnectedTo [_road,true] select {str _x in _navRoadHM};
     if (isNil {_connections}) then {_connections = [];};
+    {if(isNil{_x}) then {["Extraction","Road "+str _road+" at "+getPos _road+" was connected to nil."] call _fnc_diag_report;};} forEach _connections;
     _navRoadHM set [_x,[_road,_connections,_connections apply {_x distance2D _road}]]
 } forEach +(keys _navRoadHM);
 

@@ -3,18 +3,19 @@
 0.  Run Arma 3.
 1.  Make an empty mp-mission on any map (community or official) with just one player.
 2.  Save and close the editor.
-3.  Copy Everything in this folder (includes: /Collections/; /function/; /description.ext; /functions.hpp; /NG_importGUI.hpp)
-4.  Paste into the folder of the mp mission you created. Usually in `C:\Users\User\Documents\Arma 3 - Other Profiles\YOUR_ARMA_NAME\mpmissions\MISSION_NAME.MAP\`
-5.  Start host LAN multiplayer.
-6.  Run and join the mission.
-7.  Press `Esc` on your keyboard to open debug console.
-8.  Paste `[] spawn A3A_fnc_NG_main` into big large debug window.
-9.  Click the button `Local Exec`.
-10. Exit Debug Console, look down, and open map.
-11. Wait for it to start drawing markers.
-12. Open a new file.
-13. Paste into the new file.
-14. Save.
+3.  Locate the folder `A3-Antistasi\Tools\NavGridPP\`.
+4.  Copy Everything in this folder (includes: /Collections/; /functions/; /description.ext; /functions.hpp; /NG_importGUI.hpp)
+5.  Paste into the folder of the mp mission you created. Usually in `C:\Users\User\Documents\Arma 3 - Other Profiles\YOUR_ARMA_NAME\mpmissions\MISSION_NAME.MAP\`
+6.  Start host LAN multiplayer.
+7.  Run and join the mission.
+8.  Press `Esc` on your keyboard to open debug console.
+9.  Paste `[] spawn A3A_fnc_NG_main` into big large debug window.
+10  Click the button `Local Exec`.
+11. Exit Debug Console, look down, and open map.
+12. Wait for it to start drawing markers.
+13. Open a new file.
+14. Paste into the new file.
+15. Save.
 
 <br/>
 <br/>

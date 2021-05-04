@@ -35,7 +35,7 @@ HASHMAP<          NavFlatHM
 _Desired output format saved for A3-Antistasi. navGridDB connections are array indices._<br/>
 ```
 ARRAY<           navGridDB:
-  <POS2D|POSAGL>    Road pos.
+  <POS2D>           Road pos.
   <SCALAR>          Island ID.
   <BOOLEAN>         isJunction.
   <ARRAY<           Connections:

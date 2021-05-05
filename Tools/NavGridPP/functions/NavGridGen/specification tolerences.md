@@ -15,3 +15,6 @@ Yeah, ideally it's a <1m search. Need to check if that's workable.
 FrostB IE8 — 21May04 at 22:31
 However, if you go with the prepossessed route, there will be no tolerances and everything will be exact
 Since then it is a one way process as roads will be identifed by getPos output
+
+And on all of them it is precise. So nearestTerrainObjects [_pos, ["TRACK","ROAD","MAIN ROAD"], 0, false, true] will always work.
+However, all nav grids generated so far have X & Y shifting to try help roadAt. This puts the radius at <4.25m (sqrt (2* 3^2)). So before code that uses nearestTerrainObjects with 0 radius is used, nav grids need to be regenerated.

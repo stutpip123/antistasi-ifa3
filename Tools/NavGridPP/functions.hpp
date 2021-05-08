@@ -14,10 +14,6 @@ class A3A {
         class NG_convert_navGridDB_navGridHM {};
         class NG_convert_navGridHM_navGridDB {};
         class NG_convert_navRoadHM_navGridHM {};
-        class NG_convert_road_DBPosName {};
-        class NG_convert_road_pos {};
-        class NG_convert_DBPosName_road {};
-        class NG_convert_DBStruct_road {};
         class NG_fix_deadEnds {};
         class NG_fix_oneWays {};
         class NG_format_navGridDB {};

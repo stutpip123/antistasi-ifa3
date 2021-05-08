@@ -39,7 +39,7 @@ private _throwAndCrash = false;
             private _otherStruct = _navGrid# (_roadIndexNS getOrDefault [str _x,-1]);
             if !(_myRoad in (_otherStruct#1)) then {
                 _throwAndCrash = true;
-                [1,"Road '"+str _x+"' " + str getPosWorld _x + " has no return connection to '"+str _myRoad+"' " + str getPosWorld _myRoad + ".","fn_NG_check_oneWays"] call A3A_fnc_log;
+                [1,"Road '"+str _x+"' " + str getPos _x + " has no return connection to '"+str _myRoad+"' " + str getPos _myRoad + ".","fn_NG_check_oneWays"] call A3A_fnc_log;
                 ["fn_NG_check_oneWays Error","Please check RPT."] call A3A_fnc_customHint;
             };
         } forEach _myConnections;

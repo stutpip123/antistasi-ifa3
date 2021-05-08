@@ -2,7 +2,7 @@
 # navRoadHM
 _From road extraction and distance application. Used in simplification._<br/>
 ```
-<HASHMAP<         navGrid:
+<HASHMAP<         navRoadHM:
   <STRING>          Road string.
   <
     <OBJECT>          Road

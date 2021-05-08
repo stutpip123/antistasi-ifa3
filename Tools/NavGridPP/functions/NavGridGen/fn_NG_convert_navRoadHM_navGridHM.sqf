@@ -13,7 +13,7 @@ Environment: Scheduled
 Public: Yes
 
 Example:
-    private _navFlatHM = [_navGrid] call A3A_fnc_NG_convert_navGrid_navFlatHM;
+    private _navFlatHM = [_navGrid] call A3A_fnc_NG_convert_navRoadHM_navGridHM;
 */
 params [
     "_navRoadHM"
@@ -35,7 +35,7 @@ private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
 
 ["Creating hashMaps"] call _fnc_diag_render;
 private _nameUnprocessedHM = createHashMapFromArray (keys _navRoadHM apply {[_x,true]});
-private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,((_navRoadHM get _x) #0) call A3A_fnc_NG_convert_road_pos]});
+private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,getPos (_navRoadHM get _x select 0) select A3A_NG_const_pos2DSelect]});
 
 private _fnc_convert_NGStruct_NFStructKV = {
     params ["_NGRoadStruct","_IslandID"];

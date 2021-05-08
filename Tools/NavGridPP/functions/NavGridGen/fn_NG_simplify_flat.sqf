@@ -42,7 +42,7 @@ private _fnc_replaceRoadConnection = {
     private _connectionRoads = _roadStruct#1;
     private _conIndex = _connectionRoads find _oldRoadConnection;
     if (_conIndex == -1) exitWith {
-        [4,"Road '"+str (_roadStruct#0)+"' " + str getPosWorld (_roadStruct#0) + " was not connected to old road '"+str _oldRoadConnection+"' " + str getPosWorld _oldRoadConnection + ".","fn_NG_simplify_flat"] call A3A_fnc_log;
+        [4,"Road '"+str (_roadStruct#0)+"' " + str getPos (_roadStruct#0) + " was not connected to old road '"+str _oldRoadConnection+"' " + str getPos _oldRoadConnection + ".","fn_NG_simplify_flat"] call A3A_fnc_log;
         ["fn_NG_simplify_flat Error","Please check RPT."] call A3A_fnc_customHint;
     };
     _connectionRoads set [_conIndex,_newRoadConnection];
@@ -68,7 +68,7 @@ private _fnc_canSimplify = {
 
     if ((_hypotenuse^2 - _base^2) > _maxDriftSqr) exitWith { false; };
 
-    private _midPoint2D = getPosWorld _leftRoad vectorAdd getPosWorld _rightRoad vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+    private _midPoint2D = getPos _leftRoad vectorAdd getPos _rightRoad vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
     private _nearRoads = (nearestTerrainObjects [_midPoint2D, A3A_NG_const_roadTypeEnum, _base, false, true]) - [_leftRoad,_rightRoad,_middleRoad] - _excludedRoads;
     if (_nearRoads findIf {str _x in _navRoadHM} == -1) exitWith { true; }; // There cannot be any nodes from other roads nearby.
 

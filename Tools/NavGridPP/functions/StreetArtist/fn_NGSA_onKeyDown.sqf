@@ -2,6 +2,7 @@
 Maintainer: Caleb Serafin
     Called by keyDown event handler. Only fires on new keys.
     Calls specific modes.
+    All combinations with alt should have it as the first key.
 
 Arguments:
     <SCALAR> _button
@@ -26,33 +27,35 @@ params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
 
 if (!visibleMap) exitWith {nil};
 
-// Non-cancelling/conflicting items
-private _actionExecuted = false;
 
 if ("f" in A3A_NGSA_depressedKeysHM) then {
     A3A_NGSA_clickModeEnum = ((A3A_NGSA_clickModeEnum + 1) mod 3) max 1;  // 1 or 2
     A3A_NGSA_toolModeChanged = true;
-    _actionExecuted = true;
 };
 if ("c" in A3A_NGSA_depressedKeysHM) then {
     A3A_NGSA_modeConnect_roadTypeEnum = (A3A_NGSA_modeConnect_roadTypeEnum + 1) mod 3; // 0, 1 ,2
-    _actionExecuted = true;
 };
 
+// Non-cancelling/conflicting items
+private _actionExecuted = true;
 switch (true) do {
     case ((A3A_NGSA_depressedKeysHM getOrDefault ["s",[]]) isEqualTo [false,true,false]): {   // ctrl + s
         call A3A_fnc_NGSA_action_save;
-        _actionExecuted = true;
     };
     case ((A3A_NGSA_depressedKeysHM getOrDefault ["r",[]]) isEqualTo [false,true,false]): {   // ctrl + r
         [] spawn A3A_fnc_NGSA_action_refresh;
-        _actionExecuted = true;
     };
     case ((A3A_NGSA_depressedKeysHM getOrDefault ["d",[]]) isEqualTo [false,true,false]): {   // ctrl + d
         switch ([localNamespace,"A3A_NGPP","draw","specialColouring", "none"] call Col_fnc_nestLoc_get) do {
             case "none": {[localNamespace,"A3A_NGPP","draw","specialColouring", "islandID"] call Col_fnc_nestLoc_set;};
             case "islandID": {[localNamespace,"A3A_NGPP","draw","specialColouring", "islandIDDeadEnd"] call Col_fnc_nestLoc_set;};
             default {[localNamespace,"A3A_NGPP","draw","specialColouring", "none"] call Col_fnc_nestLoc_set;};
+        };
+        private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
+        if (count _navGridHM <= A3A_NGSA_autoMarkerRefreshNodeMax) then {
+            [true] call A3A_fnc_NGSA_action_refresh;
+        } else {
+
         };
         [
             "Street Artist Help",
@@ -71,8 +74,10 @@ switch (true) do {
             "</t>",
             true
         ] call A3A_fnc_customHint;
-        _actionExecuted = true;
     };
+    default {
+        _actionExecuted = false;
+    }
 };
 
 _actionExecuted;

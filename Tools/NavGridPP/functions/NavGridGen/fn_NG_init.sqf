@@ -33,6 +33,9 @@ A3A_NGSA_autoMarkerRefreshNodeMax = 2000;
 A3A_NGSA_dotBaseSize = 1.2;
 A3A_NGSA_lineBaseSize = 4;
 
+// Used to detect whether the user has returned from an alt-tab.
+A3A_NGSA_LastAltTime = 0;
+
 // All pallets should have at least 2 accents
 //                    Black      Dark Grey    Light Grey     White
 private _greys = ["ColorBlack","Color6_FD_F","ColorGrey","ColorWhite"];

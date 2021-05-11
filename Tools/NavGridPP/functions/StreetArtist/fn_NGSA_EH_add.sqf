@@ -43,8 +43,10 @@ A3A_NGSA_DIKToKeyName = createHashMapFromArray [
     [DIK_RCONTROL,"ctrl"],
     [DIK_LALT,"alt"],
     [DIK_RALT,"alt"],
+    [DIK_TAB,"tab"],
     [DIK_C,"c"],
     [DIK_D,"d"],
+    [DIK_E,"e"],
     [DIK_F,"f"],
     [DIK_H,"h"],
     [DIK_R,"r"],
@@ -98,6 +100,12 @@ private _mapEH_mouseUp = _map displayAddEventHandler ["MouseButtonUp", {
 
 
 private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
+    // Alt+Tab checker. Prevents clicks are keys progressing though alt+tab
+    if ("alt" in A3A_NGSA_depressedKeysHM && A3A_NGSA_LastAltTime +1 < serverTime) then {
+        {
+            A3A_NGSA_depressedKeysHM deleteAt _x;
+        } forEach +(keys A3A_NGSA_depressedKeysHM);
+    };
     //params ["_control"];
     call A3A_fnc_NGSA_onUIUpdate;
 }];
@@ -108,6 +116,9 @@ private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
 private _missionEH_keyDown = _gameWindow displayAddEventHandler ["KeyDown", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     private _return = false;
+    if ((A3A_NGSA_DIKToKeyName getOrDefault [_key,"none"]) isEqualTo "alt") then {
+        A3A_NGSA_LastAltTime = serverTime;
+    };
     if !(A3A_NGSA_depressedKeysHM set [A3A_NGSA_DIKToKeyName getOrDefault [_key,_key],[_shift, _ctrl, _alt]]) then {
         _return = _this call A3A_fnc_NGSA_onKeyDown;   // Only fires on new keys.
     };

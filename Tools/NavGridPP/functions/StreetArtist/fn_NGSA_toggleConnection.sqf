@@ -4,8 +4,11 @@ Maintainer: Caleb Serafin
     Will attempt to update marker colour if the marker exists.
 
 Arguments:
-    <<OBJECT>,<ARRAY<OBJECT>>,<ARRAY<SCALAR>>> Road Struct 1
-    <<OBJECT>,<ARRAY<OBJECT>>,<ARRAY<SCALAR>>> Road Struct 2
+    [_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]] Road Struct 1
+    [_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]] Road Struct 2
+    <SCALAR> What connection it should be [MAIN ROAD,ROAD,TRACK].
+    <SCALAR> Override Distance [Default = -1]
+
 
 Return Value:
     <BOOLEAN> true if deleted, false if not found.
@@ -17,17 +20,13 @@ Dependencies:
     <LOCATION> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "posRegionHM")
 
 Example:
-    findDisplay 12 displayAddEventHandler ["MouseButtonDown", {
-        if (!XXX_Slayer_MouseDown) then {
-            XXX_Slayer_MouseDown = true;
-            _this call A3A_fnc_NGSA_onMouseClick;
-        };
-    }];
+    [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
 */
 params [
     ["_leftStruct",[],[ [] ], [4]],
     ["_rightStruct",[],[ [] ], [4]],
-    ["_connectionTypeEnum",0,[ 0 ]]
+    ["_connectionTypeEnum",0,[ 0 ]],
+    ["_distance",-1,[ 0 ]]
 ];
 
 private _leftPos = _leftStruct#0;
@@ -51,7 +50,9 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
     deleteMarker _name;
     _marker_lines deleteAt _name;
 } else {    // If not connected, then connect.
-    private _distance = _leftPos distance2D _rightPos;
+    if (_distance < 0) then {
+        _distance = _leftPos distance2D _rightPos;
+    };
     _leftConnections pushBack [_rightPos,_connectionTypeEnum,_distance];
     _rightConnections pushBack [_leftPos,_connectionTypeEnum,_distance];
 

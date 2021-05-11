@@ -145,7 +145,8 @@ private _diag_totalSegments = count _navRoadHM;
             _connectedJuncStructs = _myConnections
                 select {_myRoad distance2D _x < _juncMergeDistance}                         // Only within small junction proximity
                 apply {_navRoadHM get str _x}                                               // Get their structs
-                select {count (_x#1) > 2};                                                  // Only structs that are junctions
+                select {count (_x#1) > 2}                                                   // Only structs that are junctions
+                select {_x#3 isEqualTo A3A_NG_const_emptyArray};                            // Has forced connection. The roads are exempt from simplification and are resolved in the road to navGrid conversion.
         };
 
         if ((count _connectedJuncStructs) != 0) then {  // At least one other junction to consume

@@ -7,7 +7,7 @@ Arguments:
     <navRoadHM> Modifies Reference
 
 Return Value:
-    <navRoadHM> Same reference to Nav grid with fake dead-ends fixed.
+    <navRoadHM> Same reference to Nav grid with erroneous dead-ends fixed.
 
 Scope: Any, Global Arguments
 Environment: Scheduled
@@ -47,9 +47,11 @@ private _fnc_connectStructAndRoad = {
 
     _myStruct#1 pushBack _otherRoad;    // Original values are modified by reference
     _myStruct#2 pushBack _distance;
+    _myStruct#3 pushBackUnique _otherRoad;// Has forced connection. The roads are exempt from simplification and are resolved in the road to navGrid conversion.
 
     _otherStruct#1 pushBack _myRoad;     // Original values are modified by reference
     _otherStruct#2 pushBack _distance;
+    _otherStruct#3 pushBackUnique _myRoad;// Has forced connection. The roads are exempt from simplification and are resolved in the road to navGrid conversion.
 };
 
 private _fnc_searchAzimuth = {
@@ -57,9 +59,9 @@ private _fnc_searchAzimuth = {
 
     private _testRoad = objNull;
     private _finalRoad = objNull;
-    private _mytPos = getPos _road;
+    private _myPos = getPos _road;
     {
-        _testRoad = roadAt (_mytPos getPos [_x,_azimuth]);
+        _testRoad = roadAt (_myPos getPos [_x,_azimuth]);
         if !(_testRoad isEqualTo _road || {isNil {_navRoadHM get str _testRoad}}) exitWith {_finalRoad = _testRoad};
     } forEach [10,20,30,40];    // Search steps
     _finalRoad;

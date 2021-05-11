@@ -6,8 +6,9 @@ _From road extraction and distance application. Used in simplification._<br/>
   <STRING>          Road string.
   <
     <OBJECT>          Road
-    <ARRAY<OBJECT>>     Connected roads.
-    <ARRAY<SCALAR>>     True driving distance in meters to connected roads.
+    <ARRAY<OBJECT>>   Connected roads.
+    <ARRAY<SCALAR>>   True driving distance in meters to connected roads.
+    <ARRAY<OBJECT>>   Connected roads that have a forced connection. This array will not be in sync with other two arrays. The roads are exempt from simplification and are resolved in the road to navGrid conversion.
   >
 >>
 ```

@@ -36,16 +36,16 @@ private _select = {
 };
 
 switch (true) do {       // Broadcast here.
-    case ("shift" in A3A_NGSA_depressedKeysHM): {
-        A3A_NGSA_modeConnect_targetNode = [_worldPos,0,false,[]];
+    case ("shift" in A3A_NGSA_depressedKeysHM && {!A3A_NGSA_modeConnect_targetExists}): {
+        A3A_NGSA_modeConnect_targetNode = [A3A_NGSA_UI_marker0_pos,0,false,[]];
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
-        [_navGridHM,_navGridPosRegionHM,_worldPos,A3A_NGSA_modeConnect_targetNode] call A3A_fnc_NGSA_pos_add;    // Island ID will not be accurate.
+        [_navGridHM,_navGridPosRegionHM,A3A_NGSA_UI_marker0_pos,A3A_NGSA_modeConnect_targetNode] call A3A_fnc_NGSA_pos_add;    // Island ID will not be accurate.
 
         private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
-        private _name = "A3A_NG_Dot_"+str _worldPos;
+        private _name = "A3A_NG_Dot_"+str A3A_NGSA_UI_marker0_pos;
         if !(_markerStructs set [_name,true]) then {
-            createMarkerLocal [_name,_worldPos];
+            createMarkerLocal [_name,A3A_NGSA_UI_marker0_pos];
         };
         _name setMarkerTypeLocal "mil_dot";
         _name setMarkerSizeLocal [A3A_NGSA_dotBaseSize,A3A_NGSA_dotBaseSize];
@@ -53,6 +53,7 @@ switch (true) do {       // Broadcast here.
 
         if (A3A_NGSA_modeConnect_selectedExists) then {
             [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
+            //[A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,_navGridHM,_navGridPosRegionHM] call A3A_fnc_NGSA_checkFix_forcedConnection;
         };
         call _select;
         call A3A_fnc_NGSA_refreshMarkerOrder;
@@ -75,6 +76,9 @@ switch (true) do {       // Broadcast here.
     case (A3A_NGSA_modeConnect_selectedNode isEqualTo A3A_NGSA_modeConnect_targetNode): _deselect;
     default {
         [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
+        private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
+        private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
+        //[A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,_navGridHM,_navGridPosRegionHM] call A3A_fnc_NGSA_checkFix_forcedConnection;
         call _select;
         call A3A_fnc_NGSA_refreshMarkerOrder;
         call A3A_fnc_NGSA_action_autoRefresh;

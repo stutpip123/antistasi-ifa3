@@ -29,7 +29,7 @@ Example:
 params [
     "_navGridHM",
 //    "_posRegionHM",
-//    ["_posRegionHMelection",[],[ [] ]],
+//    ["_posRegionHMSelection",[],[ [] ]],
     ["_dot_size",0.8,[ 0 ]]
 ];
 //private _useposRegionHM = ! isNil{_posRegionHM};
@@ -45,7 +45,8 @@ private _colourDelegate = switch (_specialColouring) do {
     };
     case "islandIDDeadEnd": {  // select by island ID
         {
-            if (count (_struct#3) < 2) exitWith {A3A_NGSA_const_markerColourHighLight}; // MarkDeadEnds or islands
+            if (count (_struct#3) < 2) exitWith {A3A_NGSA_const_markerColourAccent1}; // MarkDeadEnds or islands
+            if (nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, true] isEqualTo A3A_NG_const_emptyArray) exitWith {A3A_NGSA_const_markerColourAccent2}; // Mark onRoad.
             A3A_NGSA_const_allMarkerColours # ((_struct #1) mod A3A_NGSA_const_allMarkerColoursCount);
         };
     };
@@ -57,19 +58,28 @@ private _colourDelegate = switch (_specialColouring) do {
 if (_dot_size > 0) then {
     private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
     private _const_dot_size = [_dot_size, _dot_size];
+    private _const_dot_types = ["mil_dot","mil_triangle"];
     {
         //if (_x inArea [[43000,41000],5000,5000,0,true]) then {
 
-        private _struct = _navGridHM get _x;
-        private _name = "A3A_NG_Dot_"+str _x;
+        private _pos = _x;
+        private _struct = _navGridHM get _pos;
+        private _name = "A3A_NG_Dot_"+str _pos;
 
         private _exists = _name in _markerStructs_old;
         _markerStructs_old deleteAt _name;
         _markerStructs_new set [_name,true];
 
-        if !(_exists) then {
-            createMarkerLocal [_name,_x];
-            _name setMarkerTypeLocal "mil_dot";
+        private _onRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, true] isEqualTo A3A_NG_const_emptyArray;
+
+        if (_exists && _onRoad) then {
+            deleteMarker _name;
+            _exists = false;
+        };
+
+        if (!_exists) then {
+            createMarkerLocal [_name,_pos];
+            _name setMarkerTypeLocal (_const_dot_types select (_onRoad));   // Draw triangles where there are no roads.
         };
         _name setMarkerSizeLocal _const_dot_size;
         _name setMarkerColor call _colourDelegate;

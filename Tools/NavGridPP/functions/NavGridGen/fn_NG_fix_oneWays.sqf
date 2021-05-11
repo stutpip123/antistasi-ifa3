@@ -34,6 +34,8 @@ params [
 
                 _otherStruct#1 pushBack _myRoad;
                 _otherStruct#2 pushBack (_myRoad distance2D _x);
+                _otherStruct#3 pushBackUnique _myRoad;
+                _myStruct#3 pushBackUnique _x;
             };
         } forEach _myConnections;
     };

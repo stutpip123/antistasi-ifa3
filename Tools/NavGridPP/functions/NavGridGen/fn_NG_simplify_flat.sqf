@@ -108,6 +108,7 @@ private _trySimplify = {
     if !(_name in _navRoadHM) exitWith {};
 
     private _currentStruct = _navRoadHM get _name;
+    if (_currentStruct#3 isNotEqualTo A3A_NG_const_emptyArray) exitWith {};  // Has forced connection. The roads are exempt from simplification and are resolved in the road to navGrid conversion.
     private _myRoad = _currentStruct#0;
     private _connectedRoads = _currentStruct#1;
     if (count _connectedRoads != 2) exitWith {};

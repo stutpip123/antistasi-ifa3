@@ -37,23 +37,33 @@ private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
 private _nameUnprocessedHM = createHashMapFromArray (keys _navRoadHM apply {[_x,true]});
 private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,getPos (_navRoadHM get _x select 0) select A3A_NG_const_pos2DSelect]});
 
+private _additionalNodeHM = createHashMap;  // Used in between forced connections.
+
 private _fnc_convert_NGStruct_NFStructKV = {
-    params ["_NGRoadStruct","_IslandID"];
-    _NGRoadStruct params ["_road","_connectedRoads","_connectedDistances"];
+    params ["_NGRoadStruct","_IslandID","_navFlatHM"];
+    _NGRoadStruct params ["_road","_connectedRoads","_connectedDistances","_forcedConnections"];
 
     private _roadPos = _namePosHM get str _road;
     private _connections = [];
     {
-        private _roadType = A3A_NG_const_roadTypeEnum find (getRoadInfo _road #0);
+        private _roadType = (A3A_NG_const_roadTypeEnum find (getRoadInfo _road #0)) max (A3A_NG_const_roadTypeEnum find (getRoadInfo _x #0));   // Take the best type
+        private _position = _namePosHM get str _x;
+        private _distance = _connectedDistances#_forEachIndex;
         if (_roadType == -1) then {
             _roadType = 0;
             [1,"Road at "+str _roadPos + " had type of following line: (If missing then nil)","fn_NG_convert_navRoadHM_navGridHM"] call A3A_fnc_log;
             [1,"Road at "+str _roadPos + " had getRoadInfo of "+str (getRoadInfo _road),"fn_NG_convert_navRoadHM_navGridHM"] call A3A_fnc_log;
         };
-        _connections pushBack [_namePosHM get str _x, _roadType, _connectedDistances#_forEachIndex];
+        if (_x in _forcedConnections) then {    // Insert a midpoint that has no road assigned.
+            _position = _roadPos vectorAdd _position vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+            _distance = _distance/2;
+
+            _navFlatHM set [_position, [_position,_islandID,false,[ [_roadPos, _roadType, _distance],[_namePosHM get str _x, _roadType, _distance] ]]]; // The midpoint will connect to both roads.
+        };
+        _connections pushBack [_position, _roadType, _distance];
     } forEach _connectedRoads;
 
-    [_roadPos, [_roadPos,_islandID,(count _connectedRoads) > 2,_connections]];
+    _navFlatHM set [_roadPos, [_roadPos,_islandID,(count _connectedRoads) > 2,_connections]];
 };
 
 private _islandID = 0;
@@ -74,7 +84,7 @@ while {count _nameUnprocessedHM != 0} do {
 
         {
             private _struct = _navRoadHM get _x;
-            _navFlatHM set ([_struct,_IslandID] call _fnc_convert_NGStruct_NFStructKV);
+            [_struct,_IslandID,_navFlatHM] call _fnc_convert_NGStruct_NFStructKV;
 
             private _connectedNames = (_struct#1) apply {str _x} select {_nameUnprocessedHM get _x};
             { _nameUnprocessedHM deleteAt _x; } forEach _connectedNames;

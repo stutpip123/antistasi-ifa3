@@ -57,7 +57,7 @@ private _fnc_diag_report = {
 
 uiSleep 0.001;  // Readies the scheduler to avoid a lag spike for the following loop.
 
-["Extraction","Extracting roads"] call _fnc_diag_report;
+["Extraction","Extracting roads on "+worldName] call _fnc_diag_report;
 private _halfWorldSize = worldSize/2;
 private _worldCentre = [_halfWorldSize,_halfWorldSize];
 private _worldMaxRadius = sqrt(0.5 * (worldSize^2));
@@ -72,7 +72,7 @@ private _navRoadHM = createHashMapFromArray (_allRoadObjects apply {[str _x,_x]}
     private _connections = roadsConnectedTo [_road,true] select {str _x in _navRoadHM};
     if (isNil {_connections}) then {_connections = [];};
     {if(isNil{_x}) then {["Extraction","Road "+str _road+" at "+getPos _road+" was connected to nil."] call _fnc_diag_report;};} forEach _connections;
-    _navRoadHM set [_x,[_road,_connections,_connections apply {_x distance2D _road}]]
+    _navRoadHM set [_x,[_road,_connections,_connections apply {_x distance2D _road},[]]]
 } forEach +(keys _navRoadHM);
 
 

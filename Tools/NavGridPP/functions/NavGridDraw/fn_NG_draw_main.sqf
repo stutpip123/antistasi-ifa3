@@ -44,11 +44,7 @@ if (isNil {
 }) exitWith {};
 [localNamespace,"A3A_NGPP","draw","busy", true] call Col_fnc_nestLoc_set;
 
-// 26 All marker Colours (except "ColorBlack","ColorRed")
 if (isNil {A3A_NGSA_const_allMarkerColours}) then {
-    A3A_NGSA_const_allMarkerColours = ["ColorKhaki","ColorBlue","ColorWhite","ColorGrey","ColorOrange","ColorGreen","ColorYellow","ColorPink","ColorBrown","ColorWEST","ColorEAST","ColorGUER","ColorCIV","ColorUNKNOWN","colorBLUFOR","colorOPFOR","colorIndependent","colorCivilian","Color1_FD_F","Color2_FD_F","Color3_FD_F","Color4_FD_F","Color5_FD_F","Color6_FD_F"];
-    A3A_NGSA_const_allMarkerColoursCount = count A3A_NGSA_const_allMarkerColours;
-    A3A_NGSA_const_markerColourHighLight = "ColorRed";
 };
 
 private _fnc_diag_report = {

@@ -30,7 +30,7 @@ params [
     "_navGridHM",
 //    "_posRegionHM",
 //    ["_posRegionHMSelection",[],[ [] ]],
-    ["_dot_size",0.8,[ 0 ]]
+    ["_dot_size",A3A_NGSA_dotBaseSize,[ 0 ]]
 ];
 //private _useposRegionHM = ! isNil{_posRegionHM};
 
@@ -46,7 +46,6 @@ private _colourDelegate = switch (_specialColouring) do {
     case "islandIDDeadEnd": {  // select by island ID
         {
             if (count (_struct#3) < 2) exitWith {A3A_NGSA_const_markerColourAccent1}; // MarkDeadEnds or islands
-            if (nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, true] isEqualTo A3A_NG_const_emptyArray) exitWith {A3A_NGSA_const_markerColourAccent2}; // Mark onRoad.
             A3A_NGSA_const_allMarkerColours # ((_struct #1) mod A3A_NGSA_const_allMarkerColoursCount);
         };
     };
@@ -72,7 +71,7 @@ if (_dot_size > 0) then {
 
         private _onRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, true] isEqualTo A3A_NG_const_emptyArray;
 
-        if (_exists && _onRoad) then {
+        if (_exists && _onRoad) then {  // Makes sure that the marker is on top when redrawn.
             deleteMarker _name;
             _exists = false;
         };

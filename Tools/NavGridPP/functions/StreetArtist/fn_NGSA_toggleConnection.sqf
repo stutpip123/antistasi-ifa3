@@ -35,8 +35,6 @@ private _rightPos = _rightStruct#0;
 private _leftConnections = _leftStruct#3;
 private _rightConnections = _rightStruct#3;
 
-private _marker_lines = [localNamespace,"A3A_NGPP","draw","markers_connectionLine",[]] call Col_fnc_nestLoc_get;    // Prefixed with NGPP_line_ + (_myName + _otherName) (we will exclude distance)
-
 private _midPoint = _leftPos vectorAdd _rightPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
 private _name = "A3A_NG_Line_"+str _midPoint;
 
@@ -47,8 +45,7 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
     private _leftInRight = _rightConnections findIf {(_x#0) isEqualTo _leftPos};
     _rightConnections deleteAt _leftInRight;
 
-    deleteMarker _name;
-    _marker_lines deleteAt _name;
+    [_leftStruct,_rightStruct,0] call A3A_fnc_NG_draw_connection;
 } else {    // If not connected, then connect.
     if (_distance < 0) then {
         _distance = _leftPos distance2D _rightPos;
@@ -56,19 +53,9 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
     _leftConnections pushBack [_rightPos,_connectionTypeEnum,_distance];
     _rightConnections pushBack [_leftPos,_connectionTypeEnum,_distance];
 
-    private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
-    private _colour = _const_roadColourClassification #_connectionTypeEnum;
-    _marker_lines set [_name,true];
-    [_name,false,_leftPos,_rightPos,_colour,4,"Solid"] call A3A_fnc_NG_draw_line;
+    [_leftStruct,_rightStruct] call A3A_fnc_NG_draw_connection;
 };
 
-private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get; // Refresh marker junction colour
-if !(_markerStructs isEqualType 0) then {
-    private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
-    {
-        private _name = "A3A_NG_Dot_"+str (_x#0);
-        if (_name in _markerStructs) then {
-            _name setMarkerColor (_const_countColours getOrDefault [count (_x#3) ,"ColorBlue"]);
-        };
-    } forEach [_leftStruct,_rightStruct];
-};
+// Refresh marker junction colour
+[_leftStruct] call A3A_fnc_NG_draw_dot;
+[_rightStruct] call A3A_fnc_NG_draw_dot;

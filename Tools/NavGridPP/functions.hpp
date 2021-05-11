@@ -1,6 +1,8 @@
 class A3A {
     class NavGridDraw {
+        class NG_draw_connection {};
         class NG_draw_deleteAll {};
+        class NG_draw_dot {};
         class NG_draw_dotOnRoads {};
         class NG_draw_islands {};
         class NG_draw_line {};

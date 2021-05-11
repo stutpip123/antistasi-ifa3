@@ -42,14 +42,7 @@ switch (true) do {       // Broadcast here.
         private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
         [_navGridHM,_navGridPosRegionHM,A3A_NGSA_UI_marker0_pos,A3A_NGSA_modeConnect_targetNode] call A3A_fnc_NGSA_pos_add;    // Island ID will not be accurate.
 
-        private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", 0] call Col_fnc_nestLoc_get;
-        private _name = "A3A_NG_Dot_"+str A3A_NGSA_UI_marker0_pos;
-        if !(_markerStructs set [_name,true]) then {
-            createMarkerLocal [_name,A3A_NGSA_UI_marker0_pos];
-        };
-        _name setMarkerTypeLocal "mil_dot";
-        _name setMarkerSizeLocal [A3A_NGSA_dotBaseSize,A3A_NGSA_dotBaseSize];
-        _name setMarkerColor "ColorBlack";
+        [A3A_NGSA_modeConnect_targetNode] call A3A_fnc_NG_draw_dot;
 
         if (A3A_NGSA_modeConnect_selectedExists) then {
             [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;

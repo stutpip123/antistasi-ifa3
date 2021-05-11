@@ -28,11 +28,11 @@ Example:
     [] spawn A3A_fnc_NG_import;
 */
 params [
-    ["_line_size",4,[ 0 ]],
+    ["_line_size",A3A_NGSA_lineBaseSize,[ 0 ]],
     ["_line_opaque",false,[ false ]],
     ["_drawDistance",false,[ false ]],
-    ["_dot_size",0.8,[ 0 ]],
-    ["_islandDot_size",0.8,[ 0 ]]
+    ["_dot_size",A3A_NGSA_dotBaseSize,[ 0 ]],
+    ["_islandDot_size",A3A_NGSA_dotBaseSize,[ 0 ]]
 ];
 
 if (!canSuspend) exitWith {

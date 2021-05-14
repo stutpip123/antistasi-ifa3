@@ -13,6 +13,8 @@ Return Value:
 Scope:Any, Local Arguments, Global Effect
 Environment: Scheduled
 Public: Yes
+Dependencies:
+    <SCALAR> A3A_NGSA_modeConnect_roadTypeEnum
 
 Example:
     [_left,_right] call A3A_fnc_NG_draw_connection;
@@ -20,6 +22,7 @@ Example:
 params [
     "_leftStruct",
     "_rightStruct",
+    ["_roadTypeEnum",A3A_NGSA_modeConnect_roadTypeEnum,[0]],
     ["_thickness",A3A_NGSA_lineBaseSize,[0]]
 ];
 
@@ -46,7 +49,7 @@ if (_thickness > 0) then {
             A3A_NGSA_const_allMarkerColours # ((_leftStruct #1) mod A3A_NGSA_const_allMarkerColoursCount);
         };
         default { // none
-            _const_roadColourClassification #(_leftStruct #1);
+            _const_roadColourClassification #_roadTypeEnum;
         };
     };
 

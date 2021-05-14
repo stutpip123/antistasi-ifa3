@@ -12,12 +12,14 @@ Return Value:
 Scope: Any
 Environment: Any
 Public: No
+Dependencies:
+    <HASHMAP> A3A_NG_const_hashMap
 
 Example:
     [_navGridHM,_posRegionHM,_pos] call A3A_fnc_NGSA_node_disconnect;
 */
 params [
-    "_navGridHM",
+    ["_navGridHM",0,[A3A_NG_const_hashMap]],
     ["_pos",[],[ [] ],[2]]
 ];
 

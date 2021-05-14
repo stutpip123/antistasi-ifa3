@@ -8,17 +8,19 @@ Arguments:
     <POS2D> map position.
 
 Return Value:
-    <POS2D> Pos of closest navGridHM element If Found   |  <ARRAY> Empty array if not found.
+    ARRAY<POS2D> Array of nearby nodes.
 
 Scope: Any
 Environment: Any.
 Public: Yes
+Dependencies:
+    <HASHMAP> A3A_NG_const_hashMap
 
 Example:
     [_posRegionHM,_pos] call A3A_fnc_NGSA_posRegionHM_allAdjacent.
 */
 params [
-    "_posRegionHM",
+    ["_posRegionHM",0,[A3A_NG_const_hashMap]],
     "_pos"
 ];
 

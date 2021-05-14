@@ -20,7 +20,7 @@ if (!canSuspend) exitWith {
 
 private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
 if (_navGridHM isEqualType 0) then {
-    _navGridHM = (call A3A_fnc_NG_import #1);
+    _navGridHM = (call A3A_fnc_NGSA_import #1);
 };
 
 private _navGridPosRegionHM = [_navGridHM] call A3A_fnc_NGSA_posRegionHM_generate;

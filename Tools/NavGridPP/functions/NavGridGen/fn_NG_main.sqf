@@ -26,7 +26,7 @@ Example:
     [nil,nil,true] spawn A3A_fnc_NG_main;
 
     To avoid regenerating the nev grid for drawing, you can omit A3A_fnc_NG_main after running it once. Or import from clipboard if this is a new map load.
-    [] spawn A3A_fnc_NG_import_clipboard;
+    [] spawn A3A_fnc_NGSA_import_clipboard;
 */
 
 params [

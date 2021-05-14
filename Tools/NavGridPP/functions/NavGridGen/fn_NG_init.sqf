@@ -20,6 +20,9 @@ A3A_NG_const_pos2DSelect = [0,2];
 // Common for empty check
 A3A_NG_const_emptyArray = [];
 
+// Used for type checks
+A3A_NG_const_hashMap = createHashMap;
+
 // Common Enum of road types, Case sensitive
 A3A_NG_const_roadTypeEnum = ["TRACK","ROAD","MAIN ROAD"];
 

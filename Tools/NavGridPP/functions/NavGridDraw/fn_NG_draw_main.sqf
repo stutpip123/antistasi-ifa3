@@ -1,6 +1,6 @@
 /*
 Maintainer: Caleb Serafin
-    Use `[] spawn A3A_fnc_NG_import;` for importing from clipboard.
+    Use `[] spawn A3A_fnc_NGSA_import;` for importing from clipboard.
     Loads navGridHM from localNamespace >> "A3A_NGPP" >> "navGridHM"
     (Re)draws new markers according to user settings.
 
@@ -25,7 +25,7 @@ Example:
     [4,false,false,0.8,1.5] spawn A3A_fnc_NG_draw_main;
 
     NB: if importing from clipboard, remember to run this first!
-    [] spawn A3A_fnc_NG_import;
+    [] spawn A3A_fnc_NGSA_import;
 */
 params [
     ["_line_size",A3A_NGSA_lineBaseSize,[ 0 ]],
@@ -65,7 +65,7 @@ private _fnc_diag_report = {
 
 _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",[]] call Col_fnc_nestLoc_get;
 if (_navGridHM isEqualTo []) exitWith {
-    "navGridHM not generated...<br/>If you have not, please run `[] spawn A3A_fnc_NG_main` or [] spawn A3A_fnc_NG_import." call _fnc_diag_report;
+    "navGridHM not generated...<br/>If you have not, please run `[] spawn A3A_fnc_NG_main` or [] spawn A3A_fnc_NGSA_import." call _fnc_diag_report;
     [localNamespace,"A3A_NGPP","draw","busy", false] call Col_fnc_nestLoc_set;
 };
 

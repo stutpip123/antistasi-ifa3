@@ -17,12 +17,14 @@ Return Value:
 Scope: Any
 Environment: Any.
 Public: Yes
+Dependencies:
+    <HASHMAP> A3A_NG_const_hashMap
 
 Example:
     [_posRegionHM,_pos,500] call A3A_fnc_NGSA_posRegionHM_pixelRadius.
 */
 params [
-    "_posRegionHM",
+    ["_posRegionHM",0,[A3A_NG_const_hashMap]],
     "_pos",
     "_radius"
 ];

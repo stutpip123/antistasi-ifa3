@@ -12,7 +12,7 @@ Environment: Scheduled
 Public: Yes
 
 Example:
-    [] spawn A3A_fnc_NG_import;
+    [] spawn A3A_fnc_NGSA_import;
 */
 
 if (!canSuspend) exitWith {
@@ -76,6 +76,9 @@ if (isNil {_navGridHM} || count _navGridHM != count _navGridDB) exitWith {
     _diag_step_main = "Failed to convert navGridDB to navGridHM.<br/><br/>Please check that all entries are nested in one big array and that the opening square bracket `[` wasn't deleted accidentally.";
     call _fnc_diag_render;
 };
+[_navGridHM] call A3A_fnc_NGSA_correctPositions;
+_diag_step_main = "Correcting Positions...";
+call _fnc_diag_render;
 [localNamespace,"A3A_NGPP","navGridDB",_navGridDB] call Col_fnc_nestLoc_set;
 [localNamespace,"A3A_NGPP","navGridHM",_navGridHM] call Col_fnc_nestLoc_set;
 

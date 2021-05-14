@@ -15,6 +15,7 @@ Public: No
 Dependants Created:
     <<OBJECT>,<ARRAY<OBJECT>>,<ARRAY<SCALAR>>> A3A_NGSA_selectedStruct;
     <STRING> A3A_NGSA_modeConnect_selMarkerName;
+    <HASHMAP> A3A_NG_const_hashMap
 
 Example:
     [] spawn A3A_fnc_NGSA_EH_add;
@@ -22,8 +23,8 @@ Example:
 #include "\a3\ui_f\hpp\definedikcodes.inc";
 
 params [
-    "_navGridHM",
-    "_navGridPosRegionHM"
+    ["_navGridHM",0,[A3A_NG_const_hashMap]],
+    ["_navGridPosRegionHM",0,[A3A_NG_const_hashMap]]
 ];
 
 [localNamespace,"A3A_NGPP","navGridHM",_navGridHM] call Col_fnc_nestLoc_set;

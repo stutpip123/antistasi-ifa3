@@ -11,7 +11,7 @@ Arguments:
 
 
 Return Value:
-    <BOOLEAN> true if deleted, false if not found.
+    <BOOLEAN> true if made connected, false if made disconnected.
 
 Scope: Client, Local Arguments, Local Effect
 Environment: Unscheduled
@@ -38,14 +38,15 @@ private _rightConnections = _rightStruct#3;
 private _midPoint = _leftPos vectorAdd _rightPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
 private _name = "A3A_NG_Line_"+str _midPoint;
 
-if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If connected, then disconnect.
+private _isConnected = _rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1;
+if (_isConnected) then { // If connected, then disconnect.
     private _rightInLeft = _leftConnections findIf {(_x#0) isEqualTo _rightPos};
     _leftConnections deleteAt _rightInLeft;
 
     private _leftInRight = _rightConnections findIf {(_x#0) isEqualTo _leftPos};
     _rightConnections deleteAt _leftInRight;
 
-    [_leftStruct,_rightStruct,0] call A3A_fnc_NG_draw_connection;
+    [_leftStruct,_rightStruct,_connectionTypeEnum,0] call A3A_fnc_NG_draw_connection;
 } else {    // If not connected, then connect.
     if (_distance < 0) then {
         _distance = _leftPos distance2D _rightPos;
@@ -53,9 +54,11 @@ if (_rightConnections findIf {(_x#0) isEqualTo _leftPos} != -1) then { // If con
     _leftConnections pushBack [_rightPos,_connectionTypeEnum,_distance];
     _rightConnections pushBack [_leftPos,_connectionTypeEnum,_distance];
 
-    [_leftStruct,_rightStruct] call A3A_fnc_NG_draw_connection;
+    [_leftStruct,_rightStruct,_connectionTypeEnum] call A3A_fnc_NG_draw_connection;
 };
 
 // Refresh marker junction colour
 [_leftStruct] call A3A_fnc_NG_draw_dot;
 [_rightStruct] call A3A_fnc_NG_draw_dot;
+
+!_isConnected;

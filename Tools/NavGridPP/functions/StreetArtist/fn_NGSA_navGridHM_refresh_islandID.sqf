@@ -11,12 +11,14 @@ Return Value:
 Scope: Any
 Environment: Unscheduled, does not support parallel changes to _navGridHM;
 Public: Yes
+Dependencies:
+    <HASHMAP> A3A_NG_const_hashMap
 
 Example:
     _navGridHM call A3A_fnc_NGSA_navGridHM_refresh_islandID;
 */
 params [
-    "_navGridHM"
+    ["_navGridHM",0,[A3A_NG_const_hashMap]]
 ];
 
 private _unprocessedPosHM = createHashMapFromArray (keys _navGridHM apply {[_x,true]});

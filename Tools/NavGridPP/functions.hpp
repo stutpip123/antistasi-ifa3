@@ -19,7 +19,6 @@ class A3A {
         class NG_fix_deadEnds {};
         class NG_fix_oneWays {};
         class NG_format_navGridDB {};
-        class NG_import {};
         class NG_init { preInit = 1; };
         class NG_main {};
         class NG_simplify_conDupe {};
@@ -30,14 +29,16 @@ class A3A {
         class NGSA_action_autoRefresh {};
         class NGSA_action_refresh {};
         class NGSA_action_save {};
-        class NGSA_checkFix_forcedConnection {};
-        class NGSA_click_modeConnect {};
+        class NGSA_canAddPos {};
         class NGSA_click_modeBrush {};
+        class NGSA_click_modeConnect {};
+        class NGSA_correctPositions {};
         class NGSA_EH_add {};
         class NGSA_EH_rem {};
-        class NGSA_export {};
         class NGSA_hover_modeBrush {};
         class NGSA_hover_modeConnect {};
+        class NGSA_import {};
+        class NGSA_insertMiddleNode {};
         class NGSA_isValidRoad {};
         class NGSA_main {};
         class NGSA_navGridHM_refresh_islandID {};
@@ -51,6 +52,7 @@ class A3A {
         class NGSA_posRegionHM_generate {};
         class NGSA_posRegionHM_pixelRadius {};
         class NGSA_refreshMarkerOrder {};
+        class NGSA_shouldAddMiddleNode {};
         class NGSA_toggleConnection {};
     };
     class UI {

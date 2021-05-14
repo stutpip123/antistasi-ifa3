@@ -56,7 +56,6 @@ if !([_middlePos, _navGridHM, _posRegionHM,"offroad"] call A3A_fnc_NGSA_canAddPo
     _suitablePosFound = false;
     private _aziStep = 360 / 16;
     for "_azimuth" from 0 to 360 - _aziStep step _aziStep do {
-        //systemChat ("Trying position at " + str _azimuth + " deg.");
         private _newMiddlePos = _middlePos getPos [2*A3A_NG_const_positionInaccuracy +1,_azimuth] select A3A_NG_const_pos2DSelect;   // The +1 mitigates the issue of it being exactly on another node.
         if ([_middlePos, _navGridHM, _posRegionHM,"offroad"] call A3A_fnc_NGSA_canAddPos) exitWith {
             _middlePos = _newMiddlePos;
@@ -68,7 +67,6 @@ if !([_middlePos, _navGridHM, _posRegionHM,"offroad"] call A3A_fnc_NGSA_canAddPo
 };
 if (!_suitablePosFound) exitWith {
     [_myStruct,_otherStruct,_roadEnum] call A3A_fnc_NGSA_toggleConnection;  // Still disconnect it as it is not a good path finding connection, and the user can try move some points.
-    //systemChat ("No suitable position found.");
     [];
 };
 

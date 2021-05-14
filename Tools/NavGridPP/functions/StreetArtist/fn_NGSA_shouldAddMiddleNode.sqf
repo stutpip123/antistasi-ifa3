@@ -31,7 +31,7 @@ params [
 private _leftRoad = nearestTerrainObjects [_leftPos, A3A_NG_const_roadTypeEnum, 0, false, true];
 private _rightRoad = nearestTerrainObjects [_rightPos, A3A_NG_const_roadTypeEnum, 0, false, true];
 if (_leftRoad isEqualTo A3A_NG_const_emptyArray || _rightRoad isEqualTo A3A_NG_const_emptyArray) exitWith {
-    systemChat ("They are offroad.");
+    systemChat ("At least one is offroad.");
     false;   // If one is already off a road, then there is no need to add a middle pos.
 };
 _leftRoad = _leftRoad#0;
@@ -41,6 +41,7 @@ private _checkedPositionsHM = createHashMapFromArray [[getPos _leftRoad select A
 private _nextRoads = [_leftRoad];
 private _addMiddleNode = true;
 while {count _nextRoads > 0} do {
+    systemChat ("Scanning " + str count _nextRoads + " roads for connection.");
     _nextRoads = flatten (_nextRoads apply {
         private _current = _x;
         roadsConnectedTo [_current,true] select {
@@ -49,8 +50,8 @@ while {count _nextRoads > 0} do {
         };
     });
     _checkedPositionsHM insert ( _nextRoads apply {[getPos _x select A3A_NG_const_pos2DSelect,true]} );
-    if (_rightRoad in _connectedRoads) exitWith {
-        systemChat ("They are connected!.");
+    if (_rightRoad in _nextRoads) exitWith {
+        systemChat ("They are connected by roads.");
         _addMiddleNode = false;
     };
     _nextRoads = _nextRoads select {!((getPos _x select A3A_NG_const_pos2DSelect) in _navGridHM)};

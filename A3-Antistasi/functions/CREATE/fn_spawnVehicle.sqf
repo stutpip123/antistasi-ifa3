@@ -1,31 +1,45 @@
 /*
     File: fn_spawnVehicle.sqf
-    Author: Spoffy
+    Author: Spoffy, Caleb Serafin
 
     Description:
-        Creates a vehicle with a crew. Compatible with A3A_fnc_spawnVehicle parameters.
+        Creates a vehicle with template crew.
+        Land vehicles will be in a nearby safe pos.
+        Aircraft spawn at 110% of stall speed (Helicopters still spawn at 0 m/s)
+        Aircraft will have a minimum height unless precise is set true.
 
     Parameter(s):
         _pos - Desired position [ARRAY]
         _azi - Desired rotation [NUMBER]
         _type - Type of vehicle [STRING]
         _group - Side or existing group [SIDE or GROUP]
-        _precise - (Optional) force precise positioning [BOOL - Default: true]
+        _precise - (Optional) force precise positioning [BOOL - Default: false]
         _unitType - unit type to use as crew, recommended to leave as default [STRING, Default: nil]
 
     Returns:
         [new vehicle, all crew, group]
 
     Example(s):
-        [getPosAGL player, 0, "B_T_LSV_01_armed_F", resistance, false] call A3A_fnc_spawnVehicle params ["_vehicle", "_crew", "_group"];
+        // Spawn LSV in nearby "safe" position
+        [getPos player, 0, "B_T_LSV_01_armed_F", resistance] call A3A_fnc_spawnVehicle params ["_vehicle", "_crew", "_group"];
 
-        private _vehicle = [getPosAGL player, 69, "B_Heli_Transport_01_F", group player, true] call A3A_fnc_spawnVehicle #0;
+        // Spawn Helicopter at default height
+        private _vehicle = [getPos player, 69, "B_Heli_Transport_01_F", group player] call A3A_fnc_spawnVehicle select 0;
         _vehicle enableSimulation false; // For inspecting spawn.
-        // Release.
+
+        // Spawn Helicopter above default height
+        private _vehicle = [getPos player vectorAdd [0,0,420], 69, "B_Heli_Transport_01_F", group player] call A3A_fnc_spawnVehicle select 0;
+        _vehicle enableSimulation false; // For inspecting spawn.
+
+        // Spawn Helicopter bellow default height
+        private _vehicle = [getPos player vectorAdd [0,0,50], 69, "B_Heli_Transport_01_F", group player, true] call A3A_fnc_spawnVehicle select 0;
+        _vehicle enableSimulation false; // For inspecting spawn.
+
+        // Release to check that helicopter RPM is stable.
         cursorObject enableSimulation true;
 */
 
-params ["_pos", "_azi", "_type", "_group", ["_precise", true], "_unitType"];
+params ["_pos", "_azi", "_type", "_group", ["_precise", false], "_unitType"];
 
 private _side = if (_group isEqualType sideUnknown) then { _group } else { side _group };
 

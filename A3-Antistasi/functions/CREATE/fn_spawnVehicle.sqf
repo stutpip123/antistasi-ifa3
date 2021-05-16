@@ -32,18 +32,20 @@ private _side = if (_group isEqualType sideUnknown) then { _group } else { side 
 private _sim = getText(configFile >> "CfgVehicles" >> _type >> "simulation");
 
 private _velocity = 0;
-private _veh = switch (toLower _sim) do {
+private _veh = objNull;
+switch (toLower _sim) do {
     case "airplanex";
     case "helicopterrtd";
     case "helicopterx": {
-        //Make sure aircraft start at a reasonable height.
-        if (count _pos == 2) then {_pos set [2,0];};
-        _pos set [2,(_pos select 2) max 50];
         _velocity = getNumber(configFile >> "CfgVehicles" >> _type >> "stallSpeed") / 3.6 * 1.1;  // kilometres per hour to metres per second * 110% of stall speed.
-        createVehicle [_type, _pos, [], 0, "FLY"];
+        _veh = createVehicle [_type, _pos, [], 0, "FLY"];
+        //Make sure aircraft will start at higher altitude if provided.
+        if (count _pos == 3 && (_pos#2) > 100) then {
+            _veh setPos _pos; // It will be set twice if _precise if true, but that will not have any affect on outcome.
+        };
     };
     default {
-        createVehicle [_type, _pos, [], 0, "NONE"];
+        _veh = createVehicle [_type, _pos, [], 0, "NONE"];
     };
 };
 
@@ -51,8 +53,7 @@ private _veh = switch (toLower _sim) do {
 _veh setDir _azi;
 
 //Make sure the vehicle is where it should be.
-if (_precise) then
-{
+if (_precise) then {
     _veh setPos _pos;
 };
 

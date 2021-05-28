@@ -68,8 +68,8 @@ private _fnc_canSimplify = {
 
     if ((_hypotenuse^2 - _base^2) > _maxDriftSqr) exitWith { false; };
 
-    private _midPoint2D = getPosATL _leftRoad vectorAdd getPosATL _rightRoad vectorMultiply 0.5;
-    private _nearRoads = (nearestTerrainObjects [_midPoint2D, A3A_NG_const_roadTypeEnum, _base, false, false]) - [_leftRoad,_rightRoad,_middleRoad] - _excludedRoads;
+    private _midPoint = getPosATL _leftRoad vectorAdd getPosATL _rightRoad vectorMultiply 0.5;
+    private _nearRoads = (nearestTerrainObjects [_midPoint, A3A_NG_const_roadTypeEnum, _base, false, false]) - [_leftRoad,_rightRoad,_middleRoad] - _excludedRoads;
     if (_nearRoads findIf {str _x in _navRoadHM} == -1) exitWith { true; }; // There cannot be any nodes from other roads nearby.
 
     // Try exclude parallel roads.

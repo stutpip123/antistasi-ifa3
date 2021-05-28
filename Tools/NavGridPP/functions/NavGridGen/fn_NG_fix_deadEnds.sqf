@@ -12,6 +12,8 @@ Return Value:
 Scope: Any, Global Arguments
 Environment: Scheduled
 Public: No
+Dependencies:
+    <ARRAY> A3A_NG_const_roadTypeEnum
 
 Example:
     [_navRoadHM] call A3A_fnc_NG_fix_deadEnds;
@@ -58,11 +60,14 @@ private _fnc_connectStructAndRoad = {
 private _fnc_searchAzimuth = {
     params ["_road","_azimuth"];
 
-    private _testRoad = objNull;
     private _finalRoad = objNull;
     private _myPos = getPosATL _road;
     {
-        _testRoad = roadAt (_myPos vectorAdd [_x * cos _azimuth,_x * sin _azimuth,0]);
+        private _testPos = _myPos vectorAdd [_x * sin _azimuth,_x * cos _azimuth,0];
+        private _testRoad = roadAt _testPos;
+        if !(_testRoad isEqualTo _road || {isNil {_navRoadHM get str _testRoad}}) exitWith {_finalRoad = _testRoad};
+
+        _testRoad = nearestTerrainObjects [_testPos, A3A_NG_const_roadTypeEnum, 7.5, true, false];
         if !(_testRoad isEqualTo _road || {isNil {_navRoadHM get str _testRoad}}) exitWith {_finalRoad = _testRoad};
     } forEach [10,20,30,40];    // Search steps
     _finalRoad;
@@ -105,7 +110,7 @@ _diag_totalSegments = count _deadEndStructs;
     };
     if (count (_x#1) == 1) then {   // Skip if no-longer a dead end.
         private _road = _x#0;
-        private _missingRoad = [_road,(_x#1#0) getDir (_road)] call _fnc_searchAzimuth;
+        private _missingRoad = [_road,(_x#1#0) getDir (_road)] call _fnc_searchAzimuth;  // (_x#1#0) is the first connected road.
         if (!isNull _missingRoad) then {
             [_x,_missingRoad] call _fnc_connectStructAndRoad;
         };

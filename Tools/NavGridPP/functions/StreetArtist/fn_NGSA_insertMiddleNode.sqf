@@ -56,7 +56,7 @@ if !([_middlePos, _navGridHM, _posRegionHM,"offroad"] call A3A_fnc_NGSA_canAddPo
     private _aziStep = 360 / 16;
     for "_azimuth" from 0 to 360 - _aziStep step _aziStep do {
         private _searchDistance = 2 * A3A_NG_const_positionInaccuracy + 1;  // The +1 mitigates the issue of it being exactly on another node.
-        private _newMiddlePos = _middlePos vectorAdd [_searchDistance * cos _azimuth,_searchDistance * sin _azimuth,0];
+        private _newMiddlePos = _middlePos vectorAdd [_searchDistance * sin _azimuth,_searchDistance * cos _azimuth,0];
         if ([_middlePos, _navGridHM, _posRegionHM,"offroad"] call A3A_fnc_NGSA_canAddPos) exitWith {
             _middlePos = _newMiddlePos;
             _myDistance = _myPos distance _middlePos;

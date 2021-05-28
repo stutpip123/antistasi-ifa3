@@ -34,7 +34,7 @@ if (_pos in _navGridHM) then {
         private _connections = _x#3;
         _connections deleteAt (_connections findIf {(_x#0) isEqualTo _pos});
 
-        private _midpoint = _pos vectorAdd (_x#0) vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+        private _midpoint = _pos vectorAdd (_x#0) vectorMultiply 0.5;
         private _name = "A3A_NG_Line_"+str _midPoint;
         if (_name in _marker_lines) then {
             deleteMarker _name;

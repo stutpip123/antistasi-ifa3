@@ -20,7 +20,6 @@ Dependencies:
     <ARRAY<STRING>> A3A_NG_const_roadTypeEnum
     <ARRAY> A3A_NG_const_emptyArray
     <SCALAR> A3A_NG_const_positionInaccuracy
-    <ARRAY> A3A_NG_const_pos2DSelect
     <HASHMAP> A3A_NG_const_hashMap
 
 Example:
@@ -36,7 +35,7 @@ params [
 
 private _myPos = _myStruct#0;
 private _otherPos = _otherStruct#0;
-private _middlePos = _myPos vectorAdd _otherPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+private _middlePos = _myPos vectorAdd _otherPos vectorMultiply 0.5;
 
 private _islandID = _myStruct#1;
 private _myConnections = _myStruct#3;
@@ -56,11 +55,12 @@ if !([_middlePos, _navGridHM, _posRegionHM,"offroad"] call A3A_fnc_NGSA_canAddPo
     _suitablePosFound = false;
     private _aziStep = 360 / 16;
     for "_azimuth" from 0 to 360 - _aziStep step _aziStep do {
-        private _newMiddlePos = _middlePos getPos [2*A3A_NG_const_positionInaccuracy +1,_azimuth] select A3A_NG_const_pos2DSelect;   // The +1 mitigates the issue of it being exactly on another node.
+        private _searchDistance = 2 * A3A_NG_const_positionInaccuracy + 1;  // The +1 mitigates the issue of it being exactly on another node.
+        private _newMiddlePos = _middlePos vectorAdd [_searchDistance * cos _azimuth,_searchDistance * sin _azimuth,0];
         if ([_middlePos, _navGridHM, _posRegionHM,"offroad"] call A3A_fnc_NGSA_canAddPos) exitWith {
             _middlePos = _newMiddlePos;
-            _myDistance = _myPos distance2D _middlePos;
-            _otherDistance = _otherPos distance2D _middlePos;
+            _myDistance = _myPos distance _middlePos;
+            _otherDistance = _otherPos distance _middlePos;
             _suitablePosFound = true;
         };
     };

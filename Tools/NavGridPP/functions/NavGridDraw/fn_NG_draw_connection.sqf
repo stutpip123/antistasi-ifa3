@@ -31,7 +31,7 @@ private _markers_line = [localNamespace,"A3A_NGPP","draw","markers_connectionLin
 private _leftPos = _leftStruct#0;
 private _rightPos = _rightStruct#0;
 
-private _midPoint = _leftPos vectorAdd _rightPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+private _midPoint = _leftPos vectorAdd _rightPos vectorMultiply 0.5;
 private _name = "A3A_NG_Line_"+str _midPoint;
 
 if (_thickness > 0) then {

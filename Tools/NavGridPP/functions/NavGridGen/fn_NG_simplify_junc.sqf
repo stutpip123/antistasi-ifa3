@@ -52,7 +52,7 @@ private _fnc_disconnectStructs = {
     };
     if ((_myStruct#0) in _otherConnections || (_otherStruct#0) in _myConnections) then {
         throw ["CouldNotDisconnectStructs","CouldNotDisconnectStructs."];
-        private _crashText = "CouldNotDisconnectStructs " + str (getPos (_myStruct#0)) + ", " + str (getPos (_otherStruct#0)) + ".";
+        private _crashText = "CouldNotDisconnectStructs " + str (getPosATL (_myStruct#0)) + ", " + str (getPosATL (_otherStruct#0)) + ".";
         [1,_crashText,"fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
@@ -62,7 +62,7 @@ private _fnc_connectStructs = {
 
     private _myRoad = _myStruct#0;
     private _otherRoad = _otherStruct#0;
-    private _distance = _myRoad distance2D _otherRoad;
+    private _distance = _myRoad distance _otherRoad;
 
     (_myStruct#1) pushBack _otherRoad;
     (_myStruct#2) pushBack _distance;
@@ -88,7 +88,7 @@ private _fnc_consumeStruct = {
         [_otherStruct,_x] call _fnc_disconnectStructs;
     } forEach _otherConnectedStructs;
     if ((_navRoadHM get str _otherRoad) #1 isNotEqualTo A3A_NG_const_emptyArray) then {
-        private _crashText = "Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPos _otherRoad) + ".";
+        private _crashText = "Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPosATL _otherRoad) + ".";
         [1,_crashText,"fn_NG_simplify_junc"] call A3A_fnc_log;
         ["fn_NG_simplify_junc Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
@@ -100,7 +100,7 @@ private _fnc_consumeStruct = {
 
         if !(_otherConnectedRoad in _myConnections) then {
             if !(str _otherConnectedRoad in _navRoadHM) then {
-                private _crashText = "Tried to connect to orphan '"+str _otherConnectedRoad+"' " + str (getPos _otherConnectedRoad) + ".";
+                private _crashText = "Tried to connect to orphan '"+str _otherConnectedRoad+"' " + str (getPosATL _otherConnectedRoad) + ".";
                 [1,_crashText,"fn_NG_simplify_junc"] call A3A_fnc_log;
                 ["fn_NG_simplify_junc Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
             };
@@ -116,14 +116,14 @@ private _fnc_selectCentreStruct = {
 
     private _midPoint = [0,0];
     {
-        _midPoint = _midPoint vectorAdd getPos (_x#0);
+        _midPoint = _midPoint vectorAdd getPosATL (_x#0);
     } forEach _structs;
     _midPoint = _midPoint vectorMultiply (1 / count _structs);
 
     private _centreStruct = _structs#0;
     private _closestDistance = 9999999;
     {
-        private _distance = getPos (_x#0) distance2D _midPoint;
+        private _distance = getPosATL (_x#0) distance _midPoint;
         if (_distance < _closestDistance) then {
             _centreStruct = _x;
             _closestDistance = _distance;
@@ -146,7 +146,7 @@ private _diag_totalSegments = count _navRoadHM;
         private _connectedJuncStructs = [];
         if ((count _myConnections) > 2) then {
             _connectedJuncStructs = _myConnections
-                select {_myRoad distance2D _x < _juncMergeDistance}                         // Only within small junction proximity
+                select {_myRoad distance _x < _juncMergeDistance}                         // Only within small junction proximity
                 apply {_navRoadHM get str _x}                                               // Get their structs
                 select {count (_x#1) > 2}                                                   // Only structs that are junctions
                 select {_x#3 isEqualTo A3A_NG_const_emptyArray};                            // Has forced connection. The roads are exempt from simplification and are resolved in the road to navGrid conversion.

@@ -18,9 +18,9 @@ _Speedy and fast writeable version of navGridDB, navGridHM connections are posit
 _Island ID may become inaccurate during editing in StreetArtist and will require a refresh._<br/>
 ```
 HASHMAP<          NavFlatHM
-  POS2D             Key is Road pos.
+  POSATL            Key is Road pos.
   ARRAY<
-    <POS2D>           Road pos.
+    <POSATL>          Road pos.
     <SCALAR>          Island ID.
     <BOOLEAN>         isJunction.
     <ARRAY<           Connections:
@@ -31,12 +31,12 @@ HASHMAP<          NavFlatHM
   >
 >
 ```
-`[_pos2D,[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`
+`[_posATL,[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`
 # navGrdDB
 _Desired output format saved for A3-Antistasi. navGridDB connections are array indices._<br/>
 ```
 ARRAY<           navGridDB:
-  <POS2D>           Road pos.
+  <POSATL>          Road pos.
   <SCALAR>          Island ID.
   <BOOLEAN>         isJunction.
   <ARRAY<           Connections:
@@ -46,4 +46,4 @@ ARRAY<           navGridDB:
   >>
 >
 ```
-`[[_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`
+`[[_posATL,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]]]`

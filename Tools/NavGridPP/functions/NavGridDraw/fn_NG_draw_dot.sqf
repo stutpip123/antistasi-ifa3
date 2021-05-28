@@ -63,7 +63,7 @@ if (_dot_size > 0) then {
     };
 
     private _exists = _markerStructs set [_name,true];
-    private _onRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, 0, false, true] isEqualTo A3A_NG_const_emptyArray;
+    private _onRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false] isEqualTo A3A_NG_const_emptyArray;
 
     if (_exists && _onRoad) then {  // Makes sure that the marker is on top when redrawn.
         deleteMarker _name;

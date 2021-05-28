@@ -47,7 +47,7 @@ switch (true) do {
             private _nodePos = _x;
             private _node = _navGridHM get _x;
             {
-                private _midPoint = _nodePos vectorAdd (_x#0) vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+                private _midPoint = _nodePos vectorAdd (_x#0) vectorMultiply 0.5;
                 if !(_midPoint in _processedConnection) then {
                     _processedConnection set [_midPoint,true];
                     if ((_x#1) == A3A_NGSA_modeConnect_roadTypeEnum) exitWith {};

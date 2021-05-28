@@ -38,7 +38,7 @@ private _throwAndCrash = false;
         {
             if (_roadIndexNS getOrDefault [str _x,-1] == -1) then {
                 _throwAndCrash = true;
-                private _crashText = "Road '"+str _x+"' " + str getPos _x + " is connected to non-indexed road '"+str _myRoad+"' " + str getPos _myRoad + ".";
+                private _crashText = "Road '"+str _x+"' " + str getPosATL _x + " is connected to non-indexed road '"+str _myRoad+"' " + str getPosATL _myRoad + ".";
                 [1,_crashText,"fn_NG_check_conExists"] call A3A_fnc_log;
                 ["fn_NG_check_conExists Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
             };

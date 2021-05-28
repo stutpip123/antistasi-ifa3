@@ -27,7 +27,7 @@ A3A_NG_const_hashMap = createHashMap;
 A3A_NG_const_roadTypeEnum = ["TRACK","ROAD","MAIN ROAD"];
 
 // For use with nearRoads or NearestTerrainObjects, the inaccuracy is caused by str and parseNumber.
-A3A_NG_const_positionInaccuracy = 0.075;
+A3A_NG_const_positionInaccuracy = 0.08;
 
 // This is the maximum amount of roads that will allow changing marker type to auto refresh colours. If it goes above, it will prompt the user to refresh.
 A3A_NGSA_autoMarkerRefreshNodeMax = 2000;

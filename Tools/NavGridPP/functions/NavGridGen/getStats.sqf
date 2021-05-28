@@ -28,15 +28,16 @@ private _fnc_stdDev = {
 // Common for transforming 3DPos to 2D.
 A3A_NG_const_pos2DSelect = [0,2];
 A3A_NG_const_emptyArray = [];
+DEV_getStats_output = [];
 
 private _fnc_log2 = {
     (log _this) / (log 2);
 };
 
 private _fnc_toStringDistanceDeviation = {
-    private _pos = getPos _x select A3A_NG_const_pos2DSelect;
+    private _pos = getPosATL _x;
     private _roughPos = parseSimpleArray str _pos;
-    _pos distance2D _roughPos;
+    _pos distance _roughPos;
 };
 
 private _halfWorldSize = worldSize/2;
@@ -49,6 +50,7 @@ private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_road
 hint "2/4 - Performing distance searches.";
 private _distances = _allRoadObjects apply {_x call _fnc_toStringDistanceDeviation};
 //copyToClipboard str _distances;
+DEV_getStats_output pushBack _distances;
 hint "3/4 - Sorting distances.";
 _distances sort true;
 
@@ -65,9 +67,10 @@ private _stdDev = [_distances,_mean] call _fnc_stdDev;
 
 private _formattedData = format ["Position to string inaccuracy distance; world: %1; worldSize: %2; processedRoads: %3; min: %4m; max: %5m; mean: %6m; median: %7m; stdDev: %8m;",worldName,worldSize,count _allRoadObjects,_min,_max,_mean,_median,_stdDev];
 copyToClipboard _formattedData;
+DEV_getStats_output pushBack _formattedData;
 hint "Road statistics copied to clipboard!" + endL + endL + _formattedData;
 };
-"Data is crunching, please watch hint field.";
+"Data is crunching, please watch hint field. Data can be extracted from DEV_getStats_output";
 
 
 
@@ -102,4 +105,4 @@ A3A_NG_const_roadTypeEnum = ["TRACK","ROAD","MAIN ROAD"];
 private _allRoadObjects = nearestTerrainObjects [_worldCentre, A3A_NG_const_roadTypeEnum, _worldMaxRadius, false, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};
 
 A3A_NG_const_emptyArray = [];
-{nearestTerrainObjects [getPos _x, A3A_NG_const_roadTypeEnum, 0, false, true] isEqualTo A3A_NG_const_emptyArray} count _allRoadObjects;
+{nearestTerrainObjects [getPosATL _x, A3A_NG_const_roadTypeEnum, 0, false, true] isEqualTo A3A_NG_const_emptyArray} count _allRoadObjects;

@@ -36,12 +36,12 @@ private _fnc_diag_render = { // call _fnc_diag_render;
 private _fnc_connectStructAndRoad = {
     params ["_myStruct","_otherRoad"];
     private _myRoad = _myStruct#0;
-    private _distance = _myRoad distance2D _otherRoad;
+    private _distance = _myRoad distance _otherRoad;
 
     private _otherStruct = _navRoadHM get str _otherRoad;
 
     if (_otherStruct isEqualType 0) exitWith {
-        private _crashText = "Could not find index of '"+str _otherRoad+"' " + str (getPos _otherRoad) + ".";
+        private _crashText = "Could not find index of '"+str _otherRoad+"' " + str (getPosATL _otherRoad) + ".";
         [1,_crashText,"fn_NG_fix_deadEnds"] call A3A_fnc_log;
         ["fn_NG_fix_deadEnds Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
@@ -60,9 +60,9 @@ private _fnc_searchAzimuth = {
 
     private _testRoad = objNull;
     private _finalRoad = objNull;
-    private _myPos = getPos _road;
+    private _myPos = getPosATL _road;
     {
-        _testRoad = roadAt (_myPos getPos [_x,_azimuth]);
+        _testRoad = roadAt (_myPos vectorAdd [_x * cos _azimuth,_x * sin _azimuth,0]);
         if !(_testRoad isEqualTo _road || {isNil {_navRoadHM get str _testRoad}}) exitWith {_finalRoad = _testRoad};
     } forEach [10,20,30,40];    // Search steps
     _finalRoad;

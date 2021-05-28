@@ -81,7 +81,7 @@ if (_line_size > 0 || _drawDistance) then {
         private _myStruct = _navGridHM get _x;
         {
             private _otherPos = _x#0;
-            private _midPoint = _myPos vectorAdd _otherPos vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+            private _midPoint = _myPos vectorAdd _otherPos vectorMultiply 0.5;
 
             if !(_midPoint in _processedMidPoints) then {
                 _processedMidPoints set [_midPoint,true];

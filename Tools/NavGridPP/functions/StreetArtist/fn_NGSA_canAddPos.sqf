@@ -18,7 +18,6 @@ Public: No
 Dependencies:
     <HASHMAP> A3A_NG_const_hashMap
     <ARRAY> A3A_NG_const_emptyArray
-    <ARRAY> A3A_NG_const_pos2DSelect
     <SCALAR> A3A_NG_const_positionInaccuracy
 
 Example:
@@ -33,7 +32,7 @@ params [
 
 assert (A3A_NG_const_positionInaccuracy < 100); // This is the minimum distance returned by adjacent navRegions.
 
-private _isOffroad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, 0, false, true] isEqualTo A3A_NG_const_emptyArray;
+private _isOffroad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, 0, false, false] isEqualTo A3A_NG_const_emptyArray;
 if !(
     switch (toLower _roadRequirement) do {
         case "onroad": { !_isOffroad };
@@ -41,11 +40,11 @@ if !(
         default { true };
     }
 ) exitWith {false};
-private _isNearRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, true] isNotEqualTo A3A_NG_const_emptyArray;
+private _isNearRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false] isNotEqualTo A3A_NG_const_emptyArray;
 if (_isOffroad && _isNearRoad) exitWith {false};
 
 if (_pos in _navGridHM) exitWith {false};   // Quick check before fetching nearby regions
 
 private _nearNodes = [_posRegionHM,_pos] call A3A_fnc_NGSA_posRegionHM_allAdjacent;
 private _doublePosInaccuracy = 2 * A3A_NG_const_positionInaccuracy;
-_nearNodes findIf {_pos distance2D _x <= _doublePosInaccuracy} == -1;
+_nearNodes findIf {_pos distance _x <= _doublePosInaccuracy} == -1;

@@ -53,6 +53,8 @@ private _fnc_diag_report = {
     ];
     _hintData call A3A_fnc_customHint;
     _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
+    400 call A3A_fnc_customHintDrop;    // No more sub steps will overwrite it
+    400 remoteExec ["A3A_fnc_customHintDrop",-clientOwner];
 };
 
 uiSleep 0.001;  // Readies the scheduler to avoid a lag spike for the following loop.
@@ -71,8 +73,8 @@ private _navRoadHM = createHashMapFromArray (_allRoadObjects apply {[str _x,_x]}
     private _road = _navRoadHM get _x;
     private _connections = roadsConnectedTo [_road,true] select {str _x in _navRoadHM};
     if (isNil {_connections}) then {_connections = [];};
-    {if(isNil{_x}) then {["Extraction","Road "+str _road+" at "+getPos _road+" was connected to nil."] call _fnc_diag_report;};} forEach _connections;
-    _navRoadHM set [_x,[_road,_connections,_connections apply {_x distance2D _road},[]]]
+    {if(isNil{_x}) then {["Extraction","Road "+str _road+" at "+getPosATL _road+" was connected to nil."] call _fnc_diag_report;};} forEach _connections;
+    _navRoadHM set [_x,[_road,_connections,_connections apply {_x distance _road},[]]]
 } forEach +(keys _navRoadHM);
 
 

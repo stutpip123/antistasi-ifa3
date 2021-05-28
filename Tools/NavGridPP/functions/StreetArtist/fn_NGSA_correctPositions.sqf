@@ -16,7 +16,6 @@ Dependencies:
     <SCALAR> A3A_NG_const_positionInaccuracy
     <ARRAY> A3A_NG_const_emptyArray
     <ARRAY> A3A_NG_const_roadTypeEnum
-    <ARRAY> A3A_NG_const_pos2DSelect
     <HASHMAP> A3A_NG_const_hashMap
 
 Example:
@@ -28,10 +27,10 @@ params [
 
 private _navPointConversionHM = createHashMap;
 {
-    private _roads = nearestTerrainObjects [_x, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, true];
+    private _roads = nearestTerrainObjects [_x, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false];
     private _struct = _navGridHM get _x;
     if (_roads isNotEqualTo A3A_NG_const_emptyArray) then {
-        private _newPos = getPos (_roads#0) select A3A_NG_const_pos2DSelect;
+        private _newPos = getPosATL (_roads#0);
 
         _struct set [0,_newPos];
         _navGridHM deleteAt _x;

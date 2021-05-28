@@ -35,7 +35,7 @@ private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
 
 ["Creating hashMaps"] call _fnc_diag_render;
 private _nameUnprocessedHM = createHashMapFromArray (keys _navRoadHM apply {[_x,true]});
-private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,getPos (_navRoadHM get _x select 0) select A3A_NG_const_pos2DSelect]});
+private _namePosHM = createHashMapFromArray (keys _navRoadHM apply {[_x,getPosATL (_navRoadHM get _x select 0)]});
 
 private _additionalNodeHM = createHashMap;  // Used in between forced connections.
 
@@ -55,7 +55,7 @@ private _fnc_convert_NGStruct_NFStructKV = {
             [1,"Road at "+str _roadPos + " had getRoadInfo of "+str (getRoadInfo _road),"fn_NG_convert_navRoadHM_navGridHM"] call A3A_fnc_log;
         };
         if (_x in _forcedConnections) then {    // Insert a midpoint that has no road assigned.
-            _position = _roadPos vectorAdd _position vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
+            _position = _roadPos vectorAdd _position vectorMultiply 0.5;
             _distance = _distance/2;
 
             _navFlatHM set [_position, [_position,_islandID,false,[ [_roadPos, _roadType, _distance],[_namePosHM get str _x, _roadType, _distance] ]]]; // The midpoint will connect to both roads.

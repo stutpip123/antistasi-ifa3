@@ -38,12 +38,10 @@ private _legends = [
     "Black:0  Red:1  Orange:2<br/>"+
     "Yellow:3  Green:4  Blue:5+",
     // islandID
-    "Islands are separated by "+ str A3A_NGSA_const_allMarkerColoursCount +" colours."+
-    ,
+    "Islands are separated by "+ str A3A_NGSA_const_allMarkerColoursCount +" colours.",
     // islandIDDeadEnd
     "Islands are separated by "+ str A3A_NGSA_const_allMarkerColoursCount +" colours.<br/>"+
-    +"<br/>"+
-    "Nodes with one or zero connections are <t color='#c71716'>Red</t>.",
+    "Nodes with one or zero connections are <t color='#c71716'>Red</t>."
 ];
 [
     "Marker Legend",

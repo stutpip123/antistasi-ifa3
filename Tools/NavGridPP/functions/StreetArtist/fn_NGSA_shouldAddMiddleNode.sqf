@@ -28,8 +28,8 @@ params [
     "_rightPos"
 ];
 
-private _leftRoad = nearestTerrainObjects [_leftPos, A3A_NG_const_roadTypeEnum, 0, false, true];
-private _rightRoad = nearestTerrainObjects [_rightPos, A3A_NG_const_roadTypeEnum, 0, false, true];
+private _leftRoad = nearestTerrainObjects [_leftPos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false];
+private _rightRoad = nearestTerrainObjects [_rightPos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false];
 if (_leftRoad isEqualTo A3A_NG_const_emptyArray || _rightRoad isEqualTo A3A_NG_const_emptyArray) exitWith {
     systemChat ("At least one is offroad.");
     false;   // If one is already off a road, then there is no need to add a middle pos.
@@ -37,7 +37,7 @@ if (_leftRoad isEqualTo A3A_NG_const_emptyArray || _rightRoad isEqualTo A3A_NG_c
 _leftRoad = _leftRoad#0;
 _rightRoad = _rightRoad#0;
 
-private _checkedPositionsHM = createHashMapFromArray [[getPos _leftRoad select A3A_NG_const_pos2DSelect,true]];
+private _checkedPositionsHM = createHashMapFromArray [[getPosATL _leftRoad,true]];
 private _nextRoads = [_leftRoad];
 private _addMiddleNode = true;
 while {count _nextRoads > 0} do {
@@ -46,14 +46,14 @@ while {count _nextRoads > 0} do {
         private _current = _x;
         roadsConnectedTo [_current,true] select {
             _current in roadsConnectedTo [_x,true] &&   // Checks return connection
-            !((getPos _x select A3A_NG_const_pos2DSelect) in _checkedPositionsHM)
+            !(getPosATL _x in _checkedPositionsHM)
         };
     });
-    _checkedPositionsHM insert ( _nextRoads apply {[getPos _x select A3A_NG_const_pos2DSelect,true]} );
+    _checkedPositionsHM insert ( _nextRoads apply {[getPosATL _x,true]} );
     if (_rightRoad in _nextRoads) exitWith {
         systemChat ("They are connected by roads.");
         _addMiddleNode = false;
     };
-    _nextRoads = _nextRoads select {!((getPos _x select A3A_NG_const_pos2DSelect) in _navGridHM)};
+    _nextRoads = _nextRoads select {!(getPosATL _x in _navGridHM)};
 };
 _addMiddleNode;

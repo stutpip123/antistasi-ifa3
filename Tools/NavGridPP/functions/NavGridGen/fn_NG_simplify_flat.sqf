@@ -24,9 +24,8 @@ params [
 ];
 private _maxDriftSqr = _maxDrift^2;
 
-private _diag_step_sub = "";
-
-private _fnc_diag_render = { // call _fnc_diag_render;
+private _fnc_diag_render = { // [] call _fnc_diag_render;
+    params [["_diag_step_sub",""]];
     [
         "Simplifying Flat Segments",
         "<t align='left'>" +
@@ -42,7 +41,7 @@ private _fnc_replaceRoadConnection = {
     private _connectionRoads = _roadStruct#1;
     private _conIndex = _connectionRoads find _oldRoadConnection;
     if (_conIndex == -1) exitWith {
-        private _crashText = "Road '"+str (_roadStruct#0)+"' " + str getPos (_roadStruct#0) + " was not connected to old road '"+str _oldRoadConnection+"' " + str getPos _oldRoadConnection + ".";
+        private _crashText = "Road '"+str (_roadStruct#0)+"' " + str getPosATL (_roadStruct#0) + " was not connected to old road '"+str _oldRoadConnection+"' " + str getPosATL _oldRoadConnection + ".";
         [4,_crashText,"fn_NG_simplify_flat"] call A3A_fnc_log;
         ["fn_NG_simplify_flat Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
@@ -57,20 +56,20 @@ private _fnc_removeRoadConnection = {
     (_roadStruct#2) deleteAt _conIndex;
 };
 
-call _fnc_diag_render;
+[] call _fnc_diag_render;
 
 private _fnc_canSimplify = {
     params ["_leftRoad","_rightRoad","_realDistance","_middleRoad",[ "_excludedRoads",[] ],[ "_OUT_andSimplifyRoads",[] ]];
 
     if !(getRoadInfo _leftRoad#0 isEqualTo getRoadInfo _rightRoad#0) exitWith {false;};   // Must be same type
 
-    private _base = 0.5 * (_leftRoad distance2D _rightRoad);
+    private _base = 0.5 * (_leftRoad distance _rightRoad);
     private _hypotenuse = 0.5 * _realDistance; //  The hypotenuse is half, as the worst real road can do is climb to a point, then come back down.
 
     if ((_hypotenuse^2 - _base^2) > _maxDriftSqr) exitWith { false; };
 
-    private _midPoint2D = getPos _leftRoad vectorAdd getPos _rightRoad vectorMultiply 0.5 select A3A_NG_const_pos2DSelect;
-    private _nearRoads = (nearestTerrainObjects [_midPoint2D, A3A_NG_const_roadTypeEnum, _base, false, true]) - [_leftRoad,_rightRoad,_middleRoad] - _excludedRoads;
+    private _midPoint2D = getPosATL _leftRoad vectorAdd getPosATL _rightRoad vectorMultiply 0.5;
+    private _nearRoads = (nearestTerrainObjects [_midPoint2D, A3A_NG_const_roadTypeEnum, _base, false, false]) - [_leftRoad,_rightRoad,_middleRoad] - _excludedRoads;
     if (_nearRoads findIf {str _x in _navRoadHM} == -1) exitWith { true; }; // There cannot be any nodes from other roads nearby.
 
     // Try exclude parallel roads.
@@ -146,10 +145,9 @@ private _trySimplify = {
 
 private _diag_totalSegments = count _navRoadHM;
 {
-    //if (_forEachIndex mod 100 == 0) then {
-    //    _diag_step_sub = "Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;";;
-    //    call _fnc_diag_render;
-    //};
+    if (_forEachIndex mod 100 == 0) then {
+        ("Completion &lt;" + ((100*_forEachIndex /_diag_totalSegments) toFixed 1) + "% &gt; Processing segment &lt;" + (str _forEachIndex) + " / " + (str _diag_totalSegments) + "&gt;") call _fnc_diag_render;
+    };
     [_x,false] call _trySimplify;
 } forEach keys _navRoadHM;
 

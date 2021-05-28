@@ -27,6 +27,7 @@ class A3A {
     };
     class StreetArtist {
         class NGSA_action_autoRefresh {};
+        class NGSA_action_changeColours {};
         class NGSA_action_refresh {};
         class NGSA_action_save {};
         class NGSA_canAddPos {};

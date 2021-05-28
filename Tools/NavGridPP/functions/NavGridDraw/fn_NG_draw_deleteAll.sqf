@@ -19,11 +19,12 @@ if (!canSuspend) exitWith {
 private _diag_step_main = "";
 private _fnc_diag_render = { // call _fnc_diag_render;
     [
-        "Nav Grid++ Draw",
+        "Delete All Markers",
         "<t align='left'>" +
-        _diag_step_main+"<br/>"+
+        _diag_step_main+
         "</t>",
-        true
+        true,
+        200
     ] remoteExec ["A3A_fnc_customHint",0];
 };
 

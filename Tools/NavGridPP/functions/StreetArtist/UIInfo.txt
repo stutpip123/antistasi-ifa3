@@ -1,0 +1,14 @@
+Generator notificationIDs
+
+Halting Error       600
+Main Step + Details 500
+Sub Step + Details  400
+
+
+Editor notificationIDs
+
+Active Tool         500
+Marker Legend       450
+Display Actions     400
+General             300
+Current Operation   200

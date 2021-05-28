@@ -26,17 +26,10 @@ params [
 private _fnc_diag_report = {
     params ["_diag_step_main"];
     [
-        "Street Artist Help",
-        "<t size='1' align='left'><t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Refresh</t><br/>"+
-        _diag_step_main+"<br/>"+
-        "<br/>"+
-        "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>General</t><br/>"+
-        "<t color='#f0d498'>'F'</t>-Cycle tool<br/>"+
-        "<t color='#f0d498'>'ctrl'+'S'</t>-Export changes<br/>"+
-        "<t color='#f0d498'>'ctrl'+'D'</t>-Cycle Island Colour Division.<br/>"+
-        "<t color='#f0d498'>'ctrl'+'R'</t>-Refresh Markers<br/>"+
-        "</t>",
-        true
+        "Refresh",
+        "<t size='1' align='left'>"+_diag_step_main+"</t>",
+        true,
+        200
     ] call A3A_fnc_customHint;
 };
 if (_silent) then {

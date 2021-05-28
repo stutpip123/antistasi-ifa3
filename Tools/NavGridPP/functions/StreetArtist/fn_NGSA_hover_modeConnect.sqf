@@ -55,26 +55,16 @@ if (A3A_NGSA_toolModeChanged) then {
     A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ICON";
     A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ICON";
     [
-        "Street Artist Help",
-        "<t size='1' align='left'><t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Connection Tool</t><br/>"+   // The titles use a special space for the underlining to work.
+        "Connection Tool",
+        "<t size='1' align='left'>"+
         "<t color='#f0d498'>'click'</t>-Select &amp; connect roads<br/>"+
         "<t color='#f0d498'>'shift'+'click'</t>-Create new node<br/>"+
         "<t color='#f0d498'>'alt'</t>-Deselect node<br/>"+
         "<t color='#f0d498'>'alt'+'click'</t>-Delete node<br/>"+
-        "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Connection Types</t><br/>"+   // The titles use a special space for the underlining to work.
-        "<t color='#f0d498'>'C'</t>-Cycle connection type.<br/>"+
-        "<t color='#f57a21'>Orange</t>-Track, dirt/narrow/bumpy<br/>"+
-        "<t color='#cfc01c'>Yellow</t>-Road, asphalt/cement/smooth/<br/>"+
-        "<t color='#26c91e'>Green</t>-Main Road, smooth/wide/large turns<br/>"+
-        "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>Node Connections</t><br/>"+   // The titles use a special space for the underlining to work.
-        "Black:0  Red:1  Orange:2  Yellow:3  Green:4  Blue:5+<br/>"+
-        "<t size='1.2' color='#f0d498' font='RobotoCondensed' align='center' underline='1'>General</t><br/>"+
-        "<t color='#f0d498'>'F'</t>-Cycle tool<br/>"+
-        "<t color='#f0d498'>'ctrl'+'S'</t>-Export changes<br/>"+
-        "<t color='#f0d498'>'ctrl'+'D'</t>-Cycle Island Colour Division.<br/>"+
-        "<t color='#f0d498'>'ctrl'+'R'</t>-Refresh Markers<br/>"+
+        "<t color='#f0d498'>'C'</t>-Cycle connection type."+
         "</t>",
-        true
+        true,
+        500
     ] call A3A_fnc_customHint;
 };
 

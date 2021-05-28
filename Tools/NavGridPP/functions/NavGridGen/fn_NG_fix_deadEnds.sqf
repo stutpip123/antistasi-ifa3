@@ -24,12 +24,12 @@ private _diag_step_sub = "";
 
 private _fnc_diag_render = { // call _fnc_diag_render;
     [
-        "Nav Grid++",
+        "Missing Road Check",
         "<t align='left'>" +
-        "Appling Fixes<br/>"+
-        "Missing Road Check<br/>"+
-        _diag_step_sub+"<br/>"+
-        "</t>"
+        _diag_step_sub+
+        "</t>",
+        true,
+        400
     ] remoteExec ["A3A_fnc_customHint",0];
 };
 
@@ -41,8 +41,9 @@ private _fnc_connectStructAndRoad = {
     private _otherStruct = _navRoadHM get str _otherRoad;
 
     if (_otherStruct isEqualType 0) exitWith {
-        [1,"Could not find index of '"+str _otherRoad+"' " + str (getPos _otherRoad) + ".","fn_NG_fix_deadEnds"] call A3A_fnc_log;
-        ["fn_NG_fix_deadEnds Error","Please check RPT."] call A3A_fnc_customHint;
+        private _crashText = "Could not find index of '"+str _otherRoad+"' " + str (getPos _otherRoad) + ".";
+        [1,_crashText,"fn_NG_fix_deadEnds"] call A3A_fnc_log;
+        ["fn_NG_fix_deadEnds Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
 
     _myStruct#1 pushBack _otherRoad;    // Original values are modified by reference

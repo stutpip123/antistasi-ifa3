@@ -27,3 +27,5 @@ However, all nav grids generated so far have X & Y shifting to try help roadAt. 
 The closest road to any nabPoint is part of the same line.
 
 There should be auto snapping.
+
+Road coordinates should be in AGL.

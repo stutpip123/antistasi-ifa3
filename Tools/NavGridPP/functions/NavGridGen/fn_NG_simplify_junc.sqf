@@ -26,12 +26,12 @@ private _diag_step_sub = "";
 
 private _fnc_diag_render = {
     [
-        "Nav Grid++",
+        "Simplifying Junctions",
         "<t align='left'>" +
-        "Simplifying navGrid<br/>"+
-        "Simplifying Junctions<br/>"+
-        _diag_step_sub+"<br/>"+
-        "</t>"
+        _diag_step_sub+
+        "</t>",
+        true,
+        400
     ] remoteExec ["A3A_fnc_customHint",0];
 };
 
@@ -52,8 +52,9 @@ private _fnc_disconnectStructs = {
     };
     if ((_myStruct#0) in _otherConnections || (_otherStruct#0) in _myConnections) then {
         throw ["CouldNotDisconnectStructs","CouldNotDisconnectStructs."];
-        [1,"CouldNotDisconnectStructs " + str (getPos (_myStruct#0)) + ", " + str (getPos (_otherStruct#0)) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
-        ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
+        private _crashText = "CouldNotDisconnectStructs " + str (getPos (_myStruct#0)) + ", " + str (getPos (_otherStruct#0)) + ".";
+        [1,_crashText,"fn_NG_simplify_junc"] call A3A_fnc_log;
+        ["fn_NG_simplify_junc Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
 };
 private _fnc_connectStructs = {
@@ -87,8 +88,9 @@ private _fnc_consumeStruct = {
         [_otherStruct,_x] call _fnc_disconnectStructs;
     } forEach _otherConnectedStructs;
     if ((_navRoadHM get str _otherRoad) #1 isNotEqualTo A3A_NG_const_emptyArray) then {
-        [1,"Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPos _otherRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
-        ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
+        private _crashText = "Tried to schedule deletion of non-orphan '"+_otherName+"' " + str (getPos _otherRoad) + ".";
+        [1,_crashText,"fn_NG_simplify_junc"] call A3A_fnc_log;
+        ["fn_NG_simplify_junc Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
     _navRoadHM deleteAt _otherName;
 
@@ -98,8 +100,9 @@ private _fnc_consumeStruct = {
 
         if !(_otherConnectedRoad in _myConnections) then {
             if !(str _otherConnectedRoad in _navRoadHM) then {
-                [1,"Tried to connect to orphan '"+str _otherConnectedRoad+"' " + str (getPos _otherConnectedRoad) + ".","fn_NG_simplify_junc"] call A3A_fnc_log;
-                ["fn_NG_simplify_junc Error","Please check RPT."] call A3A_fnc_customHint;
+                private _crashText = "Tried to connect to orphan '"+str _otherConnectedRoad+"' " + str (getPos _otherConnectedRoad) + ".";
+                [1,_crashText,"fn_NG_simplify_junc"] call A3A_fnc_log;
+                ["fn_NG_simplify_junc Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
             };
 
             [_myStruct,_otherConnectedStruct] call _fnc_connectStructs;

@@ -22,12 +22,12 @@ params [
 private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
     params ["_diag_step_sub"];
     private _customHintParams = [
-        "Nav Grid++",
+        "Converting navGrid to navFlatHM",
         "<t align='left'>"+
-        "Converting navGrid to navFlatHM<br/>"+
-        _diag_step_sub+"<br/>"+
+        _diag_step_sub+
         "</t>",
-        true
+        true,
+        400
     ];
     _customHintParams call A3A_fnc_customHint;
     _customHintParams remoteExec ["A3A_fnc_customHint",-clientOwner];

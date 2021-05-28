@@ -34,12 +34,12 @@ private _fnc_diag_report = {
     params ["_diag_step_main"];
 
     private _hintData = [
-        "Nav Grid++",
+        "Drawing Lines",
         "<t align='left'>" +
-        "Drawing Lines" +
-        _diag_step_main+"<br/>"+
+        _diag_step_main+
         "</t>",
-        true
+        true,
+        200
     ];
     _hintData call A3A_fnc_customHint;
     _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];

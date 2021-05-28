@@ -21,17 +21,18 @@ private _fnc_diag_report = {
 
     [3,_diag_step_main,"fn_NGSA_action_save"] call A3A_fnc_log;
     private _hintData = [
-        "Street Artist",
+        "Export",
         "<t align='left'>" +
-        _diag_step_main+"<br/>"+
+        _diag_step_main+
         "</t>",
-        true
+        false,
+        200
     ];
     _hintData call A3A_fnc_customHint;
     _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
 };
 
-"Saving in progress..." call _fnc_diag_report;
+"navGridHM is being processed." call _fnc_diag_report;
 
 private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
 private _navGridDB = [_navGridHM] call A3A_fnc_NG_convert_navGridHM_navGridDB;
@@ -42,4 +43,4 @@ private _navGridDB_formatted = ("/*{""systemTimeUCT_G"":"""+(systemTimeUTC call 
 ") + ([_navGridDB] call A3A_fnc_NG_format_navGridDB);
 copyToClipboard _navGridDB_formatted;
 
-"Saved!<br/>navGridDB copied to clipboard!" call _fnc_diag_report;
+"Exported!<br/>navGridDB copied to clipboard!" call _fnc_diag_report;

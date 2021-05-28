@@ -44,12 +44,12 @@ private _fnc_diag_report = {
 
     [3,_diag_step_main+" | "+_diag_step_sub,"fn_NG_main"] call A3A_fnc_log;
     private _hintData = [
-        "Nav Grid++",
+        _diag_step_main,
         "<t align='left'>" +
-        _diag_step_main+"<br/>"+
-        _diag_step_sub+"<br/>"+
+        _diag_step_sub+
         "</t>",
-        true
+        true,
+        500
     ];
     _hintData call A3A_fnc_customHint;
     _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
@@ -119,5 +119,5 @@ try {
         [] call A3A_fnc_NGSA_main;
     };
 } catch {
-    ["NavGrid Error",str _exception] call A3A_fnc_customHint;
+    ["Generation Error",str _exception,false,600] call A3A_fnc_customHint;
 };

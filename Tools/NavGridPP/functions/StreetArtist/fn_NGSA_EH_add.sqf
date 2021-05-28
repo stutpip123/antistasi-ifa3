@@ -133,4 +133,45 @@ private _missionEH_keyUp = _gameWindow displayAddEventHandler ["KeyUp", {
 [localNamespace,"A3A_NGPP","missionEH_keyDown",_missionEH_keyDown] call Col_fnc_nestLoc_set;
 [localNamespace,"A3A_NGPP","missionEH_keyUp",_missionEH_keyUp] call Col_fnc_nestLoc_set;
 
+// ID 600 is not dropped in case there was a critical error that did not halt the process.
+[
+    "No Tool Selected",
+    "",
+    true,
+    500
+] call A3A_fnc_customHint;
+[
+    "Marker Legend",
+    "<t size='1' align='left'>"+
+    "<t color='#f0d498' align='center' underline='1'>Connection Types</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t color='#f57a21'>Orange</t>-Track, dirt/narrow/bumpy<br/>"+
+    "<t color='#cfc01c'>Yellow</t>-Road, asphalt/cement/smooth/<br/>"+
+    "<t color='#26c91e'>Green</t>-Main Road, smooth/wide/large turns<br/>"+
+    "<t color='#f0d498' align='center' underline='1'>Node Connections</t><br/>"+   // The titles use a special space for the underlining to work.
+    "Black:0  Red:1  Orange:2<br/>"+
+    "Yellow:3  Green:4  Blue:5+"+
+    "</t>",
+    true,
+    450
+] call A3A_fnc_customHint;
+[
+    "Display",
+    "<t size='1' align='left'>"+
+    "<t color='#f0d498'>'ctrl'+'D'</t>-Cycle Island Colour Division.<br/>"+
+    "<t color='#f0d498'>'ctrl'+'R'</t>-Refresh Markers"+
+    "</t>",
+    true,
+    400
+] call A3A_fnc_customHint;
+[
+    "General",
+    "<t size='1' align='left'>"+
+    "<t color='#f0d498'>'F'</t>-Cycle tool<br/>"+
+    "<t color='#f0d498'>'ctrl'+'S'</t>-Export changes"+
+    "</t>",
+    true,
+    300
+] call A3A_fnc_customHint;
+200 call A3A_fnc_customHintDrop;
+
 true;

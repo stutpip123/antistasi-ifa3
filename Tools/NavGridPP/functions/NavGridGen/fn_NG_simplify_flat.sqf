@@ -28,12 +28,12 @@ private _diag_step_sub = "";
 
 private _fnc_diag_render = { // call _fnc_diag_render;
     [
-        "Nav Grid++",
+        "Simplifying Flat Segments",
         "<t align='left'>" +
-        "Simplifying navGrid<br/>"+
-        "Simplifying Flat Segments<br/>"+
-        _diag_step_sub+"<br/>"+
-        "</t>"
+        _diag_step_sub+
+        "</t>",
+        true,
+        400
     ] remoteExec ["A3A_fnc_customHint",0];
 };
 
@@ -42,8 +42,9 @@ private _fnc_replaceRoadConnection = {
     private _connectionRoads = _roadStruct#1;
     private _conIndex = _connectionRoads find _oldRoadConnection;
     if (_conIndex == -1) exitWith {
-        [4,"Road '"+str (_roadStruct#0)+"' " + str getPos (_roadStruct#0) + " was not connected to old road '"+str _oldRoadConnection+"' " + str getPos _oldRoadConnection + ".","fn_NG_simplify_flat"] call A3A_fnc_log;
-        ["fn_NG_simplify_flat Error","Please check RPT."] call A3A_fnc_customHint;
+        private _crashText = "Road '"+str (_roadStruct#0)+"' " + str getPos (_roadStruct#0) + " was not connected to old road '"+str _oldRoadConnection+"' " + str getPos _oldRoadConnection + ".";
+        [4,_crashText,"fn_NG_simplify_flat"] call A3A_fnc_log;
+        ["fn_NG_simplify_flat Error","Please check RPT.<br/>"+_crashText,false,600] call A3A_fnc_customHint;
     };
     _connectionRoads set [_conIndex,_newRoadConnection];
     (_roadStruct#2) set [_conIndex,_newDistance];

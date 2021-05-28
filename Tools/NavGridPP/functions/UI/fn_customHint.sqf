@@ -6,7 +6,6 @@ Description:
     Adds item to notification queue.
     Pre-parse body text to take control of the space in-between the top A3 icon and footer.
     Note: you don't need pre-parse for custom heading/body XML, just insert where plain text would go.
-    Set A3A_customHintEnable=false to use original custom hint.
 
 Scope:
     <LOCAL> Execute on each player to add a global notification.
@@ -18,7 +17,7 @@ Parameters:
     <STRING> Heading of your notification.
     <STRING> Body of your notification. | <TEXT> Provide whole notification (except footer).
     <BOOLEAN> Silent Notification, false if you want to annoy players. [DEFAULT=false]
-    [<STRING>,<SCALER>] Icon Path & Aspect Ratio. [DEFAULT=["functions\UI\images\logo.paa",4] (512/128=4)]
+    <STRING> notification ID. Using the Same ID overwrites the previous notification. Notifications are sorted in descending order. Default = -1
 
 Returns:
     <BOOLEAN> true if it hasn't crashed; false if it does not have an interface; nil if it has crashed.
@@ -42,46 +41,39 @@ Authors: Michael Phillips(original customHint), Caleb Serafin
 License: MIT License, Copyright (c) 2019 Barbolani & The Official AntiStasi Community
 */
 params [
-    ["_headerText", "headermissingno", [""]],
-    ["_bodyText", "bodymissingno", ["",parseText""]],
+    ["_headerText", "headermissingno", ["",A3A_const_emptyText]],
+    ["_bodyText", "bodymissingno", ["",A3A_const_emptyText]],
     ["_isSilent", false, [false]],
-    ["_iconData", ["",1], [ [] ], 2]  // Will be used for GUI control version of customHints. Images can be baked into the message via XML or parseText so that the default header is not present. (See example `Pre-parse FooBar`)
+    ["_notificationID", -1, [0]]
 ];
-private _filename = "fn_customHint.sqf";
 
 if (!hasInterface) exitWith {false;}; // Disabled for server & HC.
-if (isNil {A3A_customHint_InitComplete}) then { [] call A3A_fnc_customHintInit; };
 
-private _structuredText = parseText"";
-if (_bodyText isEqualType parseText"") then {
-    _structuredText = _bodyText;
-} else {
-    _structuredText = parseText ([
-        "<t size='1' color='#ffffff' font='RobotoCondensed' align='center' valign='middle' underline='0' shadow='1' shadowColor='#000000' shadowOffset='0.0625' colorLink='#0099ff' ><t size='1.2' color='#e5b348' >",
-        _headerText,
-        "</t><br/><img size='0.60' color='#e6b24a' image='a3\ui_f\data\GUI\RscCommon\RscProgress\progressbar_ca.paa' /><br/><br/><t >",
-        _bodyText,
-        "</t><br/><br/><img size='0.60' color='#e6b24a' image='a3\ui_f\data\GUI\RscCommon\RscProgress\progressbar_ca.paa' /></t>"
-    ] joinString "");
-}; //
+private _fnc_parseIfString = {
+    params ["_stringOrText","_XMLAttributes"];
+    if (_stringOrText isEqualType A3A_const_emptyText) exitWith {_stringOrText};
+    parseText ("<t "+_XMLAttributes+" >"+_stringOrText+"</t>");
+};
 
-if (A3A_customHintEnable) then {
-    private _index = A3A_customHint_MSGs findIf {(_x #0) isEqualTo _headerText}; // Temporary solution until an programming-interface is added for counters and timers.
-    if (_index isEqualTo -1) then {
-        A3A_customHint_MSGs pushBack [_headerText,_structuredText,_isSilent];
-    } else {
-        A3A_customHint_MSGs set [_index,[_headerText,_structuredText,_isSilent]];
-    };
-    private _lastMSGIndex = count A3A_customHint_MSGs - 1;
-    if (A3A_customHint_MSGs #(_lastMSGIndex)#0 isEqualTo _headerText) then {
-        A3A_customHint_UpdateTime = serverTime;
-    };
+private _structuredText = composeText [
+    [_headerText,"size='1.2' color='#e5b348' font='RobotoCondensed' align='center' valign='middle' underline='0' shadow='1' shadowColor='#000000' shadowOffset='0.0625' colorLink='#0099ff'"] call _fnc_parseIfString,
+    lineBreak,
+    [_bodyText,"size='1' color='#ffffff' font='RobotoCondensed' align='center' valign='middle' underline='0' shadow='1' shadowColor='#000000' shadowOffset='0.0625' colorLink='#0099ff'"] call _fnc_parseIfString
+];
+
+private _index = A3A_customHint_MSGs findIf {(_x#0) <= _notificationID};
+if (_index isEqualTo -1) then {
+    A3A_customHint_MSGs pushBack [_notificationID,_structuredText];
 } else {
-    _structuredText = composeText [parseText "<img size='2.1' color='#ffffffff' shadowOffset='0.06' image='functions\UI\images\logo.paa' /><br/>",_structuredText];
-    if (_isSilent) then {
-        hintSilent _structuredText;
+    if (A3A_customHint_MSGs#_index#0 == _notificationID) then {
+        A3A_customHint_MSGs set [_index,[_notificationID,_structuredText]];
     } else {
-        hint _structuredText;
+        A3A_customHint_MSGs insert [_index,[ [_notificationID,_structuredText] ]];
     };
 };
+
+A3A_customHint_playPing = A3A_customHint_playPing || !_isSilent;
+A3A_customHint_UpdateTime = serverTime;
+[] call A3A_fnc_customHintRender;
+
 true;

@@ -14,7 +14,7 @@ Environment:
     <ANY>
 
 Returns:
-    <BOOLEAN> true if it hasn't crashed; nil if it has crashed.
+    <BOOLEAN> true if hint pushed (change or refresh); false if no hint pushed; nil if it has crashed.
 
 Examples:
     call A3A_fnc_customHintRender;
@@ -25,38 +25,25 @@ License: MIT License, Copyright (c) 2019 Barbolani & The Official AntiStasi Comm
 
 private _filename = "fn_customHintRender.sqf";
 
-if (!hasInterface || !A3A_customHintEnable) exitWith {false;}; // Disabled for server & HC.
+if (!hasInterface) exitWith {false;}; // Disabled for server & HC.
 
-if (A3A_customHint_MSGs isEqualTo []) then {
-    hintSilent "";
-} else{
-    private _autoDismiss = 120;  // Number of seconds for message lifetime  // Constant Value
-    if (serverTime - A3A_customHint_UpdateTime > _autoDismiss) exitWith {
-        [true] call A3A_fnc_customHintDismiss;
-    };
-    private _alphaHex = [(((_autoDismiss + A3A_customHint_UpdateTime - serverTime) min (_autoDismiss-5)) / (_autoDismiss-5)) ] call A3A_fnc_shader_ratioToHex;
-    private _dismissKey = actionKeysNames ["User12",1];
-    private _topMSGIndex = count A3A_customHint_MSGs - 1;
-    private _keyBind = (["<br/><t size='0.8' color='#",_alphaHex,"e5b348' shadow='1' shadowColor='#",_alphaHex,"000000' valign='top' >Press <t color='#",_alphaHex,"f0d498' >",[_dismissKey,"Use Action 12"] select (_dismissKey isEqualTo ""),"</t> to dismiss notification. +",str _topMSGIndex,"</t>"] joinString ""); // Needs to be added to string table.
-    private _previousNotifications = ["<t color='#",_alphaHex,"e5b348' font='RobotoCondensed' align='center' valign='middle' underline='0' shadow='1' shadowColor='#",_alphaHex,"000000' shadowOffset='0.0625'>"];
-    if (_topMSGIndex < 4) then {
-        private _size = 1*(-20/(8-_topMSGIndex) +4.6);
-        _previousNotifications append ["<img size='",_size,"' color='#",_alphaHex,"a71f1f' shadowOffset='",_size*0.03,"' image='a3\ui_f\data\Logos\arma3_shadow_ca.paa'/><t size='",0.9*_size,"' color='#",_alphaHex,"a71f1f' font='PuristaSemiBold' >ANTISTASI<br/>"];
-    };
-    for "_i" from 0 max (4-_topMSGIndex) to 3 do {
-        _previousNotifications append ["<t size='",-10/(_i+5) +2.3,"'>",A3A_customHint_MSGs#(_topMSGIndex-4+_i)#0,"</t><br/>"];
-    };
-    _previousNotifications pushBack "</t>";
-    _previousNotifications = _previousNotifications joinString "";
-
-    _structuredText = composeText [parseText _previousNotifications,A3A_customHint_MSGs#(_topMSGIndex)#1, parseText _keyBind];
-    if (A3A_customHint_MSGs#(_topMSGIndex)#2) then {
-        hintSilent _structuredText;
+private _fnc_hint = {
+    if (A3A_customHint_playPing) then {
+        hint A3A_customHint_cachedStructuredText;
+        A3A_customHint_playPing = false; // so it does not ping more than once.
     } else {
-        hint _structuredText;
-        A3A_customHint_MSGs#(_topMSGIndex) set [2,true]; // so it does not ping more than once.
+        hintSilent A3A_customHint_cachedStructuredText;
     };
 };
+
+if (A3A_customHint_MSGs isEqualTo A3A_customHint_previousMSGs) exitWith {
+    call _fnc_hint;
+};
+A3A_customHint_previousMSGs = +A3A_customHint_MSGs;
+
+private _structuredText = composeText flatten [A3A_customHint_const_logo, A3A_customHint_MSGs apply {[A3A_customHint_const_divider, _x#1]} ];
+A3A_customHint_cachedStructuredText = _structuredText;
+call _fnc_hint;
 true;
 
 // Arma 3 Apex #218a36 // BIS Website Differs incorrectly from in-game

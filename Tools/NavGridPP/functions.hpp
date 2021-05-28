@@ -57,8 +57,8 @@ class A3A {
     };
     class UI {
         class customHint {};
-        class customHintDismiss {};
-        class customHintInit {};
+        class customHintDrop {};
+        class customHintInit { preInit = 1; };
         class customHintRender {};
         class shader_ratioToHex {};
     };

@@ -29,7 +29,7 @@ if (!visibleMap) exitWith {nil};
 
 
 if ("f" in A3A_NGSA_depressedKeysHM) then {
-    A3A_NGSA_clickModeEnum = ((A3A_NGSA_clickModeEnum + 1) mod 3) max 1;  // 1 or 2
+    [] call A3A_fnc_NGSA_action_changeTool;
     A3A_NGSA_toolModeChanged = true;
 };
 if ("c" in A3A_NGSA_depressedKeysHM) then {
@@ -46,7 +46,7 @@ switch (true) do {
         [] spawn A3A_fnc_NGSA_action_refresh;
     };
     case ((A3A_NGSA_depressedKeysHM getOrDefault ["d",[]]) isEqualTo [false,true,false]): {   // ctrl + d
-        call A3A_fnc_NGSA_action_changeColours;
+        [] call A3A_fnc_NGSA_action_changeColours;
     };
     default {
         _actionExecuted = false;

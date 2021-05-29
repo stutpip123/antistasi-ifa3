@@ -29,16 +29,16 @@ private _region_y_centre = floor (_pos#1 / 100);
 
 // Unrolled loop since it is small and finite.
 private _posList = [];
-_posList append (_posRegionHM get [_region_x,_region_y_centre-1]);    // Does not matter if it goes out of map range, append handles nil.
-_posList append (_posRegionHM get [_region_x,_region_y_centre  ]);
-_posList append (_posRegionHM get [_region_x,_region_y_centre+1]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre-1],[] ]);    // Does not matter if it goes out of map range, append handles nil.
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre  ],[] ]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre+1],[] ]);
 _region_x = _region_x +1;
-_posList append (_posRegionHM get [_region_x,_region_y_centre-1]);
-_posList append (_posRegionHM get [_region_x,_region_y_centre  ]);
-_posList append (_posRegionHM get [_region_x,_region_y_centre+1]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre-1],[] ]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre  ],[] ]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre+1],[] ]);
 _region_x = _region_x +1;
-_posList append (_posRegionHM get [_region_x,_region_y_centre-1]);
-_posList append (_posRegionHM get [_region_x,_region_y_centre  ]);
-_posList append (_posRegionHM get [_region_x,_region_y_centre+1]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre-1],[] ]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre  ],[] ]);
+_posList append (_posRegionHM getOrDefault [ [_region_x,_region_y_centre+1],[] ]);
 
 _posList;

@@ -48,7 +48,7 @@ if (_thickness > 0) then {
         case "islandIDDeadEnd": {  // select by island ID, no dead end marking involved
             A3A_NGSA_const_allMarkerColours # ((_leftStruct #1) mod A3A_NGSA_const_allMarkerColoursCount);
         };
-        default { // none
+        default { // normal & normalOffroad
             _const_roadColourClassification #_roadTypeEnum;
         };
     };

@@ -56,7 +56,7 @@ private _fnc_parseIfString = {
 };
 
 private _structuredText = composeText [
-    [_headerText,"size='1.2' color='#e5b348' font='RobotoCondensed' align='center' valign='middle' underline='0' shadow='1' shadowColor='#000000' shadowOffset='0.0625' colorLink='#0099ff'"] call _fnc_parseIfString,
+    [_headerText,"size='1.1' color='#e5b348' font='RobotoCondensed' align='center' valign='middle' underline='0' shadow='1' shadowColor='#000000' shadowOffset='0.0625' colorLink='#0099ff'"] call _fnc_parseIfString,
     lineBreak,
     [_bodyText,"size='1' color='#ffffff' font='RobotoCondensed' align='center' valign='middle' underline='0' shadow='1' shadowColor='#000000' shadowOffset='0.0625' colorLink='#0099ff'"] call _fnc_parseIfString
 ];

@@ -38,17 +38,6 @@ if (A3A_NGSA_toolModeChanged) then {
     A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ELLIPSE";
     A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ELLIPSE";
     A3A_NGSA_UI_marker1_name setMarkerBrushLocal "Border";
-    [
-        "Brush Tool",
-        "<t size='1' align='left'>"+
-        "<t color='#f0d498'>'click'</t>-Set connection to selected type<br/>"+
-        "<t color='#f0d498'>'shift'+'click'</t>-Double the brush size<br/>"+
-        "<t color='#f0d498'>'alt'+'click'</t>-Delete nodes under brush.<br/>"+
-        "<t color='#f0d498'>'C'</t>-Cycle connection type."+
-        "</t>",
-        true,
-        500
-    ] call A3A_fnc_customHint;
 };
 /*
 Marker0 is used for fill.

@@ -56,6 +56,6 @@ private _centreRegion = [floor (_pos#0/100),floor (_pos#1/100)];
 private _positions = [];
 {
     private _regionCode = _x vectorAdd _centreRegion select A3A_NG_const_pos2DSelect;
-    _positions append (_posRegionHM get _regionCode);
+    _positions append (_posRegionHM getOrDefault [_regionCode,[]]);
 } forEach A3A_NGSA_posRegionHM_pixelRadius_offsets;
 _positions;

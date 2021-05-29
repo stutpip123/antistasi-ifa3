@@ -30,14 +30,13 @@ A3A_NGSA_maxSelectionRadius = _fullSelectionRadius min 150;         // Note, due
 A3A_NGSA_modeConnect_lineName setMarkerAlphaLocal 0;
 
 switch (A3A_NGSA_clickModeEnum) do {
-    case 0: { };    // Nothing
-    case 1: {       // Connections
+    case 0: {       // Connections
         [_worldPos] call A3A_fnc_NGSA_hover_modeConnect;
     };
-    case 2: {       // Brush Node Deletion/Connection Types
+    case 1: {       // Brush Node Deletion/Connection Types
         [_worldPos] call A3A_fnc_NGSA_hover_modeBrush;
     };
-    case 3: {       // Toggle Render region
+    case 2: {       // Toggle Render region
 
     };
     default {       // Error

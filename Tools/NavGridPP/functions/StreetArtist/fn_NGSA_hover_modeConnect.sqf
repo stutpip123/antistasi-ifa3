@@ -54,18 +54,6 @@ private _lineBrush = "SolidFull";
 if (A3A_NGSA_toolModeChanged) then {
     A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ICON";
     A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ICON";
-    [
-        "Connection Tool",
-        "<t size='1' align='left'>"+
-        "<t color='#f0d498'>'click'</t>-Select &amp; connect roads<br/>"+
-        "<t color='#f0d498'>'shift'+'click'</t>-Create new node<br/>"+
-        "<t color='#f0d498'>'alt'</t>-Deselect node<br/>"+
-        "<t color='#f0d498'>'alt'+'click'</t>-Delete node<br/>"+
-        "<t color='#f0d498'>'C'</t>-Cycle connection type."+
-        "</t>",
-        true,
-        500
-    ] call A3A_fnc_customHint;
 };
 
 /*

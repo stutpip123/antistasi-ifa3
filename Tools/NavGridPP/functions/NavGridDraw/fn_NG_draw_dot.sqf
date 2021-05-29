@@ -48,13 +48,23 @@ if (_dot_size > 0) then {
     private _const_dot_size = [_dot_size, _dot_size];
     private _const_dot_types = ["mil_dot","mil_triangle"];
 
+    private _deadEnd = count (_struct#3) < 2;
+    private _offRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false] isEqualTo A3A_NG_const_emptyArray;
     private _specialColouring = [localNamespace,"A3A_NGPP","draw","specialColouring", "none"] call Col_fnc_nestLoc_get;
     private _colour = switch (_specialColouring) do {
+        case "normalOffroad": {  // select by island ID
+            switch (true) do {
+                case (_deadEnd && _offRoad): { "ColorEAST" };
+                case (_deadEnd): { "ColorRed" };
+                case (_offRoad): { "ColorPink" };
+                default { "ColorKhaki" };
+            };
+        };
         case "islandID": {  // select by island ID
             A3A_NGSA_const_allMarkerColours # ((_struct #1) mod A3A_NGSA_const_allMarkerColoursCount);
         };
         case "islandIDDeadEnd": {  // select by island ID
-                if (count (_struct#3) < 2) exitWith {A3A_NGSA_const_markerColourAccent1}; // MarkDeadEnds or islands
+                if (_deadEnd) exitWith {A3A_NGSA_const_markerColourAccent1}; // MarkDeadEnds or islands
                 A3A_NGSA_const_allMarkerColours # ((_struct #1) mod A3A_NGSA_const_allMarkerColoursCount);
         };
         default { // none
@@ -63,16 +73,14 @@ if (_dot_size > 0) then {
     };
 
     private _exists = _markerStructs set [_name,true];
-    private _onRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false] isEqualTo A3A_NG_const_emptyArray;
-
-    if (_exists && _onRoad) then {  // Makes sure that the marker is on top when redrawn.
+    if (_exists && (_offRoad || _deadEnd)) then {  // Makes sure that the marker is on top when redrawn.
         deleteMarker _name;
         _exists = false;
     };
 
     if (!_exists) then {
         createMarkerLocal [_name,_pos];
-        _name setMarkerTypeLocal (_const_dot_types select (_onRoad));   // Draw triangles where there are no roads.
+        _name setMarkerTypeLocal (_const_dot_types select (_offRoad));   // Draw triangles where there are no roads.
     };
     _name setMarkerSizeLocal _const_dot_size;
     _name setMarkerColor _colour;

@@ -8,7 +8,6 @@ Sub Step + Details  400
 Editor notificationIDs
 
 Active Tool         500
-Marker Legend       450
-Display Actions     400
+Marker Legend       400
 General             300
 Current Operation   200

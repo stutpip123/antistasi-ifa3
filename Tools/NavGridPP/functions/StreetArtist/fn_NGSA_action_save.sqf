@@ -9,9 +9,6 @@ Scope: Client, Local Arguments, Local Effect
 Environment: Any
 Public: No
 
-Dependencies:
-    <SCALAR> A3A_NGSA_clickModeEnum Currently select click mode
-
 Example:
     call A3A_fnc_NGSA_action_save;
 */

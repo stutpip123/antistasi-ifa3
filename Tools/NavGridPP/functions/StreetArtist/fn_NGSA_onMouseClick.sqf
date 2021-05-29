@@ -39,14 +39,13 @@ if !(_leftClick) exitWith {};
 private _worldPos = findDisplay 12 displayCtrl 51 ctrlMapScreenToWorld [_xPos, _yPos];
 
  switch (A3A_NGSA_clickModeEnum) do {
-    case 0: { };    // Nothing
-    case 1: {       // Connections
+    case 0: {       // Connections
         [_worldPos ,_shift, _ctrl, _alt] call A3A_fnc_NGSA_click_modeConnect;
     };
-    case 2: {       // Node Deletion brush
+    case 1: {       // Node Deletion brush
         // All done in onUIUpdate
     };
-    case 3: {       // Toggle Render region
+    case 2: {       // Toggle Render region
 
     };
     default {       // Error

@@ -63,7 +63,7 @@ private _colourDelegate = switch (_specialColouring) do {
     case "islandIDDeadEnd": {  // select by island ID, no dead end marking involved
         {A3A_NGSA_const_allMarkerColours # ((_myStruct #1) mod A3A_NGSA_const_allMarkerColoursCount)};
     };
-    default { // none
+    default { // normal & normalOffroad
        {_const_roadColourClassification #(_x#1)};
     };
 };

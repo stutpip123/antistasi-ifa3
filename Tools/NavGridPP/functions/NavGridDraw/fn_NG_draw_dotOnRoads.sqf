@@ -82,7 +82,7 @@ if (_dot_size > 0) then {
         private _deadEnd = count (_struct#3) < 2;
         private _offRoad = nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false] isEqualTo A3A_NG_const_emptyArray;
 
-        if (_exists && (_offRoad || _deadEnd)) then {  // Makes sure that the marker is on top when redrawn.
+        if (_exists && (_offRoad)) then {  // Makes sure that the marker is on top when redrawn.
             deleteMarker _name;
             _exists = false;
         };
@@ -90,6 +90,9 @@ if (_dot_size > 0) then {
         if (!_exists) then {
             createMarkerLocal [_name,_pos];
             _name setMarkerTypeLocal (_const_dot_types select (_offRoad));   // Draw triangles where there are no roads.
+        };
+        if (abs (_pos#2) >= 0.5) then {   // Display ATL height of floating points.
+            _name setMarkerTextLocal ("   " + (_pos#2 toFixed 1) + "m")
         };
         _name setMarkerSizeLocal _const_dot_size;
         _name setMarkerColor call _colourDelegate;

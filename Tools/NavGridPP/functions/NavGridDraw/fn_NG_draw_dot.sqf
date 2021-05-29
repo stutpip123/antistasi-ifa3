@@ -73,7 +73,7 @@ if (_dot_size > 0) then {
     };
 
     private _exists = _markerStructs set [_name,true];
-    if (_exists && (_offRoad || _deadEnd)) then {  // Makes sure that the marker is on top when redrawn.
+    if (_exists && (_offRoad)) then {  // Makes sure that the marker is on top when redrawn.
         deleteMarker _name;
         _exists = false;
     };
@@ -81,6 +81,9 @@ if (_dot_size > 0) then {
     if (!_exists) then {
         createMarkerLocal [_name,_pos];
         _name setMarkerTypeLocal (_const_dot_types select (_offRoad));   // Draw triangles where there are no roads.
+    };
+    if (abs (_pos#2) >= 0.5) then {   // Display ATL height of floating points.
+        _name setMarkerTextLocal ("   " + (_pos#2 toFixed 1) + "m")
     };
     _name setMarkerSizeLocal _const_dot_size;
     _name setMarkerColor _colour;

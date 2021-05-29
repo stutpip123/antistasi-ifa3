@@ -4,8 +4,8 @@ Maintainer: Caleb Serafin
     Will attempt to update marker colour if the marker exists.
 
 Arguments:
-    [_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]] Road Struct 1
-    [_pos2D,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]] Road Struct 2
+    [_posATL,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]] Road Struct 1
+    [_posATL,_islandID,_isJunction,[_conPos2D,_roadEnum,_distance]] Road Struct 2
     <SCALAR> What connection it should be [MAIN ROAD,ROAD,TRACK].
     <SCALAR> Override Distance [Default = -1]
 

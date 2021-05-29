@@ -9,7 +9,7 @@ Arguments:
 Return Value:
     <HASHMAP
         POS2D           Region code blocks. ([0,3] is between 0m x and 100m x; 300m y and 400m y)
-        Array<POS2D>    All positions within that region.
+        Array<POSATL>   All positions within that region.
     >
 
 Scope: Any

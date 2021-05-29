@@ -20,6 +20,7 @@ Public: No
 Dependencies:
     <HASHMAP> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "posRegionHM")
     <HASHMAP> nestLoc entry at (localNamespace >> "A3A_NGPP" >> "navGridHM")
+    <ARRAY> A3A_NG_const_emptyArray
 
 Example:
     [_worldPos ,_shift, _ctrl, _alt] call A3A_fnc_NGSA_hover_modeConnect;
@@ -29,8 +30,16 @@ params ["_worldPos"];
 private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
 private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
 
+private _showAddNode = "shift" in A3A_NGSA_depressedKeysHM;
+if (_showAddNode) then {
+    private _nearRoads = nearestTerrainObjects [_worldPos, A3A_NG_const_roadTypeEnum, A3A_NGSA_maxSelectionRadius, true, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};  // Bad roads need to be filtered out.
+    if (count _nearRoads > 0) then {
+        _showAddNode = !(getPosATL (_nearRoads#0) in _navGridHM); // Cannot add the same road.
+    };
+};
+
 private _targetPos = [];
-private _closestDistance = A3A_NGSA_maxSelectionRadius; // max selection
+private _closestDistance = [A3A_NGSA_maxSelectionRadius,2*A3A_NG_const_positionInaccuracy] select _showAddNode; // Prioritise adding roads.
 {
     private _distance = _x distance2D _worldPos;
     if (_distance < _closestDistance) then {
@@ -39,7 +48,7 @@ private _closestDistance = A3A_NGSA_maxSelectionRadius; // max selection
     };
 } forEach ([_navGridPosRegionHM,_worldPos] call A3A_fnc_NGSA_posRegionHM_allAdjacent);
 
-A3A_NGSA_modeConnect_targetExists = count _targetPos != 0;
+A3A_NGSA_modeConnect_targetExists = _targetPos isNotEqualTo A3A_NG_const_emptyArray;
 if (A3A_NGSA_modeConnect_targetExists) then {
     A3A_NGSA_modeConnect_targetNode = _navGridHM get _targetPos;
 };
@@ -55,7 +64,6 @@ if (A3A_NGSA_toolModeChanged) then {
     A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ICON";
     A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ICON";
 };
-
 /*
 Marker0 is used for icon under cursor.
 Marker1 is used for selected node.
@@ -67,11 +75,15 @@ A3A_NGSA_UI_marker1_name setMarkerColorLocal _lineColour;
 
 A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
 switch (true) do {       // Broadcast here.
-    case ("shift" in A3A_NGSA_depressedKeysHM && {!A3A_NGSA_modeConnect_targetExists}): {                       // Add new node
-        //A3A_NGSA_UI_marker0_pos = _worldPos;
-        _lineEndPos = _worldPos;
-        A3A_NGSA_UI_marker0_name setMarkerTypeLocal "mil_destroy_noShadow";
-        A3A_NGSA_UI_marker0_name setMarkerColorLocal (["ColorRed","ColorBlack"] select ([_worldPos] call A3A_fnc_NGSA_isValidRoad));
+    case (_showAddNode): {                       // Add new node
+        private _nearRoads = nearestTerrainObjects [_worldPos, A3A_NG_const_roadTypeEnum, A3A_NGSA_maxSelectionRadius, true, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};  // Bad roads need to be filtered out.
+        if (count _nearRoads > 0) then {
+            A3A_NGSA_UI_marker0_pos = getPosATL (_nearRoads#0);
+        };
+        _lineEndPos = A3A_NGSA_UI_marker0_pos;
+        A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_dotBaseSize, A3A_NGSA_dotBaseSize];
+        A3A_NGSA_UI_marker0_name setMarkerTypeLocal (["mil_triangle","mil_dot"] select (count _nearRoads > 0));
+        A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorBlack";
     };
     case ("alt" in A3A_NGSA_depressedKeysHM): {                         // Deselect current. Delete node.
         A3A_NGSA_modeConnect_selectedExists = false;
@@ -113,6 +125,7 @@ switch (true) do {       // Broadcast here.
         A3A_NGSA_UI_marker0_name setMarkerColorLocal _lineColour;
     };
 };
+A3A_NGSA_UI_marker0_name setMarkerTextLocal ((A3A_NGSA_UI_marker0_pos#2 toFixed 1) + "m");
 A3A_NGSA_UI_marker0_name setMarkerPos A3A_NGSA_UI_marker0_pos; // Broadcasts marker attributes here
 
 

@@ -35,7 +35,7 @@ params [
 
 private _myPos = _myStruct#0;
 private _otherPos = _otherStruct#0;
-private _middlePos = _myPos vectorAdd _otherPos vectorMultiply 0.5;
+private _middlePos = ((_myPos vectorAdd _otherPos vectorMultiply 0.5) select A3A_NG_const_pos2DSelect) call A3A_fnc_NGSA_getSurfaceATL;
 
 private _islandID = _myStruct#1;
 private _myConnections = _myStruct#3;

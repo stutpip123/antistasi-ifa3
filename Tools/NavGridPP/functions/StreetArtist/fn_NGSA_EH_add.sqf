@@ -21,6 +21,8 @@ Example:
     [] spawn A3A_fnc_NGSA_EH_add;
 */
 #include "\a3\ui_f\hpp\definedikcodes.inc";
+#define FIX_LINE_NUMBERS2(sharp) sharp##line __LINE__ __FILE__
+FIX_LINE_NUMBERS2(#)
 
 params [
     ["_navGridHM",0,[A3A_NG_const_hashMap]],
@@ -35,6 +37,7 @@ waitUntil {
     !isNull findDisplay 12 && !isNull findDisplay 46;
 };
 private _map = findDisplay 12;
+private _mapCtrl = _map displayCtrl 51;
 private _gameWindow = findDisplay 46;
 
 A3A_NGSA_DIKToKeyName = createHashMapFromArray [
@@ -59,6 +62,8 @@ A3A_NGSA_depressedKeysHM = createHashMap;    // Will always be sorted, this allo
 A3A_NGSA_dotBaseSize = 1.2;
 A3A_NGSA_lineBaseSize = 4;
 A3A_NGSA_nodeOnlyOnRoad = true;
+
+A3A_NGSA_heightTester = "Land_TacticalBacon_F" createVehicle [0,0,0];
 
 A3A_NGSA_clickModeEnum = 0;
 A3A_NGSA_toolModeChanged = true;
@@ -86,10 +91,12 @@ A3A_NGSA_refresh_busy = false;
 
 private _mapEH_mouseDown = _map displayAddEventHandler ["MouseButtonDown", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
-    if !(A3A_NGSA_depressedKeysHM set [["mbt0","mbt1"]#_button,[_shift, _ctrl, _alt]]) then {   // Will only be left or right
+    if !(A3A_NGSA_depressedKeysHM set [["mbt0","mbt1"]#_button,[_shift, _ctrl, _alt]]) exitWith {   // Will only be left or right
         _this call A3A_fnc_NGSA_onMouseClick;   // Only fires on new keys.
+        true;
     };
     nil;
+    true;
 }];
 private _mapEH_mouseUp = _map displayAddEventHandler ["MouseButtonUp", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
@@ -98,6 +105,10 @@ private _mapEH_mouseUp = _map displayAddEventHandler ["MouseButtonUp", {
 }];
 [localNamespace,"A3A_NGPP","mapEH_mouseDown",_mapEH_mouseDown] call Col_fnc_nestLoc_set;
 [localNamespace,"A3A_NGPP","mapEH_mouseUp",_mapEH_mouseUp] call Col_fnc_nestLoc_set;
+_gameWindow displayAddEventHandler ["MouseButtonDblClick", {
+    params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
+    visibleMap;   // Prevent adding markers.
+}];
 
 
 private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
@@ -114,9 +125,9 @@ private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
 
 
 
-private _missionEH_keyDown = _gameWindow displayAddEventHandler ["KeyDown", {
+private _missionEH_keyDown = _map displayAddEventHandler ["KeyDown", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
-    private _return = false;
+    private _return = nil;
     if ((A3A_NGSA_DIKToKeyName getOrDefault [_key,"none"]) isEqualTo "alt") then {
         A3A_NGSA_LastAltTime = serverTime;
     };
@@ -125,7 +136,7 @@ private _missionEH_keyDown = _gameWindow displayAddEventHandler ["KeyDown", {
     };
     _return;
 }];
-private _missionEH_keyUp = _gameWindow displayAddEventHandler ["KeyUp", {
+private _missionEH_keyUp = _map displayAddEventHandler ["KeyUp", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM deleteAt (A3A_NGSA_DIKToKeyName getOrDefault [_key,_key]);
     nil;

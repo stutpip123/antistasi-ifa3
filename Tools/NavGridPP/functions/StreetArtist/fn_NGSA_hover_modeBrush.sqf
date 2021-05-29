@@ -35,6 +35,7 @@ if ("shift" in A3A_NGSA_depressedKeysHM) then {
 };
 
 if (A3A_NGSA_toolModeChanged) then {
+    A3A_NGSA_UI_marker0_name setMarkerTextLocal "";
     A3A_NGSA_UI_marker0_name setMarkerShapeLocal "ELLIPSE";
     A3A_NGSA_UI_marker1_name setMarkerShapeLocal "ELLIPSE";
     A3A_NGSA_UI_marker1_name setMarkerBrushLocal "Border";

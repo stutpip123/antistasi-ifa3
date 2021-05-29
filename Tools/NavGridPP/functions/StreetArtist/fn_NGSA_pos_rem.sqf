@@ -3,12 +3,12 @@ Maintainer: Caleb Serafin
     Removes a road reference from navGridHM and posRegionHM
 
 Arguments:
-    <HASHMAP<POS2D,ANY>>    Position as Key.
+    <HASHMAP<POSATL,ANY>>   Position as Key.
     <HASHMAP<
         <POS2D>             Region code Key. (Not real pos)
         <ARRAY<POS2D>>      List of actual positions in region
     >
-    <POS2D>                 Position to remove
+    <POSATL>                Position to remove
 
 Return Value:
     <BOOLEAN> true if at least one was deleted, false if none were found.
@@ -25,7 +25,7 @@ Example:
 params [
     ["_navGridHM",0,[A3A_NG_const_hashMap]],
     ["_posRegionHM",0,[A3A_NG_const_hashMap]],
-    ["_pos",[],[ [] ],[2]]
+    ["_pos",[],[ [] ],[3]]
 ];
 
 private _bucket = _posRegionHM getOrDefault [[floor (_pos#0 / 100),floor (_pos#1 / 100)],A3A_NG_const_emptyArray];  // the empty array will not be modified or passed.

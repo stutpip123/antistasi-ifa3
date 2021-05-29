@@ -4,7 +4,7 @@ Maintainer: Caleb Serafin
 
 Arguments:
     <navRoadHM>
-    <POS2D>                 Position to remove
+    <POSATL>                Position to remove
 
 Return Value:
     <ANY> Undefined
@@ -20,7 +20,7 @@ Example:
 */
 params [
     ["_navGridHM",0,[A3A_NG_const_hashMap]],
-    ["_pos",[],[ [] ],[2]]
+    ["_pos",[],[ [] ],[3]]
 ];
 
 private _marker_lines = [localNamespace,"A3A_NGPP","draw","markers_connectionLine",0] call Col_fnc_nestLoc_get;

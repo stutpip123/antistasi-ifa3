@@ -5,7 +5,7 @@ Maintainer: Caleb Serafin
 
 Arguments:
     <HASHMAP> _posRegionHM
-    <POS2D> map position.
+    <POSATL> map position.
 
 Return Value:
     ARRAY<POS2D> Array of nearby nodes.

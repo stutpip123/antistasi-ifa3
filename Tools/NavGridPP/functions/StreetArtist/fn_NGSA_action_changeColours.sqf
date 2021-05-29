@@ -88,7 +88,7 @@ _selectorText set [_colourModeIndex, "<t color='#f0d498' size='1'>" + (_selector
 
 private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
 if (count _navGridHM <= A3A_NGSA_autoMarkerRefreshNodeMax) then {
-    [true] call A3A_fnc_NGSA_action_refresh;
+    [true] spawn A3A_fnc_NGSA_action_refresh;
 } else {
     [
         "Colour Mode Changed",

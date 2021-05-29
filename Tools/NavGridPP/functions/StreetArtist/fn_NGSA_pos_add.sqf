@@ -5,12 +5,12 @@ Maintainer: Caleb Serafin
     navGridHM will hold references to pos and walue data.
 
 Arguments:
-    <HASHMAP<POS2D,ANY>>    Position as Key.
+    <HASHMAP<POSATL,ANY>>   Position as Key.
     <HASHMAP<
         <POS2D>             Region code Key. (Not real pos)
-        <ARRAY<POS2D>>      List of actual positions in region
+        <ARRAY<POSATL>>     List of actual positions in region
     >
-    <POS2D>                 Position to add
+    <POSATL>                Position to add
     <ANY>                   Value to add to _navGridHM.
 
 Return Value:
@@ -28,7 +28,7 @@ Example:
 params [
     ["_navGridHM",0,[A3A_NG_const_hashMap]],
     ["_posRegionHM",0,[A3A_NG_const_hashMap]],
-    ["_pos",[],[ [] ],[2]],
+    ["_pos",[],[ [] ],[3]],
     "_valueData"
 ];
 

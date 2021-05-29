@@ -5,8 +5,8 @@ Maintainer: Caleb Serafin
 
 Arguments:
     <HASHMAP> The first argument
-    <POS3D> Position 1
-    <POS3D> Position 2
+    <POSATL> Position 1
+    <POSATL> Position 2
 
 Return Value:
     <BOOL> True if middle point is needed, false if it is not needed.
@@ -31,7 +31,6 @@ params [
 private _leftRoad = nearestTerrainObjects [_leftPos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false];
 private _rightRoad = nearestTerrainObjects [_rightPos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false];
 if (_leftRoad isEqualTo A3A_NG_const_emptyArray || _rightRoad isEqualTo A3A_NG_const_emptyArray) exitWith {
-    systemChat ("At least one is offroad.");
     false;   // If one is already off a road, then there is no need to add a middle pos.
 };
 _leftRoad = _leftRoad#0;
@@ -41,7 +40,6 @@ private _checkedPositionsHM = createHashMapFromArray [[getPosATL _leftRoad,true]
 private _nextRoads = [_leftRoad];
 private _addMiddleNode = true;
 while {count _nextRoads > 0} do {
-    systemChat ("Scanning " + str count _nextRoads + " roads for connection.");
     _nextRoads = flatten (_nextRoads apply {
         private _current = _x;
         roadsConnectedTo [_current,true] select {
@@ -51,7 +49,6 @@ while {count _nextRoads > 0} do {
     });
     _checkedPositionsHM insert ( _nextRoads apply {[getPosATL _x,true]} );
     if (_rightRoad in _nextRoads) exitWith {
-        systemChat ("They are connected by roads.");
         _addMiddleNode = false;
     };
     _nextRoads = _nextRoads select {!(getPosATL _x in _navGridHM)};

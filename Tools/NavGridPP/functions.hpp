@@ -37,11 +37,11 @@ class A3A {
         class NGSA_correctPositions {};
         class NGSA_EH_add {};
         class NGSA_EH_rem {};
+        class NGSA_getSurfaceATL {};
         class NGSA_hover_modeBrush {};
         class NGSA_hover_modeConnect {};
         class NGSA_import {};
         class NGSA_insertMiddleNode {};
-        class NGSA_isValidRoad {};
         class NGSA_main {};
         class NGSA_navGridHM_refresh_islandID {};
         class NGSA_node_disconnect {};

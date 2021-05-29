@@ -9,7 +9,7 @@ Arguments:
     <BOOLEAN> _alt
 
 Return Value:
-    <BOOLEAN> true if deleted, false if not found.
+    <ANY> nil is not action. <BOOLEAN> True if action.
 
 Scope: Client, Local Arguments, Local Effect
 Environment: Unscheduled
@@ -35,15 +35,15 @@ private _select = {
     A3A_NGSA_UI_marker1_name setMarkerPos A3A_NGSA_UI_marker1_pos; // Broadcasts marker attributes here
 };
 
-systemChat (str serverTime);
+private _actionFired = true;
 switch (true) do {       // Broadcast here.
-    case ("shift" in A3A_NGSA_depressedKeysHM && {!A3A_NGSA_modeConnect_targetExists}): {
-        A3A_NGSA_modeConnect_targetNode = [A3A_NGSA_UI_marker0_pos,0,false,[]];
+    case ("shift" in A3A_NGSA_depressedKeysHM && !A3A_NGSA_modeConnect_targetExists): {
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _posRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
         if ([A3A_NGSA_UI_marker0_pos, _navGridHM, _posRegionHM] call A3A_fnc_NGSA_canAddPos) then {
-            [_navGridHM,_posRegionHM,A3A_NGSA_UI_marker0_pos,A3A_NGSA_modeConnect_targetNode] call A3A_fnc_NGSA_pos_add;    // Island ID will not be accurate.
+            A3A_NGSA_modeConnect_targetNode = [A3A_NGSA_UI_marker0_pos,0,false,[]];
 
+            [_navGridHM,_posRegionHM,A3A_NGSA_UI_marker0_pos,A3A_NGSA_modeConnect_targetNode] call A3A_fnc_NGSA_pos_add;    // Island ID may not be accurate.
             [A3A_NGSA_modeConnect_targetNode] call A3A_fnc_NG_draw_dot;
 
             private _isConnected = false;
@@ -53,13 +53,12 @@ switch (true) do {       // Broadcast here.
             if (_isConnected && {[_navGridHM, A3A_NGSA_modeConnect_selectedNode#0, A3A_NGSA_modeConnect_targetNode#0] call A3A_fnc_NGSA_shouldAddMiddleNode}) then {
                 [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,_navGridHM,_posRegionHM] call A3A_fnc_NGSA_insertMiddleNode;
             };
+            call _select;
+            call A3A_fnc_NGSA_refreshMarkerOrder;
+            call A3A_fnc_NGSA_action_autoRefresh;
         };
-
-        call _select;
-        call A3A_fnc_NGSA_refreshMarkerOrder;
-        call A3A_fnc_NGSA_action_autoRefresh;
     };
-    case (!A3A_NGSA_modeConnect_targetExists): _deselect;
+    case (A3A_NGSA_modeConnect_selectedExists && !A3A_NGSA_modeConnect_targetExists): _deselect;
     case ("alt" in A3A_NGSA_depressedKeysHM): {
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _posRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
@@ -72,9 +71,9 @@ switch (true) do {       // Broadcast here.
         _markerStructs deleteAt _name;
         call A3A_fnc_NGSA_action_autoRefresh;
     };
-    case (!A3A_NGSA_modeConnect_selectedExists): _select;
-    case (A3A_NGSA_modeConnect_selectedNode isEqualTo A3A_NGSA_modeConnect_targetNode): _deselect;
-    default {
+    case (!A3A_NGSA_modeConnect_selectedExists && A3A_NGSA_modeConnect_targetExists): _select;
+    case (A3A_NGSA_modeConnect_selectedExists && (A3A_NGSA_modeConnect_selectedNode isEqualTo A3A_NGSA_modeConnect_targetNode)): _deselect;
+    case (A3A_NGSA_modeConnect_selectedExists && A3A_NGSA_modeConnect_targetExists): {
         private _isConnected = [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _posRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
@@ -87,4 +86,8 @@ switch (true) do {       // Broadcast here.
         call A3A_fnc_NGSA_refreshMarkerOrder;
         call A3A_fnc_NGSA_action_autoRefresh;
     };
+    default {
+        _actionFired = nil
+    }
 };
+_actionFired;

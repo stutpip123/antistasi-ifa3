@@ -1,3 +1,5 @@
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
 if (player != theBoss) exitWith {["Move HQ", "Only Player Commander is allowed to move HQ assets"] call A3A_fnc_customHint;};
 private ["_thingX","_playerX","_id","_sites","_markerX","_size","_positionX"];
 
@@ -8,7 +10,7 @@ _id = _this select 2;
 if (!(isNull attachedTo _thingX)) exitWith {["Move HQ", "The asset you want to move is being moved by another player"] call A3A_fnc_customHint;};
 if (vehicle _playerX != _playerX) exitWith {["Move HQ", "You cannot move HQ assets while in a vehicle"] call A3A_fnc_customHint;};
 
-if ({!(isNull _x)} count (attachedObjects _playerX) != 0) exitWith {["Move HQ", "You have other things attached, you cannot move this"] call A3A_fnc_customHint;};
+if (([_playerX] call A3A_fnc_countAttachedObjects) > 0) exitWith {["Move HQ", "You have other things attached, you cannot move this"] call A3A_fnc_customHint;};
 _sites = markersX select {sidesX getVariable [_x,sideUnknown] == teamPlayer};
 _markerX = [_sites,_playerX] call BIS_fnc_nearestPosition;
 _size = [_markerX] call A3A_fnc_sizeMarker;
@@ -25,8 +27,8 @@ _thingX attachTo [_playerX, [0, _spacing, _height]];
 private _fnc_placeObject = {
 	params [["_thingX", objNull], ["_playerX", objNull], ["_dropObjectActionIndex", -1]];
 
-	if (isNull _thingX) exitWith {diag_log "[Antistasi] Error, trying to place invalid HQ object"};
-	if (isNull _playerX) exitWith {diag_log "[Antistasi] Error, trying to place HQ object with invalid player"};
+	if (isNull _thingX) exitWith {Error("trying to place invalid HQ object")};
+	if (isNull _playerX) exitWith {Error("trying to place HQ object with invalid player")};
 
 	if (!(_thingX getVariable ["objectBeingMoved", false])) exitWith {};
 

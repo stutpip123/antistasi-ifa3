@@ -1,6 +1,6 @@
 if (!isServer and hasInterface) exitWith{};
-
-private _fileName = "fn_createCIV.sqf";
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
 
 private ["_markerX","_dataX","_numCiv","_numVeh","_prestigeOPFOR","_prestigeBLUFOR","_civs","_groups","_vehiclesX","_civsPatrol","_groupsPatrol","_vehPatrol","_typeCiv","_typeVehX","_dirVeh","_groupX","_size","_road","_typeVehX","_dirVeh","_positionX","_area","_civ","_veh","_roadcon","_pos","_p1","_p2","_mrkMar","_burst","_groupP","_wp","_wp1"];
 
@@ -16,7 +16,7 @@ _numVeh = _dataX select 1;
 private _roads = nearestTerrainObjects [getMarkerPos _markerX, ["MAIN ROAD", "ROAD", "TRACK"], 250, false, true];
 if (count _roads == 0) exitWith
 {
-	[1, format ["Roads not found for marker %1", _markerX], _fileName] call A3A_fnc_log;
+    Error_1("Roads not found for marker %1", _markerX);
 };
 
 _prestigeOPFOR = _dataX select 2;
@@ -80,6 +80,10 @@ while {(spawner getVariable _markerX != 2) and (_countParked < _numParked)} do
 		    */
 			_veh = _typeVehX createVehicle _pos;
 			_veh setDir _dirveh;
+			clearMagazineCargoGlobal _veh;
+			clearWeaponCargoGlobal _veh;
+			clearItemCargoGlobal _veh;
+			clearBackpackCargoGlobal _veh;
 			_vehiclesX pushBack _veh;
 			[_veh, civilian] spawn A3A_fnc_AIVEHinit;
 			_veh setVariable ["originalPos", getPos _veh];
@@ -100,6 +104,10 @@ if (count _mrkMar > 0) then
 			_pos = (getMarkerPos (_mrkMar select 0)) findEmptyPosition [0,20,_typeVehX];
 			_veh = _typeVehX createVehicle _pos;
 			_veh setDir (random 360);
+			clearMagazineCargoGlobal _veh;
+			clearWeaponCargoGlobal _veh;
+			clearItemCargoGlobal _veh;
+			clearBackpackCargoGlobal _veh;
 			_vehiclesX pushBack _veh;
 			[_veh, civilian] spawn A3A_fnc_AIVEHinit;
 			_veh setVariable ["originalPos", getPos _veh];
@@ -149,6 +157,10 @@ if ([_markerX,false] call A3A_fnc_fogCheck > 0.2) then
 					_typeVehX = selectRandomWeighted civVehiclesWeighted;
 					_veh = _typeVehX createVehicle (getPos _p1);
 					_veh setDir _dirveh;
+					clearMagazineCargoGlobal _veh;
+					clearWeaponCargoGlobal _veh;
+					clearItemCargoGlobal _veh;
+					clearBackpackCargoGlobal _veh;
 
 					//_veh forceFollowRoad true;
 					_vehPatrol = _vehPatrol + [_veh];

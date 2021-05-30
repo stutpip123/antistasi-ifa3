@@ -1,9 +1,14 @@
 private ["_unit","_enemiesX"];
-
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
 _unit = _this select 0;
 
+//dress unit
+_unit setUnitLoadout (configFile >> "EmptyLoadout");
+_unit forceAddUniform selectRandom (A3A_faction_civ getVariable "uniforms");
+_unit addHeadgear selectRandom (A3A_faction_civ getVariable "headgear");
+
 _unit setSkill 0;
-_unit forceAddUniform (selectRandom allCivilianUniforms);
 _unit disableAI "TARGET";
 _unit disableAI "AUTOTARGET";
 //Stops civilians from shouting out commands.
@@ -59,20 +64,15 @@ _EHkilledIdx = _unit addEventHandler
 			//Must be group, in case they're undercover.
 			if (side group _killer == teamPlayer) then
 			{
-                [
-                    3,
-                    "Rebels killed a civilian",
-                    "aggroEvent",
-                    true
-                ] call A3A_fnc_log;
-				[[10 * _multiplier, 60], [0, 0]] remoteExec ["A3A_fnc_prestige",2];
+                Debug("aggroEvent | Rebels killed a civilian");
+				[Occupants, 10 * _multiplier, 60] remoteExec ["A3A_fnc_addAggression",2];
 				[1,0,getPos _victim] remoteExec ["A3A_fnc_citySupportChange",2];
 			}
 			else
 			{
 				if (side group _killer == Occupants) then
 				{
-					[[-5 * _multiplier, 60], [0, 0]] remoteExec ["A3A_fnc_prestige",2];
+					[Occupants, -5 * _multiplier, 60] remoteExec ["A3A_fnc_addAggression",2];
 					[0,1,getPos _victim] remoteExec ["A3A_fnc_citySupportChange",2];
 				}
 				else

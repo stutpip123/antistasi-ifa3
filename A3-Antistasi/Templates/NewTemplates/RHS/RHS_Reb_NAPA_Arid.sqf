@@ -39,22 +39,24 @@
 ["baggedAA", [["not_supported"]]] call _fnc_saveToTemplate; 					//this line determines bagged static AAs -- Example: ["baggedAA", [["B_AA_01_weapon_F", "B_HMG_01_support_F"]]] -- Array, can contain multiple assets
 ["baggedMortars", [["RHS_Podnos_Gun_Bag","RHS_Podnos_Bipod_Bag"]]] call _fnc_saveToTemplate; 			//this line determines bagged static mortars -- Example: ["baggedMortars", [["B_Mortar_01_F", "B_Mortar_01_weapon_F"]]] -- Array, can contain multiple assets
 
-["mineAT", "rhs_mag_mine_ptm1"] call _fnc_saveToTemplate; 				//this line determines AT mines used for spawning in minefields -- Example: ["minefieldAT", ["ATMine_Range_Mag"]] -- Array, can contain multiple assets
-["mineAPERS", "rhs_mine_ozm72_b_mag"] call _fnc_saveToTemplate; 			//this line determines APERS mines used for spawning in minefields -- Example: ["minefieldAPERS", ["APERSMine_Range_Mag"]] -- Array, can contain multiple assets
+["mineAT", "rhs_mag_mine_ptm1"] call _fnc_saveToTemplate;
+["mineAPERS", "rhs_mine_ozm72_b_mag"] call _fnc_saveToTemplate;
 
-["breachingExplosivesAPC", [["rhs_ec200_mag", 1], ["rhs_ec200_sand_mag", 1], ["rhsusf_m112_mag", 1]]] call _fnc_saveToTemplate;
-["breachingExplosivesTank", [["rhs_ec400_mag", 1], ["rhs_ec400_sand_mag", 1], ["rhs_ec200_mag", 2], ["rhs_ec200_sand_mag", 2], ["rhsusf_m112x4_mag", 1], ["rhs_charge_M2tet_x2_mag", 1]]] call _fnc_saveToTemplate;
+["breachingExplosivesAPC", [["rhs_ec75_mag", 2], ["rhs_ec75_sand_mag", 2], ["rhs_ec200_mag", 1], ["rhs_ec200_sand_mag", 1], ["rhsusf_m112_mag", 1], ["DemoCharge_Remote_Mag", 1]]] call _fnc_saveToTemplate;
+["breachingExplosivesTank", [["rhs_ec75_mag", 4], ["rhs_ec75_sand_mag", 4], ["rhs_ec200_mag", 2], ["rhs_ec200_sand_mag", 2], ["rhs_ec400_mag", 1], ["rhs_ec400_sand_mag", 1],["DemoCharge_Remote_Mag", 2], ["rhsusf_m112_mag", 2], ["rhsusf_m112x4_mag", 1], ["rhs_charge_M2tet_x2_mag", 1], ["SatchelCharge_Remote_Mag", 1]]] call _fnc_saveToTemplate;
 
 ///////////////////////////
 //  Rebel Starting Gear  //
 ///////////////////////////
-//Vanilla + RHS Uniforms
-allRebelUniforms append ["U_IG_Guerilla1_1","U_IG_Guerilla2_1","U_IG_Guerilla2_2","U_IG_Guerilla2_3","U_IG_Guerilla3_1","U_IG_leader",
+
+["uniforms", ["U_IG_Guerilla1_1","U_IG_Guerilla2_1","U_IG_Guerilla2_2","U_IG_Guerilla2_3","U_IG_Guerilla3_1","U_IG_leader",
 "U_IG_Guerrilla_6_1","rhsgref_uniform_alpenflage","rhsgref_uniform_flecktarn","rhsgref_uniform_flecktarn_full",
 "rhsgref_uniform_tigerstripe","rhsgref_uniform_woodland","rhsgref_uniform_woodland_olive","rhsgref_uniform_olive",
 "rhsgref_uniform_altis_lizard","rhsgref_uniform_altis_lizard_olive","rhsgref_uniform_dpm","rhsgref_uniform_dpm_olive",
 "rhsgref_uniform_3color_desert","rhsgref_uniform_gorka_1_f","rhsgref_uniform_TLA_1","rhsgref_uniform_TLA_2","rhs_insurgent_uniform_1",
-"rhs_insurgent_uniform_2","rhs_insurgent_uniform_3","rhs_insurgent_uniform_4","rhs_insurgent_uniform_5"];
+"rhs_insurgent_uniform_2","rhs_insurgent_uniform_3","rhs_insurgent_uniform_4","rhs_insurgent_uniform_5"]] call _fnc_saveToTemplate;
+
+["headgear", [""]] call _fnc_saveToTemplate;
 
 private _initialRebelEquipment = [
 "rhs_weap_type94_new","rhs_weap_tt33","rhs_weap_Izh18","rhs_weap_kar98k",
@@ -63,9 +65,10 @@ private _initialRebelEquipment = [
 "B_FieldPack_blk","B_FieldPack_cbr","B_FieldPack_green_F","B_FieldPack_khk","B_FieldPack_oli",
 "rhsgref_chestrig","rhsgref_chicom","rhs_vydra_3m","rhs_vest_pistol_holster","rhs_vest_commander","rhs_6sh46","rhsgref_alice_webbing",
 "rhs_acc_2dpZenit","Binocular"];
-if (hasTFAR) then {_initialRebelEquipment append ["tf_microdagr","tf_anprc154"]};
-if (hasTFAR && startWithLongRangeRadio) then {_initialRebelEquipment pushBack "tf_anprc155_coyote"};
-
+if (A3A_hasTFAR) then {_initialRebelEquipment append ["tf_microdagr","tf_anprc154"]};
+if (A3A_hasTFAR && startWithLongRangeRadio) then {_initialRebelEquipment pushBack "tf_anprc155_coyote"};
+if (A3A_hasTFARBeta) then {_initialRebelEquipment append ["TFAR_microdagr","TFAR_anprc154"]};
+if (A3A_hasTFARBeta && startWithLongRangeRadio) then {_initialRebelEquipment pushBack "TFAR_anprc155_coyote"};
 ["initialRebelEquipment", _initialRebelEquipment] call _fnc_saveToTemplate;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -106,8 +109,8 @@ _loadoutData setVariable ["smokeGrenades", []]; 		//this line determines smoke g
 _loadoutData setVariable ["maps", ["ItemMap"]];
 _loadoutData setVariable ["watches", ["ItemWatch"]];
 _loadoutData setVariable ["compasses", ["ItemCompass"]];
-_loadoutData setVariable ["radios", ["ItemRadio"]];
-_loadoutData setVariable ["gpses", ["ItemGPS"]];
+_loadoutData setVariable ["radios", []];
+_loadoutData setVariable ["gpses", []];
 _loadoutData setVariable ["NVGs", []]; //this line determines NVGs -- Array, can contain multiple assets
 _loadoutData setVariable ["binoculars", ["Binocular"]];
 
@@ -153,12 +156,12 @@ private _squadLeaderTemplate = {
 	["helmets"] call _fnc_setHelmet;
 	["vests"] call _fnc_setVest;
 	["uniforms"] call _fnc_setUniform;
-	//TODO - Long range radios
+
 	["backpacks"] call _fnc_setBackpack;
 
 	[["grenadeLaunchers", "rifles"] call _fnc_fallback] call _fnc_setPrimary;
 	["primary", 5] call _fnc_addMagazines;
-	//TODO: How to add underslung grenade mags.
+
 
 	["sidearms"] call _fnc_setHandgun;
 	["handgun", 2] call _fnc_addMagazines;
@@ -239,7 +242,7 @@ private _grenadierTemplate = {
 
 	["grenadeLaunchers"] call _fnc_setPrimary;
 	["primary", 5] call _fnc_addMagazines;
-	//TODO: How to add underslung grenade mags.
+
 
 	["sidearms"] call _fnc_setHandgun;
 	["handgun", 2] call _fnc_addMagazines;
@@ -266,7 +269,7 @@ private _explosivesExpertTemplate = {
 
 	["rifles"] call _fnc_setPrimary;
 	["primary", 5] call _fnc_addMagazines;
-	//TODO: How to add underslung grenade mags.
+
 
 	["sidearms"] call _fnc_setHandgun;
 	["handgun", 2] call _fnc_addMagazines;
@@ -448,7 +451,7 @@ private _marksmanTemplate = {
 	["items_marksman_extras"] call _fnc_addItemSet;
 	["items_miscEssentials"] call _fnc_addItemSet;
 	["antiInfantryGrenades", 2] call _fnc_addItem;
-	["smokeGrenades", 3] call _fnc_addItem;
+	["smokeGrenades", 2] call _fnc_addItem;
 
 	["maps"] call _fnc_addMap;
 	["watches"] call _fnc_addWatch;
@@ -473,7 +476,7 @@ private _sniperTemplate = {
 	["items_sniper_extras"] call _fnc_addItemSet;
 	["items_miscEssentials"] call _fnc_addItemSet;
 	["antiInfantryGrenades", 2] call _fnc_addItem;
-	["smokeGrenades", 3] call _fnc_addItem;
+	["smokeGrenades", 2] call _fnc_addItem;
 
 	["maps"] call _fnc_addMap;
 	["watches"] call _fnc_addWatch;
@@ -548,9 +551,9 @@ private _unitTypes = [
 	["SquadLeader", _squadLeaderTemplate],
 	["Rifleman", _riflemanTemplate],
 	["staticCrew", _riflemanTemplate],
-	["Medic", _medicTemplate],
-	["Engineer", _engineerTemplate],
-	["ExplosivesExpert", _explosivesExpertTemplate],
+	["Medic", _medicTemplate, [["medic", true]]],
+	["Engineer", _engineerTemplate, [["engineer", true]]],
+	["ExplosivesExpert", _explosivesExpertTemplate, [["explosiveSpecialist", true]]],
 	["Grenadier", _grenadierTemplate],
 	["LAT", _latTemplate],
 	["AT", _atTemplate],

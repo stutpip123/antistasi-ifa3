@@ -1,3 +1,5 @@
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
 if (!isServer and hasInterface) exitWith{};
 
 private ["_pos","_markerX","_vehiclesX","_groups","_soldiers","_busy","_buildings","_pos1","_pos2","_groupX","_countX","_typeVehX","_veh","_unit","_arrayVehAAF","_nVeh","_frontierX","_size","_ang","_mrk","_typeGroup","_flagX","_dog","_typeUnit","_garrison","_sideX","_cfg","_max","_vehicle","_vehCrew","_groupVeh","_roads","_dist","_road","_roadscon","_roadcon","_dirveh","_bunker","_typeGroup"];
@@ -6,7 +8,7 @@ _markerX = _this select 0;
 //Not sure if that ever happens, but it reduces redundance
 if(spawner getVariable _markerX == 2) exitWith {};
 
-diag_log format ["[Antistasi] Spawning Airbase %1 (createAIAirplane.sqf)", _markerX];
+Debug_1("Spawning Airbase %1", _markerX);
 
 _vehiclesX = [];
 _groups = [];
@@ -237,7 +239,7 @@ _vehiclesX pushBack _flagX;
 private _ammoBox = if (garrison getVariable [_markerX + "_lootCD", 0] == 0) then
 {
 	private _ammoBoxType = if (_sideX == Occupants) then {NATOAmmoBox} else {CSATAmmoBox};
-	private _ammoBox = _ammoBoxType createVehicle _positionX;
+	private _ammoBox = [_ammoBoxType, _positionX, 15, 5, true] call A3A_fnc_safeVehicleSpawn;
 	// Otherwise when destroyed, ammoboxes sink 100m underground and are never cleared up
 	_ammoBox addEventHandler ["Killed", { [_this#0] spawn { sleep 10; deleteVehicle (_this#0) } }];
 	[_ammoBox] spawn A3A_fnc_fillLootCrate;

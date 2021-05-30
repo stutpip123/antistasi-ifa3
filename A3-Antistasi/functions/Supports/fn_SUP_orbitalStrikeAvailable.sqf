@@ -1,11 +1,14 @@
 params ["_side", "_posDestination"];
-
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
 if(tierWar < 9) exitWith {-1};
 
 private _lastSupport = server getVariable ["lastSupport", ["", 0]];
 if((_lastSupport select 0) == "ORBSTRIKE" && {(_lastSupport select 1) > time}) exitWith {-1};
 
 if !(allowFuturisticSupports) exitWith {-1};
+private _loadedTemplate = if (_side isEqualTo Occupants) then {A3A_Occ_template} else {A3A_Inv_template};
+if (toLower _loadedTemplate isEqualTo "VN") exitWith {-1}; //dont allow with VN
 
 //Check if support is available at all
 private _timer = -1;
@@ -94,7 +97,7 @@ private _unitsInRange = allUnits select {((getPos _x) distance2D _posDestination
 } forEach _unitsInRange;
 
 private _willUse = selectRandomWeighted [true, _proCounter, false, _contraCounter];
-[2, format ["With %1 pro and %2 contra, decided for %3", _proCounter, _contraCounter, _willUse], "SUP_orbitalStrikeAvailable"] call A3A_fnc_log;
+Info_3("With %1 pro and %2 contra, decided for %3", _proCounter, _contraCounter, _willUse);
 
 if(_willUse) exitWith {0};
 -1;

@@ -2,18 +2,18 @@
 //   Rebel Information   //
 ///////////////////////////
 
-["name", "CCM"] call _fnc_saveToTemplate; 						//this line determines the faction name -- Example: ["name", "NATO"] - ENTER ONLY ONE OPTION
+["name", "TTF"] call _fnc_saveToTemplate; 						//this line determines the faction name -- Example: ["name", "NATO"] - ENTER ONLY ONE OPTION
 
-["flag", "Flag_CCM_B"] call _fnc_saveToTemplate; 						//this line determines the flag -- Example: ["flag", "Flag_NATO_F"] - ENTER ONLY ONE OPTION
-["flagTexture", "\UK3CB_Factions\addons\UK3CB_Factions_CCM\Flag\ccm_i_flag_co.paa"] call _fnc_saveToTemplate; 				//this line determines the flag texture -- Example: ["flagTexture", "\A3\Data_F\Flags\Flag_NATO_CO.paa"] - ENTER ONLY ONE OPTION
+["flag", "Flag_TKM_B"] call _fnc_saveToTemplate; 						//this line determines the flag -- Example: ["flag", "Flag_NATO_F"] - ENTER ONLY ONE OPTION
+["flagTexture", "uk3cb_factions\addons\uk3cb_factions_tkm\flag\tkm_b_flag_co.paa"] call _fnc_saveToTemplate; 				//this line determines the flag texture -- Example: ["flagTexture", "\A3\Data_F\Flags\Flag_NATO_CO.paa"] - ENTER ONLY ONE OPTION
 ["flagMarkerType", ""] call _fnc_saveToTemplate; 			//this line determines the flag marker type -- Example: ["flagMarkerType", "flag_NATO"] - ENTER ONLY ONE OPTION
 
 ["vehicleBasic", "I_G_Quadbike_01_F"] call _fnc_saveToTemplate; 			//this line determines basic vehicles, the lightest kind available. -- Example: ["vehiclesBasic", ["B_Quadbike_01_F"]] -- Array, can contain multiple assets
 ["vehicleLightUnarmed", "UK3CB_CCM_I_Datsun_Open"] call _fnc_saveToTemplate; 		//this line determines light and unarmed vehicles. -- Example: ["vehiclesLightUnarmed", ["B_MRAP_01_F"]] -- Array, can contain multiple assets
-["vehicleLightArmed", "UK3CB_CCM_I_Datsun_Pkm"] call _fnc_saveToTemplate; 		//this line determines light and armed vehicles -- Example: ["vehiclesLightArmed",["B_MRAP_01_hmg_F","B_MRAP_01_gmg_F"]] -- Array, can contain multiple assets
+["vehicleLightArmed", "UK3CB_TKM_I_LR_M2"] call _fnc_saveToTemplate; 		//this line determines light and armed vehicles -- Example: ["vehiclesLightArmed",["B_MRAP_01_hmg_F","B_MRAP_01_gmg_F"]] -- Array, can contain multiple assets
 ["vehicleTruck", "UK3CB_CCM_I_V3S_Closed"] call _fnc_saveToTemplate; 			//this line determines the trucks -- Example: ["vehiclesTrucks", ["B_Truck_01_transport_F","B_Truck_01_covered_F"]] -- Array, can contain multiple assets
 ["vehicleAT", "UK3CB_I_G_Hilux_Spg9"] call _fnc_saveToTemplate; 		//this line determines cargo trucks -- Example: ["vehiclesCargoTrucks", ["B_Truck_01_transport_F","B_Truck_01_covered_F"]] -- Array, can contain multiple assets
-["vehicleAA", "UK3CB_TKM_I_Hilux_Zu23"] call _fnc_saveToTemplate; 		//this line determines cargo trucks -- Example: ["vehiclesCargoTrucks", ["B_Truck_01_transport_F","B_Truck_01_covered_F"]] -- Array, can contain multiple assets
+["vehicleAA", "UK3CB_TKM_I_V3S_Zu23"] call _fnc_saveToTemplate; 		//this line determines cargo trucks -- Example: ["vehiclesCargoTrucks", ["B_Truck_01_transport_F","B_Truck_01_covered_F"]] -- Array, can contain multiple assets
 
 ["vehicleBoat", "UK3CB_I_G_Fishing_Boat_SPG9"] call _fnc_saveToTemplate; 	//this line determines transport boats -- Example: ["vehiclesTransportBoats", ["B_Boat_Transport_01_F"]] -- Array, can contain multiple assets
 ["vehicleRepair", "UK3CB_CCM_I_V3S_Repair"] call _fnc_saveToTemplate; 			//this line determines gun boats -- Example: ["vehiclesGunboats", ["B_Boat_Armed_01_minigun_F"]] -- Array, can contain multiple assets
@@ -39,22 +39,43 @@
 ["baggedAA", []] call _fnc_saveToTemplate; 					//this line determines bagged static AAs -- Example: ["baggedAA", [["B_AA_01_weapon_F", "B_HMG_01_support_F"]]] -- Array, can contain multiple assets
 ["baggedMortars", [["RHS_Podnos_Gun_Bag","RHS_Podnos_Bipod_Bag"]]] call _fnc_saveToTemplate; 			//this line determines bagged static mortars -- Example: ["baggedMortars", [["B_Mortar_01_F", "B_Mortar_01_weapon_F"]]] -- Array, can contain multiple assets
 
-["mineAT", "rhs_mine_smine35_press_mag"] call _fnc_saveToTemplate; 				//this line determines AT mines used for spawning in minefields -- Example: ["minefieldAT", ["ATMine_Range_Mag"]] -- Array, can contain multiple assets
-["mineAPERS", "rhs_mine_pmn2_mag"] call _fnc_saveToTemplate; 			//this line determines APERS mines used for spawning in minefields -- Example: ["minefieldAPERS", ["APERSMine_Range_Mag"]] -- Array, can contain multiple assets
+["mineAT", "rhs_mine_smine35_press_mag"] call _fnc_saveToTemplate;
+["mineAPERS", "rhs_mine_pmn2_mag"] call _fnc_saveToTemplate;
 
-["breachingExplosivesAPC", [["rhs_ec200_mag", 1], ["rhs_ec200_sand_mag", 1], ["rhsusf_m112_mag", 1]]] call _fnc_saveToTemplate;
-["breachingExplosivesTank", [["rhs_ec400_mag", 1], ["rhs_ec400_sand_mag", 1], ["rhs_ec200_mag", 2], ["rhs_ec200_sand_mag", 2], ["rhsusf_m112x4_mag", 1], ["rhs_charge_M2tet_x2_mag", 1]]] call _fnc_saveToTemplate;
+["breachingExplosivesAPC", [["rhs_ec75_mag", 2], ["rhs_ec75_sand_mag", 2], ["rhs_ec200_mag", 1], ["rhs_ec200_sand_mag", 1], ["rhsusf_m112_mag", 1], ["DemoCharge_Remote_Mag", 1]]] call _fnc_saveToTemplate;
+["breachingExplosivesTank", [["rhs_ec75_mag", 4], ["rhs_ec75_sand_mag", 4], ["rhs_ec200_mag", 2], ["rhs_ec200_sand_mag", 2], ["rhs_ec400_mag", 1], ["rhs_ec400_sand_mag", 1],["DemoCharge_Remote_Mag", 2], ["rhsusf_m112_mag", 2], ["rhsusf_m112x4_mag", 1], ["rhs_charge_M2tet_x2_mag", 1], ["SatchelCharge_Remote_Mag", 1]]] call _fnc_saveToTemplate;
 
 ///////////////////////////
 //  Rebel Starting Gear  //
 ///////////////////////////
 
-//Greenfor uniforms
-allRebelUniforms append ["U_IG_Guerilla1_1","U_IG_Guerilla2_1","U_IG_Guerilla2_2","U_IG_Guerilla2_3","U_IG_Guerilla3_1","U_IG_leader","U_IG_Guerrilla_6_1"];
-//TKM_B uniforms
-allRebelUniforms append ["UK3CB_TKM_I_U_01","UK3CB_TKM_I_U_01_B","UK3CB_TKM_I_U_01_C","UK3CB_TKM_I_U_03","UK3CB_TKM_I_U_03_B","UK3CB_TKM_I_U_03_C",
-"UK3CB_TKM_I_U_04","UK3CB_TKM_I_U_04_B","UK3CB_TKM_I_U_04_C","UK3CB_TKM_I_U_05","UK3CB_TKM_I_U_05_B","UK3CB_TKM_I_U_05_C","UK3CB_TKM_I_U_06",
-"UK3CB_TKM_I_U_06_B","UK3CB_TKM_I_U_06_C"];
+["uniforms", [
+    "U_IG_Guerilla1_1"
+    ,"U_IG_Guerilla2_1"
+    ,"U_IG_Guerilla2_2"
+    ,"U_IG_Guerilla2_3"
+    ,"U_IG_Guerilla3_1"
+    ,"U_IG_leader"
+    ,"U_IG_Guerrilla_6_1"
+    ,"UK3CB_TKM_I_U_01"
+    ,"UK3CB_TKM_I_U_01_B"
+    ,"UK3CB_TKM_I_U_01_C"
+    ,"UK3CB_TKM_I_U_03"
+    ,"UK3CB_TKM_I_U_03_B"
+    ,"UK3CB_TKM_I_U_03_C"
+    ,"UK3CB_TKM_I_U_04"
+    ,"UK3CB_TKM_I_U_04_B"
+    ,"UK3CB_TKM_I_U_04_C"
+    ,"UK3CB_TKM_I_U_05"
+    ,"UK3CB_TKM_I_U_05_B"
+    ,"UK3CB_TKM_I_U_05_C"
+    ,"UK3CB_TKM_I_U_06"
+    ,"UK3CB_TKM_I_U_06_B"
+    ,"UK3CB_TKM_I_U_06_C"
+]] call _fnc_saveToTemplate;
+
+["headgear", [""]] call _fnc_saveToTemplate;
+
 
 private _initialRebelEquipment = [
 "UK3CB_BHP","rhs_weap_tt33",
@@ -65,9 +86,10 @@ private _initialRebelEquipment = [
 "UK3CB_V_CW_Chestrig","UK3CB_V_CW_Chestrig_2_Small","UK3CB_V_Belt_KHK","UK3CB_V_Belt_Rig_KHK","UK3CB_V_Belt_Rig_Lite_KHK","UK3CB_V_Pouch","UK3CB_V_Chestrig_TKA_OLI","UK3CB_V_Chestrig_2_Small_OLI","UK3CB_V_Chestrig_TKA_BRUSH","UK3CB_V_Chestrig_Lite_KHK","UK3CB_V_Chestrig_Lite_2_Small_KHK",
 "rhs_acc_2dpZenit","Binocular"
 ];
-if (hasTFAR) then {_initialRebelEquipment append ["tf_microdagr","tf_anprc154"]};
-if (hasTFAR && startWithLongRangeRadio) then {_initialRebelEquipment pushBack "tf_anprc155_coyote"};
-
+if (A3A_hasTFAR) then {_initialRebelEquipment append ["tf_microdagr","tf_anprc154"]};
+if (A3A_hasTFAR && startWithLongRangeRadio) then {_initialRebelEquipment pushBack "tf_anprc155_coyote"};
+if (A3A_hasTFARBeta) then {_initialRebelEquipment append ["TFAR_microdagr","TFAR_anprc154"]};
+if (A3A_hasTFARBeta && startWithLongRangeRadio) then {_initialRebelEquipment pushBack "TFAR_anprc155_coyote"};
 ["initialRebelEquipment", _initialRebelEquipment] call _fnc_saveToTemplate;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -108,8 +130,8 @@ _loadoutData setVariable ["smokeGrenades", []]; 		//this line determines smoke g
 _loadoutData setVariable ["maps", ["ItemMap"]];
 _loadoutData setVariable ["watches", ["ItemWatch"]];
 _loadoutData setVariable ["compasses", ["ItemCompass"]];
-_loadoutData setVariable ["radios", ["ItemRadio"]];
-_loadoutData setVariable ["gpses", ["ItemGPS"]];
+_loadoutData setVariable ["radios", []];
+_loadoutData setVariable ["gpses", []];
 _loadoutData setVariable ["NVGs", []]; //this line determines NVGs -- Array, can contain multiple assets
 _loadoutData setVariable ["binoculars", ["Binocular"]];
 
@@ -150,12 +172,12 @@ private _squadLeaderTemplate = {
 	["helmets"] call _fnc_setHelmet;
 	["vests"] call _fnc_setVest;
 	["uniforms"] call _fnc_setUniform;
-	//TODO - Long range radios
+
 	["backpacks"] call _fnc_setBackpack;
 
 	[["grenadeLaunchers", "rifles"] call _fnc_fallback] call _fnc_setPrimary;
 	["primary", 5] call _fnc_addMagazines;
-	//TODO: How to add underslung grenade mags.
+
 
 	["sidearms"] call _fnc_setHandgun;
 	["handgun", 2] call _fnc_addMagazines;
@@ -236,7 +258,7 @@ private _grenadierTemplate = {
 
 	["grenadeLaunchers"] call _fnc_setPrimary;
 	["primary", 5] call _fnc_addMagazines;
-	//TODO: How to add underslung grenade mags.
+
 
 	["sidearms"] call _fnc_setHandgun;
 	["handgun", 2] call _fnc_addMagazines;
@@ -263,7 +285,7 @@ private _explosivesExpertTemplate = {
 
 	["rifles"] call _fnc_setPrimary;
 	["primary", 5] call _fnc_addMagazines;
-	//TODO: How to add underslung grenade mags.
+
 
 	["sidearms"] call _fnc_setHandgun;
 	["handgun", 2] call _fnc_addMagazines;
@@ -445,7 +467,7 @@ private _marksmanTemplate = {
 	["items_marksman_extras"] call _fnc_addItemSet;
 	["items_miscEssentials"] call _fnc_addItemSet;
 	["antiInfantryGrenades", 2] call _fnc_addItem;
-	["smokeGrenades", 3] call _fnc_addItem;
+	["smokeGrenades", 2] call _fnc_addItem;
 
 	["maps"] call _fnc_addMap;
 	["watches"] call _fnc_addWatch;
@@ -470,7 +492,7 @@ private _sniperTemplate = {
 	["items_sniper_extras"] call _fnc_addItemSet;
 	["items_miscEssentials"] call _fnc_addItemSet;
 	["antiInfantryGrenades", 2] call _fnc_addItem;
-	["smokeGrenades", 3] call _fnc_addItem;
+	["smokeGrenades", 2] call _fnc_addItem;
 
 	["maps"] call _fnc_addMap;
 	["watches"] call _fnc_addWatch;
@@ -545,9 +567,9 @@ private _unitTypes = [
 	["SquadLeader", _squadLeaderTemplate],
 	["Rifleman", _riflemanTemplate],
 	["staticCrew", _riflemanTemplate],
-	["Medic", _medicTemplate],
-	["Engineer", _engineerTemplate],
-	["ExplosivesExpert", _explosivesExpertTemplate],
+	["Medic", _medicTemplate, [["medic", true]]],
+	["Engineer", _engineerTemplate, [["engineer", true]]],
+	["ExplosivesExpert", _explosivesExpertTemplate, [["explosiveSpecialist", true]]],
 	["Grenadier", _grenadierTemplate],
 	["LAT", _latTemplate],
 	["AT", _atTemplate],

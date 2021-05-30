@@ -38,8 +38,17 @@
         // Release to check that helicopter RPM is stable.
         cursorObject enableSimulation true;
 */
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
 
 params ["_pos", "_azi", "_type", "_group", ["_precise", false], "_unitType"];
+
+if (
+    isNil "_pos"
+    || {isNil "_azi"}
+    || {isNil "_type"}
+    || {isNil "_group"}
+) exitWith { Error_4("Invalid arguments passed | Pos: %1 | Azimut: %2 | Type: %3 | Group: %4", _pos, _azi, _type, _group) };
 
 private _side = if (_group isEqualType sideUnknown) then { _group } else { side _group };
 

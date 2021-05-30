@@ -9,8 +9,8 @@ params ["_plane", "_type"];
     Returns:
         Nothing
 */
-
-private _fileName = "setPlaneLoadout";
+#include "..\..\Includes\common.inc"
+FIX_LINE_NUMBERS()
 
 private _validInput = false;
 private _loadout = [];
@@ -42,7 +42,9 @@ if (_type == "CAS") then
             _loadout = ["PylonRack_1Rnd_LG_scalpel","PylonRack_3Rnd_LG_scalpel","PylonRack_3Rnd_LG_scalpel","","PylonRack_3Rnd_LG_scalpel","PylonRack_3Rnd_LG_scalpel","PylonRack_1Rnd_LG_scalpel"];
         };
         //RHS US CAS (A-10)
-        case "RHS_A10":
+        case "RHS_A10";
+        case "UK3CB_CW_US_B_EARLY_A10":
+
         {
             _loadout = ["rhs_mag_ANALQ131","rhs_mag_M151_7_USAF_LAU131","rhs_mag_agm65d_3","rhs_mag_M151_21_USAF_LAU131_3","rhs_mag_M151_7_USAF_LAU131","","rhs_mag_M151_7_USAF_LAU131","rhs_mag_M151_21_USAF_LAU131_3","rhs_mag_agm65d_3","rhs_mag_M151_7_USAF_LAU131","","rhsusf_ANALE40_CMFlare_Chaff_Magazine_x16"];
             _plane setVariable ["mainGun", "RHS_weap_gau8"];
@@ -59,16 +61,29 @@ if (_type == "CAS") then
         };
         case "RHS_Su25SM_CAS_vvs";
         case "rhsgref_cdf_b_su25";
-        case "UK3CB_TKA_B_Su25SM_CAS":
+        case "UK3CB_TKA_B_Su25SM_CAS";
+        case "UK3CB_CW_SOV_O_LATE_Su25SM_CAS":
         {
             _loadout = ["rhs_mag_kh29D","rhs_mag_kh29D","rhs_mag_kh25MTP","rhs_mag_kh25MTP","rhs_mag_kh25MTP","rhs_mag_kh25MTP","rhs_mag_b8m1_s8kom","rhs_mag_b8m1_s8kom","rhs_mag_R60M","rhs_mag_R60M","rhs_ASO2_CMFlare_Chaff_Magazine_x4"];
             _plane setVariable ["mainGun", "rhs_weap_gsh302"];
             _plane setVariable ["rocketLauncher", ["rhs_weap_s8"]];
             _plane setVariable ["missileLauncher", ["rhs_weap_kh29d_Launcher", "rhs_weap_kh25mtp_Launcher"]];
         };
+        case "vn_b_air_f4c_hcas":
+        {
+            _loadout = ["vn_missile_f4_out_agm45_mag_x1","vn_missile_f4_out_agm45_mag_x1","vn_rocket_ffar_f4_lau3_m229_he_x57","vn_rocket_ffar_f4_lau3_m229_he_x57","vn_bomb_f4_out_750_blu1b_fb_mag_x3","vn_missile_f4_lau7_aim9e_mag_x2","vn_missile_f4_lau7_aim9e_mag_x2","vn_missile_aim7e2_mag_x1","vn_missile_aim7e2_mag_x1","vn_missile_aim7e2_mag_x1","vn_missile_aim7e2_mag_x1"];
+            _plane setVariable ["rocketLauncher", ["vn_rocket_ffar_275in_launcher_m229"]];
+            _plane setVariable ["missileLauncher", ["vn_missile_agm45_launcher"]];
+        };
+        case "vn_o_air_mi2_04_04":
+        {
+            _loadout = ["vn_rocket_s5_heat_x16","vn_rocket_s5_heat_x16"];
+            _plane setVariable ["mainGun", "vn_ns23_v_01"];
+            _plane setVariable ["rocketLauncher", ["vn_rocket_s5_heat_launcher"]];
+        };
         default
         {
-            [1, format ["Plane type %1 currently not supported for CAS, please add the case!", typeOf _plane], _fileName] call A3A_fnc_log;
+            Error_1("Plane type %1 currently not supported for CAS, please add the case!", typeOf _plane);
         };
     };
 };
@@ -103,7 +118,8 @@ if (_type == "AA") then
         //RHS Russian Air superiority
         case "rhs_mig29s_vvs";
         case "rhsgref_cdf_b_mig29s";
-        case "UK3CB_TKA_O_MIG29SM":
+        case "UK3CB_TKA_O_MIG29SM";
+        case "UK3CB_CW_SOV_O_LATE_MIG29S":
         {
             _loadout = ["rhs_mag_R73M_APU73","rhs_mag_R73M_APU73","rhs_mag_R73M_APU73","rhs_mag_R73M_APU73","rhs_mag_R77_AKU170_MIG29","rhs_mag_R77_AKU170_MIG29","","rhs_BVP3026_CMFlare_Chaff_Magazine_x2"];
         };
@@ -115,16 +131,24 @@ if (_type == "AA") then
         {
             _loadout = ["PylonRack_1Rnd_Missile_AA_04_F","PylonRack_1Rnd_AAA_missiles","PylonRack_1Rnd_AAA_missiles","PylonWeapon_300Rnd_20mm_shells","PylonRack_1Rnd_AAA_missiles","PylonRack_1Rnd_AAA_missiles","PylonRack_1Rnd_Missile_AA_04_F"];
         };
+        case "vn_b_air_f4c_cap":
+        {
+            _loadout = ["vn_fuel_f4_370_mag","vn_fuel_f4_370_mag","","","vn_fuel_f4_600_mag","vn_missile_f4_lau7_aim9e_mag_x2","vn_missile_f4_lau7_aim9e_mag_x2","vn_missile_aim7e2_mag_x1","vn_missile_aim7e2_mag_x1","vn_missile_aim7e2_mag_x1","vn_missile_aim7e2_mag_x1"];
+        };
+        case "vn_o_air_mi2_05_06":
+        {
+            _loadout = ["vn_missile_at3_mag_01_x1","vn_missile_at3_mag_01_x1","vn_missile_at3_mag_01_x1","vn_missile_at3_mag_01_x1","vn_missile_sa7b_mag_x2","vn_missile_sa7b_mag_x2"];
+        };
         default
         {
-            [1, format ["Plane type %1 currently not supported for AA, please add the case!", typeOf _plane], _fileName] call A3A_fnc_log;
+            Error_1("Plane type %1 currently not supported for AA, please add the case!", typeOf _plane);
         };
     };
 };
 
 if !(_loadout isEqualTo []) then
 {
-    [3, "Selected new loadout for plane, now equiping plane with it", _fileName] call A3A_fnc_log;
+    Debug("Selected new loadout for plane, now equiping plane with it");
     {
         _plane setPylonLoadout [_forEachIndex + 1, _x, true];
         _plane setVariable ["loadout", _loadout];

@@ -1,5 +1,4 @@
-# ❗❗ HEY YOU, READ THIS! &nbsp;&nbsp; HEY DU, LIES DAS! ❗❗
-# 👉 BASIC AND QUICK START 👈
+# 🚀 Quick Start Guide
 0.  Run Arma 3.
 1.  Make an empty mp-mission on any map (community or official) with just one player.
 2.  Save and close the editor.
@@ -10,7 +9,7 @@
 7.  Run and join the mission.
 8.  Press `Esc` on your keyboard to open debug console.
 9.  Paste `[] spawn A3A_fnc_NG_main` into big large debug window.
-10  Click the button `Local Exec`.
+10.  Click the button `Local Exec`.
 11. Exit Debug Console, look down, and open map.
 12. Wait for it to start drawing markers.
 13. Open a new file.
@@ -20,12 +19,9 @@
 <br/>
 <br/>
 
+See [Steet Artist Editor](https://github.com/official-antistasi-community/A3-Antistasi/wiki/Street-Artist-Editor) for A3-Antistasi navGrid Guidelines (and GIFs!).<br/>
 ***
 ***
-*Visual Studio Code has a markdown preview button in the top-right corner.*
-<br/>
-<br/>
-
 
 # 🗺 Generate navGridDB & Open Street Artist
 Executing `[] spawn A3A_fnc_NG_main` will run with default settings.<br/>
@@ -52,6 +48,7 @@ When starting the Street Artist editor and switch tools, in game help will displ
 
 # 📍 Customise Marker Size and Colours
 **Run after you have generated a navGrid or have imported one.**<br/>
+**And if the Street Artist Editor was not started.**<br/>
 To draw markers with default settings run `[] spawn A3A_fnc_NG_draw_main;`<br/>
 You can re-run this command as much as you want, everytime it will delete the old markers and redraw new. (But please wait for the last one to finish otherwise bad things will happen.)<br/>
 
@@ -63,7 +60,7 @@ You can re-run this command as much as you want, everytime it will delete the ol
 5.  <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1.5)
 
 Therefore, the default execution would also look like this: `[4,false,false,0.8,1] spawn A3A_fnc_NG_draw_main;`<br/>
-You will need to update these variables if using street artist editor:<br/>
+You will need to update these variables if using the Street Artist Editor:<br/>
 `A3A_NGSA_dotBaseSize = 1.2;`<br/>
 `A3A_NGSA_lineBaseSize = 4;`<br/>
 
@@ -74,7 +71,7 @@ You will need to update these variables if using street artist editor:<br/>
 * Only large lines and distances: `[6,false,true,0,0] spawn A3A_fnc_NG_draw_main;`
 
 # 🔎 Further Reading
-See [Steet Artist Editor](https://github.com/official-antistasi-community/A3-Antistasi/wiki/Street-Artist-Editor) for GIFs and hotkeys.<br/>
+See [Steet Artist Editor](https://github.com/official-antistasi-community/A3-Antistasi/wiki/Street-Artist-Editor) for A3-Antistasi navGrid Guidelines (and GIFs!).<br/>
 You can find further satisfying and accurate documentation on all sorts of things by looking into the headers of files in `./functions/NavGridPP/`.
 
 <br/>

@@ -1,36 +1,31 @@
-See `Please Read Me.md` for starting up the editor.
+See [Street Artist Generation](https://github.com/official-antistasi-community/A3-Antistasi/wiki/Street-Artist-Generation) for starting up the editor.<br/>
 
-# Connection Tool<br/>
-'click'-Select &amp; connect roads<br/>
-'shift'+'click'-Create new node<br/>
-'alt'-Deselect node<br/>
-'alt'+'click'-Delete node<br/>
+*Help for the Editor's functions is provided in-game.*<br/>
+*However, there are guidelines for creating A3-Antistasi navGrids.*<br/>
 
-# Brush Tool<br/>
-'click'-Set connection to selected type<br/>
-'shift'+'click'-Double the brush size<br/>
-'alt'+'click'-Delete nodes under brush.<br/>
-
-# Connection Types<br/>
-'C'-Cycle connection type.<br/>
-Orange-Track, dirt/narrow/bumpy<br/>
-Yellow-Road, asphalt/cement/smooth/<br/>
-Green-Main Road, smooth/wide/large turns<br/>
-
-# Node Connections<br/>
-Black: 0  Red: 1  Orange: 2  Yellow: 3  Green: 4  Blue: 5+
-
-# General<br/>
-'C'-Cycle connection type.<br/>
-'F'-Cycle tool<br/>
-'ctrl'+'S'-Export changes<br/>
-'ctrl'+'D'-Cycle Island Colour Division.<br/>
-'ctrl'+'R'-Refresh Markers<br/>
-
-# Colour Divisions<br/>
-'none'-Road by type, Nodes by connections.<br/>
-'islandID'-Road &amp; Nodes by islandID.<br/>
-'islandIDDeadEnd'-islandID with red dead ends.<br/>
+# Important Guidelines
+### 1. Along a road section, the closest node must be one at the end.
+The Street Artist Generation takes this into account when simplifying the navGrid.<br/>
+However, there is no checking when the user connects nodes or adds new ones.<br/>
+Ensure that new nodes will not become the closest to any other nearby roads.<br/>
+### 2. Ground supplied outposts should have a node within 300m.
+You can create a path to outposts and airports to allow ground convoys access.<br/>
+You will need to take a screenshot or memorise A3-Antistasi outpost locations as they are not available in the Editor.<br/>
+# Automated Actions
+The Street Artist Editor helps the user avoid common problems.<br/>
+There is no way to bypass these systems.<br/>
+### 3. If there's no road path between two nodes, then one of the nodes should be off-road.
+Every time the user connects two road nodes, it will a employ quick pathfinding check to determine whether there is a valid direct connection.<br/>
+If not, it will add a middle node automatically.<br/>
+### 4. Nodes cannot share the same road.
+The minimum distance between two nodes is currently 16cm. This also means an off-road node needs to be at least 16cm from any road.<br/>
+### 5. Nodes must be on top of bridges.
+All added nodes in the Editor are placed on top of the highest surface.<br/>
+The height above ground is displayed next to the cursor.<br/>
+Take this into account for routes going under tunnels or overhangs.<br/>
+To avoid any issues:
+Place off-road nodes on both ends of the tunnel and hope the AI path safely between them.<br/>
+Nodes snapped to roads will inherit the roads' height, therefore no intervention is required.<br/>
 
 # GIFs
 Street Artist- Set Road Types<br/>

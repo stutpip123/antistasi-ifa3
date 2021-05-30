@@ -28,4 +28,4 @@ The closest road to any nabPoint is part of the same line.
 
 There should be auto snapping.
 
-Road coordinates should be in AGL.
+Road coordinates should be in ATL.

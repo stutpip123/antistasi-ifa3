@@ -34,9 +34,9 @@ A3A_customHint_updateTime = 0;
 A3A_customHint_cachedStructuredText = parseText "";
 A3A_customHint_playPing = false;
 A3A_const_emptyText = parseText "";
-A3A_customHint_const_logo = parseText "<img size='2.1' color='#ffa71f1f' shadowOffset='0.063' image='a3\ui_f\data\Logos\arma3_shadow_ca.paa'/><t size='1.89' color='#ffa71f1f' font='PuristaSemiBold' >Street Artist</t>";
+A3A_customHint_const_logo = parseText ("<img size='"+str(2.1*A3A_NGSA_baseTextSize)+"' color='#ffa71f1f' shadowOffset='0.063' image='a3\ui_f\data\Logos\arma3_shadow_ca.paa'/><t size='"+str(1.89*A3A_NGSA_baseTextSize)+"' color='#ffa71f1f' font='PuristaSemiBold' >Street Artist</t>");
 //A3A_customHint_const_divider = composeText [lineBreak,parseText "<img size='0.25' color='#e6b24a' image='a3\ui_f\data\GUI\RscCommon\RscProgress\progressbar_ca.paa' />",lineBreak];
-A3A_customHint_const_divider = composeText [lineBreak,parseText "<t size='0.1'> </t>",lineBreak];
+A3A_customHint_const_divider = composeText [lineBreak,parseText ("<t size='"+str(0.1*A3A_NGSA_baseTextSize)+"'> </t>"),lineBreak];
 
 A3A_customHint_hexChars = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
 

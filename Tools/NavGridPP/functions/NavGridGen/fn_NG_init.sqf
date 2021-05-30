@@ -39,6 +39,10 @@ A3A_NGSA_lineBaseSize = 4;
 // Used to detect whether the user has returned from an alt-tab.
 A3A_NGSA_LastAltTime = 0;
 
+// Required for making sure that the hint fits on screen.
+A3A_NGSA_ArmaUIScale = getResolution #5;  // uiScale, [screenW, screenH, viewPortW, viewPortH, aspectRatio, uiScale, fovTop, fovLeft, tripleHead]
+A3A_NGSA_baseTextSize = (0.7 / A3A_NGSA_ArmaUIScale) min 1;
+
 // All pallets should have at least 2 accents
 //                    Black      Dark Grey    Light Grey     White
 private _greys = ["ColorBlack","Color6_FD_F","ColorGrey","ColorWhite"];

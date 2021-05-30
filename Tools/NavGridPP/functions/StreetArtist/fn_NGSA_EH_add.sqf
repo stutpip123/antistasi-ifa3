@@ -21,8 +21,6 @@ Example:
     [] spawn A3A_fnc_NGSA_EH_add;
 */
 #include "\a3\ui_f\hpp\definedikcodes.inc";
-#define FIX_LINE_NUMBERS2(sharp) sharp##line __LINE__ __FILE__
-FIX_LINE_NUMBERS2(#)
 
 params [
     ["_navGridHM",0,[A3A_NG_const_hashMap]],
@@ -149,7 +147,7 @@ private _missionEH_keyUp = _map displayAddEventHandler ["KeyUp", {
 [0] call A3A_fnc_NGSA_action_changeColours;
 [
     "General",
-    "<t size='1' align='left'>"+
+    "<t size='"+str(A3A_NGSA_baseTextSize)+"' align='left'>"+
     "<t color='#f0d498'>'F'</t>-Cycle Tool<br/>"+
     "<t color='#f0d498'>'ctrl'+'D'</t>-Cycle Map Legend<br/>"+
     "<t color='#f0d498'>'ctrl'+'R'</t>-Refresh Markers<br/>"+

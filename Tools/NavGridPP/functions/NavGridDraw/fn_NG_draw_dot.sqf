@@ -83,7 +83,7 @@ if (_dot_size > 0) then {
         _name setMarkerTypeLocal (_const_dot_types select (_offRoad));   // Draw triangles where there are no roads.
     };
     if (abs (_pos#2) >= 0.5) then {   // Display ATL height of floating points.
-        _name setMarkerTextLocal ("   " + (_pos#2 toFixed 1) + "m")
+        _name setMarkerTextLocal ((_pos#2 toFixed 1) + "m")
     };
     _name setMarkerSizeLocal _const_dot_size;
     _name setMarkerColor _colour;

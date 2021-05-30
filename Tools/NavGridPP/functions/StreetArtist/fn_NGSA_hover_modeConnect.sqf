@@ -125,7 +125,7 @@ switch (true) do {       // Broadcast here.
         A3A_NGSA_UI_marker0_name setMarkerColorLocal _lineColour;
     };
 };
-A3A_NGSA_UI_marker0_name setMarkerTextLocal ((A3A_NGSA_UI_marker0_pos#2 toFixed 1) + "m");
+A3A_NGSA_UI_marker0_name setMarkerTextLocal ("        " + (A3A_NGSA_UI_marker0_pos#2 toFixed 1) + "m");  // The space allows to to avoid the map coord text.
 A3A_NGSA_UI_marker0_name setMarkerPos A3A_NGSA_UI_marker0_pos; // Broadcasts marker attributes here
 
 

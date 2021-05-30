@@ -38,16 +38,16 @@ private _legends = [
     "<t color='#f0d498'>'alt'+'click'</t>-Delete nodes under brush.<br/>"+
     "<t color='#f0d498'>'shift'</t>-Double the brush size<br/>"+
     "<t color='#f0d498'>'C'</t>-Cycle connection type.<br/>"+
-    ""      // Extra line so make it same length as connection tool. This avoids common visual jumping when switching tools.
+    " "      // Extra line so make it same length as connection tool. This avoids common visual jumping when switching tools.
 ];
 
 private _selectorText = ["Connection","Brush"];   // Use a special space for the underlining to work.
 private _selectorTextPlain = _selectorText #A3A_NGSA_clickModeEnum;
-_selectorText set [A3A_NGSA_clickModeEnum, "<t color='#f0d498' size='1'>"+_selectorTextPlain+"</t>"];
+_selectorText set [A3A_NGSA_clickModeEnum, "<t color='#f0d498' size='"+str(A3A_NGSA_baseTextSize)+"'>"+_selectorTextPlain+"</t>"];
 [
     "Toolbox",
-    "<t align='center' color='#888888' size='0.8' underline='1' valign='middle'>"+(_selectorText joinString " ")+"</t><br/>"+
-    "<t align='left' size='1'>"+
+    "<t align='center' color='#888888' size='"+str(0.8*A3A_NGSA_baseTextSize)+"' underline='1' valign='middle'>"+(_selectorText joinString " ")+"</t><br/>"+
+    "<t align='left' size='"+str(A3A_NGSA_baseTextSize)+"'>"+
     (_legends #A3A_NGSA_clickModeEnum)+
     "</t>",
     true,

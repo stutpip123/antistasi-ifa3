@@ -34,7 +34,7 @@ private _colourModeIndex = switch (true) do {
 _newColourMode = _colourModes #_colourModeIndex;
 [localNamespace,"A3A_NGPP","draw","specialColouring", _newColourMode] call Col_fnc_nestLoc_set;
 
-private _proceduralTextureLine = "<t size='0.3'><img image='#(argb,4,4,1)color(1,1,1,1)'/><img image='#(argb,4,4,1)color(1,1,1,1)'/></t>";
+private _proceduralTextureLine = "<t size='"+str(0.3*A3A_NGSA_baseTextSize)+"'><img image='#(argb,4,4,1)color(1,1,1,1)'/><img image='#(argb,4,4,1)color(1,1,1,1)'/></t>";
 private _legends = [
     // normal
     "<t align='right' underline='1'>Connection Types</t><br/>"+   // The titles use a special space for the underlining to work.
@@ -75,11 +75,11 @@ private _legends = [
 ];
 
 private _selectorText = ["Normal","Normal &amp; Offroad","Island","Island &amp; Dead-ends"];   // Use a special space for the underlining to work.
-_selectorText set [_colourModeIndex, "<t color='#f0d498' size='1'>" + (_selectorText #_colourModeIndex) + "</t>"];
+_selectorText set [_colourModeIndex, "<t color='#f0d498' size='"+str(A3A_NGSA_baseTextSize)+"'>" + (_selectorText #_colourModeIndex) + "</t>"];
 [
     "Marker Legend",
-    "<t align='center' color='#888888' size='0.8' underline='1' valign='middle'>"+(_selectorText joinString " ")+"</t><br/>"+
-    "<t align='left' size='1'>"+
+    "<t align='center' color='#888888' size='"+str(0.8*A3A_NGSA_baseTextSize)+"' underline='1' valign='middle'>"+(_selectorText joinString " ")+"</t><br/>"+
+    "<t align='left' size='"+str(A3A_NGSA_baseTextSize)+"'>"+
     (_legends #_colourModeIndex)+
     "</t>",
     true,
@@ -92,7 +92,7 @@ if (count _navGridHM <= A3A_NGSA_autoMarkerRefreshNodeMax) then {
 } else {
     [
         "Colour Mode Changed",
-        "<t size='1' align='left'>"+
+        "<t size='"+str(A3A_NGSA_baseTextSize)+"' align='left'>"+
         "Refresh To apply colour changes! (<t color='#f0d498'>'ctrl'+'R'</t>)"+
         "</t>",
         true,

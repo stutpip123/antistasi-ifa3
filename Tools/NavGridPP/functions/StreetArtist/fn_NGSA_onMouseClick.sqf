@@ -36,7 +36,7 @@ if (!visibleMap) exitWith {nil};
 private _leftClick = _button isEqualTo 0;   // Will only be left or right
 if !(_leftClick) exitWith {nil};
 
-private _worldPos = ((findDisplay 12 displayCtrl 51 ctrlMapScreenToWorld [_xPos, _yPos]) call A3A_fnc_NGSA_getSurfaceATL) vectorAdd [0,0.08,0];  // The shift allows markers beneath it be be clicked on.
+private _worldPos = ((findDisplay 12 displayCtrl 51 ctrlMapScreenToWorld [_xPos, _yPos]) call A3A_fnc_NGSA_getSurfaceATL) vectorAdd [0,0.01,0];  // The shift allows markers beneath it be be clicked on.
 
 switch (A3A_NGSA_clickModeEnum) do {
     case 0: {       // Connections

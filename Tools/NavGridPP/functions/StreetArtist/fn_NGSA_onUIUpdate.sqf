@@ -22,7 +22,7 @@ if (!visibleMap) exitWith {};
 
 private _mousePos = getMousePosition;
 private _mapTexture = findDisplay 12 displayCtrl 51;
-private _worldPos = ((_mapTexture ctrlMapScreenToWorld _mousePos) call A3A_fnc_NGSA_getSurfaceATL) vectorAdd [0,0.08,0];  // The shift allows markers beneath it be be clicked on.
+private _worldPos = ((_mapTexture ctrlMapScreenToWorld _mousePos) call A3A_fnc_NGSA_getSurfaceATL) vectorAdd [0,0.01,0];  // The shift allows markers beneath it be be clicked on.
 private _mapScale = ctrlMapScale _mapTexture;
 private _fullSelectionRadius = worldSize / 16 * _mapScale;
 A3A_NGSA_maxSelectionRadius = _fullSelectionRadius min 150;         // Note, due to 100m edge map regions, the max distance will be between 100m and 282.8m.

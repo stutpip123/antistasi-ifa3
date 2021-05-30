@@ -24,7 +24,7 @@ private _fnc_diag_report = {
     params ["_diag_step_main"];
     [
         "Refresh",
-        "<t size='1' align='left'>"+_diag_step_main+"</t>",
+        "<t size='"+str(A3A_NGSA_baseTextSize)+"' align='left'>"+_diag_step_main+"</t>",
         true,
         200
     ] call A3A_fnc_customHint;

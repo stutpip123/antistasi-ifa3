@@ -1,14 +1,14 @@
 /*
 Maintainer: Caleb Serafin
     Returns the ASL height of the top surface under the specified point.
+    Does not modify the input.
 
 Arguments:
-    <SCALAR> X Position
-    <SCALAR> Y Position
-    <SCALAR> Z Position ATL [Default=10000]
+    <POS2D || POS3D> Y and Y coordinate, Z is unused can can be omitted.
+    <SCALAR> Z Position ATL to start scanning terrain height. 1000m leaves 3 decimal place precision, bigger numbers lose precision. [Default=1000]
 
 Return Value:
-    <POSASL> position on surface.
+    <POSATL> position on surface.
 
 Scope: Any
 Environment: Any
@@ -17,13 +17,13 @@ Dependencies:
     <OBJECT> A3A_NGSA_heightTester
 
 Example:
-    [123,456] call A3A_fnc_NGSA_getSurfaceATL;
+    [getPos player] call A3A_fnc_NGSA_getSurfaceATL;
 */
 params [
-    ["_xHeight",0,[0]],
-    ["_yHeight",0,[0]],
-    ["_zHeight",1000,[0]]
+    ["_pos",[],[ [] ],[2,3]],
+    ["_zScanHeight",1000,[0]]
 ];
-
-A3A_NGSA_heightTester setPosATL [_xHeight,_yHeight,_zHeight];
-[_xHeight,_yHeight,_zHeight - ((getPos A3A_NGSA_heightTester)#2)];
+private _xComponent = _pos#0;
+private _yComponent = _pos#1;
+A3A_NGSA_heightTester setPosATL [_xComponent,_yComponent,_zScanHeight];
+[_xComponent,_yComponent,_zScanHeight - ((getPos A3A_NGSA_heightTester)#2)];

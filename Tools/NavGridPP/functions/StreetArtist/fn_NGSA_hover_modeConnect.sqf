@@ -31,14 +31,8 @@ private _navGridPosRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0]
 private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
 
 private _showAddNode = "shift" in A3A_NGSA_depressedKeysHM;
-if (_showAddNode) then {
-    private _nearRoads = nearestTerrainObjects [_worldPos, A3A_NG_const_roadTypeEnum, A3A_NGSA_maxSelectionRadius, true, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};  // Bad roads need to be filtered out.
-    if (count _nearRoads > 0) then {
-        _showAddNode = !(getPosATL (_nearRoads#0) in _navGridHM); // Cannot add the same road.
-    };
-};
 
-private _targetPos = [];
+private _targetPos = _worldPos;
 private _closestDistance = [A3A_NGSA_maxSelectionRadius,2*A3A_NG_const_positionInaccuracy] select _showAddNode; // Prioritise adding roads.
 {
     private _distance = _x distance2D _worldPos;
@@ -48,12 +42,25 @@ private _closestDistance = [A3A_NGSA_maxSelectionRadius,2*A3A_NG_const_positionI
     };
 } forEach ([_navGridPosRegionHM,_worldPos] call A3A_fnc_NGSA_posRegionHM_allAdjacent);
 
-A3A_NGSA_modeConnect_targetExists = _targetPos isNotEqualTo A3A_NG_const_emptyArray;
+A3A_NGSA_modeConnect_targetExists = _targetPos in _navGridHM;
 if (A3A_NGSA_modeConnect_targetExists) then {
     A3A_NGSA_modeConnect_targetNode = _navGridHM get _targetPos;
 };
 
-A3A_NGSA_UI_marker0_pos = [_worldPos,_targetPos] select A3A_NGSA_modeConnect_targetExists;
+private _disconnectAction = A3A_NGSA_modeConnect_selectedExists && A3A_NGSA_modeConnect_targetExists && {A3A_NGSA_modeConnect_targetNode#3 findIf {_x#0 isEqualTo (A3A_NGSA_modeConnect_selectedNode#0)} != -1}; // Node under cursor is connected to select node.
+// Leash connection length while allowing unlink to work at longer distances.
+if (A3A_NGSA_modeConnect_selectedExists && !_disconnectAction && {A3A_NGSA_modeConnect_selectedNode#0 distance2D _targetPos > A3A_NGSA_const_maxConnectionLength}) then {
+    private _azimuth = A3A_NGSA_modeConnect_selectedNode#0 getDir _targetPos;
+    _targetPos = [A3A_NGSA_modeConnect_selectedNode#0 getPos [A3A_NGSA_const_maxConnectionLength,_azimuth]] call A3A_fnc_NGSA_getSurfaceATL;
+    A3A_NGSA_modeConnect_targetExists = false
+};
+
+if (_showAddNode) then {
+    private _nearRoads = nearestTerrainObjects [_targetPos, A3A_NG_const_roadTypeEnum, A3A_NGSA_maxSelectionRadius, true, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};  // Bad roads need to be filtered out.
+    if (count _nearRoads > 0) then {
+        _showAddNode = !(getPosATL (_nearRoads#0) in _navGridHM); // Cannot add the same road.
+    };
+};
 
 private _lineColour = ["ColorOrange","ColorYellow","ColorGreen"] #A3A_NGSA_modeConnect_roadTypeEnum; // ["TRACK", "ROAD", "MAIN ROAD"]
 private _lineStartPos = +A3A_NGSA_UI_marker1_pos;
@@ -70,17 +77,20 @@ Marker1 is used for selected node.
 */
 
 A3A_NGSA_UI_marker1_name setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
-A3A_NGSA_UI_marker1_name setMarkerType (["Empty","mil_start"] select (A3A_NGSA_modeConnect_selectedExists && A3A_NGSA_UI_marker0_pos isNotEqualTo A3A_NGSA_UI_marker1_pos));       // Broadcasts for selected marker.
+A3A_NGSA_UI_marker1_name setMarkerType (["Empty","mil_start"] select (A3A_NGSA_modeConnect_selectedExists && _targetPos isNotEqualTo A3A_NGSA_UI_marker1_pos));       // Broadcasts for selected marker.
 A3A_NGSA_UI_marker1_name setMarkerColorLocal _lineColour;
 
 A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_dotBaseSize*0.8, A3A_NGSA_dotBaseSize*0.8];
 switch (true) do {       // Broadcast here.
     case (_showAddNode): {                       // Add new node
-        private _nearRoads = nearestTerrainObjects [_worldPos, A3A_NG_const_roadTypeEnum, A3A_NGSA_maxSelectionRadius, true, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};  // Bad roads need to be filtered out.
-        if (count _nearRoads > 0) then {
-            A3A_NGSA_UI_marker0_pos = getPosATL (_nearRoads#0);
+        private _nearRoads = nearestTerrainObjects [_targetPos, A3A_NG_const_roadTypeEnum, A3A_NGSA_maxSelectionRadius, true, true] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}};  // Bad roads need to be filtered out.
+        if (A3A_NGSA_modeConnect_selectedExists) then {
+            _nearRoads = _nearRoads select {A3A_NGSA_modeConnect_selectedNode#0 distance2D _x <= A3A_NGSA_const_maxConnectionLength};
         };
-        _lineEndPos = A3A_NGSA_UI_marker0_pos;
+        if (count _nearRoads > 0) then {
+            _targetPos = getPosATL (_nearRoads#0);
+        };
+        _lineEndPos = _targetPos;
         A3A_NGSA_UI_marker0_name setMarkerSizeLocal [A3A_NGSA_dotBaseSize, A3A_NGSA_dotBaseSize];
         A3A_NGSA_UI_marker0_name setMarkerTypeLocal (["mil_triangle","mil_dot"] select (count _nearRoads > 0));
         A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorBlack";
@@ -97,7 +107,7 @@ switch (true) do {       // Broadcast here.
         A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorBlack";
     };
     case (!A3A_NGSA_modeConnect_targetExists): {                        // Nothing under cursor, there is a node selected. //Deselect
-        _lineEndPos = _worldPos;
+        _lineEndPos = _targetPos;
         A3A_NGSA_UI_marker0_name setMarkerSizeLocal [1.2,1.2];
         _lineBrush = "DiagGrid";
         A3A_NGSA_UI_marker0_name setMarkerTypeLocal "waypoint";
@@ -107,12 +117,12 @@ switch (true) do {       // Broadcast here.
         A3A_NGSA_UI_marker0_name setMarkerTypeLocal "selector_selectable";
         A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorBlack";
     };
-    case (A3A_NGSA_UI_marker0_pos isEqualTo A3A_NGSA_UI_marker1_pos): { // Already selected node under cursor. // Deselect
+    case (_targetPos isEqualTo A3A_NGSA_UI_marker1_pos): { // Already selected node under cursor. // Deselect
         A3A_NGSA_UI_marker0_name setMarkerSizeLocal [1.2,1.2];
         A3A_NGSA_UI_marker0_name setMarkerTypeLocal "waypoint";
         A3A_NGSA_UI_marker0_name setMarkerColorLocal "ColorBlack";
     };
-    case ((A3A_NGSA_modeConnect_targetNode#3) findIf {(_x#0) isEqualTo (A3A_NGSA_modeConnect_selectedNode#0)} != -1): { // Node under cursor is connected to select node. // Disconnect nodes.
+    case (_disconnectAction): { // Node under cursor is connected to select node. // Disconnect nodes.
         _lineColour = "ColorRed";
         _lineBrush = "DiagGrid";
         A3A_NGSA_UI_marker0_name setMarkerTypeLocal "mil_objective";
@@ -126,7 +136,8 @@ switch (true) do {       // Broadcast here.
     };
 };
 A3A_NGSA_UI_marker0_name setMarkerTextLocal ("        " + (A3A_NGSA_UI_marker0_pos#2 toFixed 1) + "m");  // The space allows to to avoid the map coord text.
-A3A_NGSA_UI_marker0_name setMarkerPos A3A_NGSA_UI_marker0_pos; // Broadcasts marker attributes here
+A3A_NGSA_UI_marker0_pos = _targetPos;
+A3A_NGSA_UI_marker0_name setMarkerPos (A3A_NGSA_UI_marker0_pos vectorAdd [0,0.01,0]);  // The shift allows markers beneath it be be clicked on.; // Broadcasts marker attributes here
 
 
 

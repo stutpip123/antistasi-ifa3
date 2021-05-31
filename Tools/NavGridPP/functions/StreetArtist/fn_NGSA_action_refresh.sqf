@@ -5,45 +5,57 @@ Maintainer: Caleb Serafin
 
 Arguments:
     <BOOLEAN> true to make silent. [Default = false]
+    <BOOLEAN> forceRun. Reserved to internal scheduling. Do not set true! [Default = false]
 
 Return Value:
     <ANY> undefined.
 
 Scope: Client, Local Arguments, Local Effect
-Environment: Any
+Environment: Scheduled.
 Public: No
 
 Example:
     call A3A_fnc_NGSA_action_refresh;
 */
 params [
-    ["_silent",false]
+    ["_silent",false],
+    ["_forceRun",false]
 ];
 
-private _fnc_diag_report = {
-    params ["_diag_step_main"];
-    [
-        "Refresh",
-        "<t size='"+str(A3A_NGSA_baseTextSize)+"' align='left'>"+_diag_step_main+"</t>",
-        true,
-        200
-    ] call A3A_fnc_customHint;
+if (_fnc_scriptNameParent isNotEqualTo _fnc_scriptName) exitWith {
+    throw ["Unauthorised","A3A_fnc_NGSA_action_refresh was called with forceRun set true."];
 };
-if (_silent) then {
-    _fnc_diag_report = {};
+if (!canSuspend) exitWith {
+    throw ["NotScheduledEnvironment","Please execute NG_main in a scheduled environment as it is a long process: `[] spawn A3A_fnc_NGSA_action_refresh;`."];
 };
 
-if (A3A_NGSA_refresh_busy) exitWith {
-    "Auto refresh is busy running. Wait a second then run again." call _fnc_diag_report;
+private _fnc_diag_report = {};
+if (!_silent) then {
+    _fnc_diag_report = {
+        params ["_diag_step_main"];
+        ["Refresh",_diag_step_main,true,200] call A3A_fnc_customHint;
+    };
+};
+
+if (A3A_NGSA_refresh_busy && !_forceRun) exitWith {
+    A3A_NGSA_refresh_scheduled = true;
+    A3A_NGSA_refresh_scheduledSilent = A3A_NGSA_refresh_scheduled && _silent;
+    if (!_silent) then {
+        ["Refresh","Auto refresh is busy running. Scheduled another refresh.",false,201] call A3A_fnc_customHint;
+    };
 };
 A3A_NGSA_refresh_busy = true;
 "Refreshing All Markers." call _fnc_diag_report;
-
-private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
-_navGridHM call A3A_fnc_NGSA_navGridHM_refresh_islandID;
-[_navGridHM,A3A_NGSA_dotBaseSize] call A3A_fnc_NG_draw_islands;
-
 [nil,false,false] call A3A_fnc_NG_draw_main;
 
-A3A_NGSA_refresh_busy = false;
-"Islands refreshed!" call _fnc_diag_report;
+if (A3A_NGSA_refresh_scheduled) then {
+    A3A_NGSA_refresh_scheduled = false;
+    private _silent = A3A_NGSA_refresh_scheduledSilent;
+    A3A_NGSA_refresh_scheduledSilent = true;
+    [201] call A3A_fnc_customHintDrop;
+    [_silent,true] call A3A_fnc_NGSA_action_refresh;
+} else {
+    A3A_NGSA_refresh_busy = false;
+    "Islands refreshed!" call _fnc_diag_report;
+};
+

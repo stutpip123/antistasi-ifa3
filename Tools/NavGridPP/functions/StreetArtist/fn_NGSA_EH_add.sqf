@@ -86,6 +86,8 @@ createMarkerLocal [A3A_NGSA_modeConnect_lineName,[0,0]];
 
 A3A_NGSA_modeBrush_recentDeletion = false;
 A3A_NGSA_refresh_busy = false;
+A3A_NGSA_refresh_scheduled = false;
+A3A_NGSA_refresh_scheduledSilent = true;
 
 private _mapEH_mouseDown = _map displayAddEventHandler ["MouseButtonDown", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
@@ -144,7 +146,7 @@ private _missionEH_keyUp = _map displayAddEventHandler ["KeyUp", {
 
 // ID 600 is not dropped in case there was a critical error that did not halt the process.
 [0] call A3A_fnc_NGSA_action_changeTool;
-[0] call A3A_fnc_NGSA_action_changeColours;
+[0,true] call A3A_fnc_NGSA_action_changeColours;
 [
     "General",
     "<t color='#f0d498'>'F'</t>-Cycle Tool<br/>"+

@@ -4,6 +4,7 @@ Maintainer: Caleb Serafin
 
 Arguments:
     <NIL> cycle colour mode. | <STRING|INTEGER> switch to specific colour mode. [Default = nil]
+    <BOOLEAN> Skip automatic refresh. [Default = false]
 
 Return Value:
     <ANY> undefined.
@@ -17,10 +18,11 @@ Dependencies:
 
 Example:
     [] call A3A_fnc_NGSA_action_changeColours;
-    [0] call A3A_fnc_NGSA_action_changeColours;
+    [0,true] call A3A_fnc_NGSA_action_changeColours;
 */
 params [
-    ["_specificColourMode",nil,["",0]]
+    ["_specificColourMode",nil,["",0]],
+    ["_noRefresh",false,[false]]
 ];
 
 private _colourModes = ["normal","normalOffroad","islandID","islandIDDeadEnd"];
@@ -84,9 +86,11 @@ _selectorText set [_colourModeIndex, "<t color='#f0d498' size='"+str(A3A_NGSA_ba
     400
 ] call A3A_fnc_customHint;
 
-private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
-if (count _navGridHM <= A3A_NGSA_autoMarkerRefreshNodeMax) then {
-    [true] spawn A3A_fnc_NGSA_action_refresh;
-} else {
-    ["Colour Mode Changed","Refresh To apply colour changes! (<t color='#f0d498'>'ctrl'+'R'</t>)",true,200] call A3A_fnc_customHint;
+if (!_noRefresh) then {
+    private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
+    if (count _navGridHM <= A3A_NGSA_autoMarkerRefreshNodeMax) then {
+        [true] spawn A3A_fnc_NGSA_action_refresh;
+    } else {
+        ["Colour Mode Changed","Refresh To apply colour changes! (<t color='#f0d498'>'ctrl'+'R'</t>)",true,200] call A3A_fnc_customHint;
+    };
 };

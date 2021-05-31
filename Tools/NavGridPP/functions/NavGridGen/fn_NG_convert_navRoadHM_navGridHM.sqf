@@ -21,16 +21,7 @@ params [
 
 private _fnc_diag_render = { // ["Hi"] call _fnc_diag_render;
     params ["_diag_step_sub"];
-    private _customHintParams = [
-        "Converting navGrid to navFlatHM",
-        "<t align='left'>"+
-        _diag_step_sub+
-        "</t>",
-        true,
-        400
-    ];
-    _customHintParams call A3A_fnc_customHint;
-    _customHintParams remoteExec ["A3A_fnc_customHint",-clientOwner];
+    ["Converting navGrid to navFlatHM",_diag_step_sub,true,400] call A3A_fnc_customHint;
 };
 
 ["Creating hashMaps"] call _fnc_diag_render;

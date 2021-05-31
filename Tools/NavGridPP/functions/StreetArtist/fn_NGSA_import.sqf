@@ -21,14 +21,7 @@ if (!canSuspend) exitWith {
 
 private _diag_step_main = "";
 private _fnc_diag_render = { // call _fnc_diag_render;
-    [
-        "Import",
-        "<t align='left'>" +
-        _diag_step_main+
-        "</t>",
-        true,
-        200
-    ] remoteExec ["A3A_fnc_customHint",0];
+    ["Import",_diag_step_main,true,200] call A3A_fnc_customHint;
     [4,_diag_step_main,"fn_NG_import"] call A3A_fnc_log;
 };
 

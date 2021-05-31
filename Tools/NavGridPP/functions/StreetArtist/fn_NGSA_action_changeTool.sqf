@@ -47,9 +47,7 @@ _selectorText set [A3A_NGSA_clickModeEnum, "<t color='#f0d498' size='"+str(A3A_N
 [
     "Toolbox",
     "<t align='center' color='#888888' size='"+str(0.8*A3A_NGSA_baseTextSize)+"' underline='1' valign='middle'>"+(_selectorText joinString " ")+"</t><br/>"+
-    "<t align='left' size='"+str(A3A_NGSA_baseTextSize)+"'>"+
-    (_legends #A3A_NGSA_clickModeEnum)+
-    "</t>",
+    (_legends #A3A_NGSA_clickModeEnum),
     true,
     500
 ] call A3A_fnc_customHint;

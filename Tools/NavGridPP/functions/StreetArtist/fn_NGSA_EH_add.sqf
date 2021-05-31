@@ -147,12 +147,10 @@ private _missionEH_keyUp = _map displayAddEventHandler ["KeyUp", {
 [0] call A3A_fnc_NGSA_action_changeColours;
 [
     "General",
-    "<t size='"+str(A3A_NGSA_baseTextSize)+"' align='left'>"+
     "<t color='#f0d498'>'F'</t>-Cycle Tool<br/>"+
     "<t color='#f0d498'>'ctrl'+'D'</t>-Cycle Map Legend<br/>"+
     "<t color='#f0d498'>'ctrl'+'R'</t>-Refresh Markers<br/>"+
-    "<t color='#f0d498'>'ctrl'+'S'</t>-Export changes"+
-    "</t>",
+    "<t color='#f0d498'>'ctrl'+'S'</t>-Export changes",
     true,
     300
 ] call A3A_fnc_customHint;

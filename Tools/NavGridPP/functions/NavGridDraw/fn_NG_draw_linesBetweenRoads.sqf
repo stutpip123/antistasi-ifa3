@@ -32,17 +32,7 @@ params [
 
 private _fnc_diag_report = {
     params ["_diag_step_main"];
-
-    private _hintData = [
-        "Drawing Lines",
-        "<t align='left'>" +
-        _diag_step_main+
-        "</t>",
-        true,
-        200
-    ];
-    _hintData call A3A_fnc_customHint;
-    _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
+    ["Drawing Lines",_diag_step_main,true,200] call A3A_fnc_customHint;
 };
 private _const_roadColourClassification = ["ColorOrange","ColorYellow","ColorGreen"]; // ["TRACK", "ROAD", "MAIN ROAD"]
 private _diag_totalSegments = count _navGridHM;

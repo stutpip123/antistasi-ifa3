@@ -43,6 +43,9 @@ A3A_NGSA_LastAltTime = 0;
 A3A_NGSA_ArmaUIScale = getResolution #5;  // uiScale, [screenW, screenH, viewPortW, viewPortH, aspectRatio, uiScale, fovTop, fovLeft, tripleHead]
 A3A_NGSA_baseTextSize = (0.7 / A3A_NGSA_ArmaUIScale) min 1;
 
+// Code searches for a Node in a radius of 300m from a road. There is a 100m safety margin.
+A3A_NGSA_const_maxConnectionLength = 400;
+
 // All pallets should have at least 2 accents
 //                    Black      Dark Grey    Light Grey     White
 private _greys = ["ColorBlack","Color6_FD_F","ColorGrey","ColorWhite"];

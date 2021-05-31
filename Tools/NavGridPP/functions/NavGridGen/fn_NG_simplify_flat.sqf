@@ -26,14 +26,7 @@ private _maxDriftSqr = _maxDrift^2;
 
 private _fnc_diag_render = { // [] call _fnc_diag_render;
     params [["_diag_step_sub",""]];
-    [
-        "Simplifying Flat Segments",
-        "<t align='left'>" +
-        _diag_step_sub+
-        "</t>",
-        true,
-        400
-    ] remoteExec ["A3A_fnc_customHint",0];
+    ["Simplifying Flat Segments",_diag_step_sub,true,400] call A3A_fnc_customHint;
 };
 
 private _fnc_replaceRoadConnection = {

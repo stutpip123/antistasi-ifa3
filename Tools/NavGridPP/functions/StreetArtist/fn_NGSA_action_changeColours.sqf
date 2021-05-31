@@ -79,9 +79,7 @@ _selectorText set [_colourModeIndex, "<t color='#f0d498' size='"+str(A3A_NGSA_ba
 [
     "Marker Legend",
     "<t align='center' color='#888888' size='"+str(0.8*A3A_NGSA_baseTextSize)+"' underline='1' valign='middle'>"+(_selectorText joinString " ")+"</t><br/>"+
-    "<t align='left' size='"+str(A3A_NGSA_baseTextSize)+"'>"+
-    (_legends #_colourModeIndex)+
-    "</t>",
+    (_legends #_colourModeIndex),
     true,
     400
 ] call A3A_fnc_customHint;
@@ -90,12 +88,5 @@ private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nest
 if (count _navGridHM <= A3A_NGSA_autoMarkerRefreshNodeMax) then {
     [true] spawn A3A_fnc_NGSA_action_refresh;
 } else {
-    [
-        "Colour Mode Changed",
-        "<t size='"+str(A3A_NGSA_baseTextSize)+"' align='left'>"+
-        "Refresh To apply colour changes! (<t color='#f0d498'>'ctrl'+'R'</t>)"+
-        "</t>",
-        true,
-        200
-    ] call A3A_fnc_customHint;
+    ["Colour Mode Changed","Refresh To apply colour changes! (<t color='#f0d498'>'ctrl'+'R'</t>)",true,200] call A3A_fnc_customHint;
 };

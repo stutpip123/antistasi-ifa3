@@ -17,16 +17,7 @@ private _fnc_diag_report = {
     params ["_diag_step_main"];
 
     [3,_diag_step_main,"fn_NGSA_action_save"] call A3A_fnc_log;
-    private _hintData = [
-        "Export",
-        "<t align='left'>" +
-        _diag_step_main+
-        "</t>",
-        false,
-        200
-    ];
-    _hintData call A3A_fnc_customHint;
-    _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
+    ["Export",_diag_step_main,false,200] call A3A_fnc_customHint;
 };
 
 "navGridHM is being processed." call _fnc_diag_report;

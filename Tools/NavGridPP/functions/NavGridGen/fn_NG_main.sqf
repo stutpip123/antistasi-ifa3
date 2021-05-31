@@ -43,18 +43,8 @@ private _fnc_diag_report = {
     params ["_diag_step_main","_diag_step_sub"];
 
     [3,_diag_step_main+" | "+_diag_step_sub,"fn_NG_main"] call A3A_fnc_log;
-    private _hintData = [
-        _diag_step_main,
-        "<t align='left'>" +
-        _diag_step_sub+
-        "</t>",
-        true,
-        500
-    ];
-    _hintData call A3A_fnc_customHint;
-    _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
+    [_diag_step_main,_diag_step_sub,true,500] call A3A_fnc_customHint;
     400 call A3A_fnc_customHintDrop;    // No more sub steps will overwrite it
-    400 remoteExec ["A3A_fnc_customHintDrop",-clientOwner];
 };
 
 uiSleep 0.001;  // Readies the scheduler to avoid a lag spike for the following loop.

@@ -10,6 +10,7 @@ Arguments:
     <BOOLEAN> True to draw distance between road segments. (Only draws if above 5m) (Default = false)
     <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
     <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 0.8)
+    <BOOLEAN> Silent, don't produce hint messages.
 
 Return Value:
     <ANY> Undefined
@@ -32,7 +33,8 @@ params [
     ["_line_opaque",false,[ false ]],
     ["_drawDistance",false,[ false ]],
     ["_dot_size",A3A_NGSA_dotBaseSize,[ 0 ]],
-    ["_islandDot_size",A3A_NGSA_dotBaseSize,[ 0 ]]
+    ["_islandDot_size",A3A_NGSA_dotBaseSize,[ 0 ]],
+    ["_silent",false,[false]]
 ];
 
 if (!canSuspend) exitWith {
@@ -47,20 +49,14 @@ if (isNil {
 if (isNil {A3A_NGSA_const_allMarkerColours}) then {
 };
 
-private _fnc_diag_report = {
-    params ["_diag_step_main"];
+private _fnc_diag_report = {};
+if (!_silent) then {
+    _fnc_diag_report = {
+        params ["_diag_step_main"];
 
-    [3,_diag_step_main,"fn_NG_main"] call A3A_fnc_log;
-    private _hintData = [
-        "Drawing",
-        "<t align='left'>" +
-        _diag_step_main+
-        "</t>",
-        true,
-        200
-    ];
-    _hintData call A3A_fnc_customHint;
-    _hintData remoteExec ["A3A_fnc_customHint",-clientOwner];
+        [3,_diag_step_main,"fn_NG_main"] call A3A_fnc_log;
+        ["Drawing",_diag_step_main,true,200] call A3A_fnc_customHint;
+    };
 };
 
 _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",[]] call Col_fnc_nestLoc_get;
@@ -72,15 +68,15 @@ if (_navGridHM isEqualTo []) exitWith {
 //call A3A_fnc_NG_draw_deleteAll;
 
 "Drawing Lines Between Roads" call _fnc_diag_report;
-[4,"A3A_fnc_NG_draw_linesBetweenRoads","fn_NG_main_draw"] call A3A_fnc_log;
 [_navGridHM,_line_size,_line_opaque,_drawDistance] call A3A_fnc_NG_draw_linesBetweenRoads;
 
 "Drawing Dots On Roads" call _fnc_diag_report;
-[4,"A3A_fnc_NG_draw_dotOnRoads","fn_NG_main_draw"] call A3A_fnc_log;
 [_navGridHM,_dot_size] call A3A_fnc_NG_draw_dotOnRoads;
 
+"Refreshing Island Makers" call _fnc_diag_report;
+[_navGridHM] call A3A_fnc_NGSA_navGridHM_refresh_islandID;
+
 "Drawing Island Makers" call _fnc_diag_report;
-[4,"A3A_fnc_NG_draw_islands","fn_NG_main_draw"] call A3A_fnc_log;
 [_navGridHM,_islandDot_size] call A3A_fnc_NG_draw_islands;
 
 "Done<br/>You can re-run `A3A_fnc_NG_draw_main` as many times as you want to redraw the markers without re-generating the navGrid." call _fnc_diag_report;

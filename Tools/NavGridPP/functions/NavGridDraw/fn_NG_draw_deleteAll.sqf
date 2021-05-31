@@ -18,14 +18,7 @@ if (!canSuspend) exitWith {
 
 private _diag_step_main = "";
 private _fnc_diag_render = { // call _fnc_diag_render;
-    [
-        "Delete All Markers",
-        "<t align='left'>" +
-        _diag_step_main+
-        "</t>",
-        true,
-        200
-    ] remoteExec ["A3A_fnc_customHint",0];
+    ["Delete All Markers",_diag_step_main,true,200] call A3A_fnc_customHint;
 };
 
 _diag_step_main = "Deleting Dots";

@@ -56,7 +56,10 @@ private _fnc_canSimplify = {
 
     if !(getRoadInfo _leftRoad#0 isEqualTo getRoadInfo _rightRoad#0) exitWith {false;};   // Must be same type
 
-    private _base = 0.5 * (_leftRoad distance _rightRoad);
+    private _straightDistance = _leftRoad distance _rightRoad;
+    if (_straightDistance > A3A_NGSA_const_maxConnectionLength) exitWith {false;};   // Node searches expect a node within a reasonable distance from a road.
+
+    private _base = 0.5 * _straightDistance;
     private _hypotenuse = 0.5 * _realDistance; //  The hypotenuse is half, as the worst real road can do is climb to a point, then come back down.
 
     if ((_hypotenuse^2 - _base^2) > _maxDriftSqr) exitWith { false; };

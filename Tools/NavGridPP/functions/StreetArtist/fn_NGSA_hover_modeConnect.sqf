@@ -135,7 +135,11 @@ switch (true) do {       // Broadcast here.
         A3A_NGSA_UI_marker0_name setMarkerColorLocal _lineColour;
     };
 };
-A3A_NGSA_UI_marker0_name setMarkerTextLocal ("        " + (A3A_NGSA_UI_marker0_pos#2 toFixed 1) + "m");  // The space allows to to avoid the map coord text.
+private _cursorInformation = "        H:" + (A3A_NGSA_UI_marker0_pos#2 toFixed 2) + "m";  // The space allows to to avoid the map coord text.
+if (A3A_NGSA_modeConnect_selectedExists) then {
+    _cursorInformation = _cursorInformation + "  L:" + (A3A_NGSA_modeConnect_selectedNode#0 distance2D _targetPos toFixed 2) + "m";
+};
+A3A_NGSA_UI_marker0_name setMarkerTextLocal _cursorInformation;
 A3A_NGSA_UI_marker0_pos = _targetPos;
 A3A_NGSA_UI_marker0_name setMarkerPos (A3A_NGSA_UI_marker0_pos vectorAdd [0,0.01,0]);  // The shift allows markers beneath it be be clicked on.; // Broadcasts marker attributes here
 

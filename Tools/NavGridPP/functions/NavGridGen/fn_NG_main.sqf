@@ -46,6 +46,7 @@ private _fnc_diag_report = {
     [_diag_step_main,_diag_step_sub,true,500] call A3A_fnc_customHint;
     400 call A3A_fnc_customHintDrop;    // No more sub steps will overwrite it
 };
+["Tip","Close your map and look down to make it run faster.<br/>When markers are being drawn, zooming in or closing the map gives better performance.",true,300] call A3A_fnc_customHint;
 
 uiSleep 0.001;  // Readies the scheduler to avoid a lag spike for the following loop.
 

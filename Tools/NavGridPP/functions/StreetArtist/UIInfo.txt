@@ -3,6 +3,7 @@ Generator notificationIDs
 Halting Error       600
 Main Step + Details 500
 Sub Step + Details  400
+Main step Tip       300
 
 
 Editor notificationIDs

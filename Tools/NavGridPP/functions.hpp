@@ -11,8 +11,6 @@ class A3A {
         class NG_draw_text {};
     };
     class NavGridGen {
-        class NG_check_conExists {};
-        class NG_check_oneWays {};
         class NG_convert_navGridDB_navGridHM {};
         class NG_convert_navGridHM_navGridDB {};
         class NG_convert_navRoadHM_navGridHM {};
@@ -36,7 +34,6 @@ class A3A {
         class NGSA_click_modeConnect {};
         class NGSA_correctPositions {};
         class NGSA_EH_add {};
-        class NGSA_EH_rem {};
         class NGSA_getSurfaceATL {};
         class NGSA_hover_modeBrush {};
         class NGSA_hover_modeConnect {};

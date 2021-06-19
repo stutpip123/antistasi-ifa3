@@ -17,6 +17,7 @@ Example:
 
 if (!canSuspend) exitWith {
     throw ["NotScheduledEnvironment","Please execute NG_main in a scheduled environment as it is a long process: `[] spawn A3A_fnc_NG_draw_main;`."];
+    [];
 };
 
 private _diag_step_main = "";
@@ -29,6 +30,7 @@ private _fnc_diag_render = { // call _fnc_diag_render;
 //private _navGridDB_formatted = copyFromClipboard; // Disabled in multiplayer :'(
 if !(createDialog "A3A_NG_import_dialogue") exitWith {
     throw ["CreateDialogFailed","Failed to create A3A_NG_import_dialogue."];
+    [];
 };
 
 waitUntil {
@@ -37,8 +39,9 @@ waitUntil {
 };
 
 if (isNil {A3A_NG_import_NGDB_formatted}) exitWith {
-    _diag_step_main = "Import cancelled by closing dialogue without pressing Import.";
+    _diag_step_main = "Import cancelled by closing dialogue.";
     call _fnc_diag_render;
+    [];
 };
 private _navGridDB_formatted = A3A_NG_import_NGDB_formatted;
 
@@ -58,6 +61,7 @@ private _navGridDB = parseSimpleArray _navGridDB_formatted;
 if (isNil {_navGridDB} || _navGridDB isEqualTo []) exitWith {
     _diag_step_main = "Failed to parseSimpleArray.<br/><br/>Please only copy the array from the navGridDB file. Paste your clipboard into a file and REMOVE other code from it.";
     call _fnc_diag_render;
+    [];
 };
 
 _diag_step_main = "Converting navGridDB to navGridHM...";
@@ -69,6 +73,7 @@ private _navGridHM = [_navGridDB] call A3A_fnc_NG_convert_navGridDB_navGridHM;
 if (isNil {_navGridHM} || count _navGridHM != count _navGridDB) exitWith {
     _diag_step_main = "Failed to convert navGridDB to navGridHM.<br/><br/>Please check that all entries are nested in one big array and that the opening square bracket `[` wasn't deleted accidentally.";
     call _fnc_diag_render;
+    [];
 };
 [_navGridHM] call A3A_fnc_NGSA_correctPositions;
 _diag_step_main = "Correcting Positions...";

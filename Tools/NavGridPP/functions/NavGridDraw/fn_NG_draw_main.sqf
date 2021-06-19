@@ -61,8 +61,6 @@ if (_navGridHM isEqualTo []) exitWith {
     [localNamespace,"A3A_NGPP","draw","busy", false] call Col_fnc_nestLoc_set;
 };
 
-//call A3A_fnc_NG_draw_deleteAll;
-
 "Drawing Lines Between Roads" call _fnc_diag_report;
 [_navGridHM,_line_size,_line_opaque,_drawDistance] call A3A_fnc_NG_draw_linesBetweenRoads;
 

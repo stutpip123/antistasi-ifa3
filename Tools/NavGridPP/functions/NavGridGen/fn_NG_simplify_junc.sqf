@@ -8,7 +8,7 @@ Arguments:
     <SCALAR> Junctions are only merged if within this distance. (Default = 15)
 
 Return Value:
-    <ARRAY> Same Simplified _navRoadHM reference
+    <navRoadHM> Same Simplified _navRoadHM reference
 
 Scope: Any, Global Arguments
 Environment: Scheduled

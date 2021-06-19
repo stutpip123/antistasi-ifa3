@@ -102,11 +102,6 @@ _map displayAddEventHandler ["MouseButtonUp", {
     A3A_NGSA_depressedKeysHM deleteAt (["mbt0","mbt1"]#_button);    // Will only be left or right
     nil;
 }];
-_gameWindow displayAddEventHandler ["MouseButtonDblClick", {
-    params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
-    visibleMap;   // Prevent adding markers.
-}];
-
 
 addMissionEventHandler ["EachFrame", {
     // Alt+Tab checker. Prevents clicks are keys progressing though alt+tab

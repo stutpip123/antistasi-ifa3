@@ -1,6 +1,7 @@
 /*
 Maintainer: Caleb Serafin
-    Deletes all existing map markers
+    Deletes all existing map markers.
+    Currently unused, may be used in the future.
 
 Return Value:
     <ANY> Undefined

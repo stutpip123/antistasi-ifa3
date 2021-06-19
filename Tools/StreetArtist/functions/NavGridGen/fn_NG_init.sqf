@@ -86,7 +86,3 @@ reverse A3A_NGSA_const_allMarkerColours;    // Push the brighter colours to the 
 A3A_NGSA_const_allMarkerColoursCount = count A3A_NGSA_const_allMarkerColours;
 A3A_NGSA_const_markerColourAccent1 = _reds#2;
 A3A_NGSA_const_markerColourAccent2 = _reds#1;
-
-
-
-

@@ -2,7 +2,7 @@
 0.  Run Arma 3.
 1.  Make an empty mp-mission on any map (community or official) with just one player.
 2.  Save and close the editor.
-3.  Locate the folder `A3-Antistasi\Tools\NavGridPP\`.
+3.  Locate the folder `A3-Antistasi\Tools\StreetArtist\`.
 4.  Copy Everything in this folder (includes: /Collections/; /functions/; /description.ext; /functions.hpp; /NG_importGUI.hpp)
 5.  Paste into the folder of the mp mission you created. Usually in `C:\Users\User\Documents\Arma 3 - Other Profiles\YOUR_ARMA_NAME\mpmissions\MISSION_NAME.MAP\`
 6.  Start host LAN multiplayer.
@@ -45,7 +45,7 @@ If you have already generated a navGridDB before loading the world and you do no
 4. Switch to Arma 3 and paste it into the editBox and press the the import button.<br/>
 # 🔎 Further Reading
 See [Steet Artist Editor](https://github.com/official-antistasi-community/A3-Antistasi/wiki/Street-Artist-Editor) for A3-Antistasi navGrid Guidelines (and GIFs!).<br/>
-You can find further satisfying and accurate documentation on all sorts of things by looking into the headers of files in `./functions/NavGridPP/`.
+You can find further satisfying and accurate documentation on all sorts of things by looking into the headers of files in `./functions/StreetArtist/`.
 
 <br/>
 <br/>

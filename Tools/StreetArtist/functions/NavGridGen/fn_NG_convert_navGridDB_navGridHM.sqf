@@ -1,6 +1,6 @@
 /*
 Maintainer: Caleb Serafin
-    Converts navGridDB (format saved for A3-Antistasi) to navGridHM (Format used in navGridPP & StreetArtist).
+    Converts navGridDB (format saved for A3-Antistasi) to navGridHM (Format used in StreetArtist).
     navGridHM connections are positions.
     navGridDB connections are array indices.
     Conversion is transparent (reversible).

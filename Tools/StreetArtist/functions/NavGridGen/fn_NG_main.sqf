@@ -2,7 +2,7 @@
 Maintainer: Caleb Serafin
     See `Please Read Me.md` in root folder for clear instructions
     Main process that organises the creation of the navGrid.
-    Calls many NavGridPP functions.
+    Calls many Street Artist Generation functions.
     Output navGridDB string includes creation time and config;
     NavGridDB is copied to clipboard.
 
@@ -94,7 +94,7 @@ try {
     ["Format Conversion","Converting navGridHM to navGridDB."] call _fnc_diag_report;
     private _navGridDB = [_navGridHM] call A3A_fnc_NG_convert_navGridHM_navGridDB;
 
-    private _navGridDB_formatted = ("/*{""systemTimeUCT_G"":"""+(systemTimeUTC call A3A_fnc_systemTime_format_G)+""",""worldName"":"""+worldName+""",""NavGridPP_Config"":{""_flatMaxDrift"":"+str _flatMaxDrift+",""_juncMergeDistance"":"+str _juncMergeDistance+"}}*/
+    private _navGridDB_formatted = ("/*{""systemTimeUCT_G"":"""+(systemTimeUTC call A3A_fnc_systemTime_format_G)+""",""worldName"":"""+worldName+""",""StreetArtist_Config"":{""_flatMaxDrift"":"+str _flatMaxDrift+",""_juncMergeDistance"":"+str _juncMergeDistance+"}}*/
 ") + ([_navGridDB] call A3A_fnc_NG_format_navGridDB);
 
     [localNamespace,"A3A_NGPP","navGridDB_formatted",_navGridDB_formatted] call Col_fnc_nestLoc_set;

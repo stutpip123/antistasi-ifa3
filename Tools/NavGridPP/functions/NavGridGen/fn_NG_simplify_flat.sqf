@@ -73,7 +73,7 @@ private _fnc_canSimplify = {
 
     _nearRoads = _nearRoads select {str _x in _navRoadHM};
     if (_nearRoads findIf {str _x in _navRoadHM} == -1) exitWith {
-
+        true;
     };
     private _canRemoveParallel = true;
     {
@@ -117,7 +117,7 @@ private _trySimplify = {
 
 
     private _andSimplifyRoads = [];
-    if !(_force || [_leftRoad,_rightRoad,_newDistance,_myRoad,nil,_andSimplifyRoads] call _fnc_canSimplify) exitWith {};
+    if !(_force || {[_leftRoad,_rightRoad,_newDistance,_myRoad,nil,_andSimplifyRoads] call _fnc_canSimplify}) exitWith {};
     if (count _andSimplifyRoads != 0) exitWith {};
 
     private _leftStruct = _navRoadHM get str _leftRoad;

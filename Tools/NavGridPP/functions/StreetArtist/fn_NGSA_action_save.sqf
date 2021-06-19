@@ -3,7 +3,7 @@ Maintainer: Caleb Serafin
     Exports the formatted navGridDB to clipboard.
 
 Return Value:
-    <ANY> undefined.
+    <BOOLEAN> true or nil if crashed. Whether the navGrid was exported successfully.
 
 Scope: Client, Local Arguments, Local Effect
 Environment: Any
@@ -32,3 +32,4 @@ private _navGridDB_formatted = ("/*{""systemTimeUCT_G"":"""+(systemTimeUTC call 
 copyToClipboard _navGridDB_formatted;
 
 "Exported!<br/>navGridDB copied to clipboard!" call _fnc_diag_report;
+true;

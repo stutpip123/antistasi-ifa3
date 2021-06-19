@@ -9,7 +9,7 @@ Arguments:
 Return Value:
     <ANY> undefined.
 
-Scope: Server/Server&HC/Clients/Any, Local Arguments/Global Arguments, Local Effect/Global Effect
+Scope: Server, Global Effect
 Environment: Scheduled (Recommended) | Any (If small navGrid like Stratis, Malden)
 Public: Yes
 

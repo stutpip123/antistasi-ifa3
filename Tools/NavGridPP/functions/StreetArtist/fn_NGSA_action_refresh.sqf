@@ -22,9 +22,6 @@ params [
     ["_forceRun",false]
 ];
 
-if (_fnc_scriptNameParent isNotEqualTo _fnc_scriptName) exitWith {
-    throw ["Unauthorised","A3A_fnc_NGSA_action_refresh was called with forceRun set true."];
-};
 if (!canSuspend) exitWith {
     throw ["NotScheduledEnvironment","Please execute NG_main in a scheduled environment as it is a long process: `[] spawn A3A_fnc_NGSA_action_refresh;`."];
 };

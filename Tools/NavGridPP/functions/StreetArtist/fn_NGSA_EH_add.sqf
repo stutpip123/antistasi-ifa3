@@ -21,6 +21,7 @@ Example:
     [] spawn A3A_fnc_NGSA_EH_add;
 */
 #include "\a3\ui_f\hpp\definedikcodes.inc";
+#include "\a3\ui_f\hpp\defineResincl.inc";
 
 params [
     ["_navGridHM",0,[A3A_NG_const_hashMap]],
@@ -32,11 +33,11 @@ params [
 
 waitUntil {
     uiSleep 0.5;
-    !isNull findDisplay 12 && !isNull findDisplay 46;
+    !isNull findDisplay IDD_MAIN_MAP && !isNull findDisplay IDD_MISSION;
 };
-private _map = findDisplay 12;
-private _mapCtrl = _map displayCtrl 51;
-private _gameWindow = findDisplay 46;
+private _map = findDisplay IDD_MAIN_MAP;
+private _mapCtrl = _map displayCtrl IDD_SELECT_ISLAND;
+private _gameWindow = findDisplay IDD_MISSION;
 
 A3A_NGSA_DIKToKeyName = createHashMapFromArray [
     [DIK_LSHIFT,"shift"],
@@ -89,29 +90,25 @@ A3A_NGSA_refresh_busy = false;
 A3A_NGSA_refresh_scheduled = false;
 A3A_NGSA_refresh_scheduledSilent = true;
 
-private _mapEH_mouseDown = _map displayAddEventHandler ["MouseButtonDown", {
+_map displayAddEventHandler ["MouseButtonDown", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
-    if !(A3A_NGSA_depressedKeysHM set [["mbt0","mbt1"]#_button,[_shift, _ctrl, _alt]]) exitWith {   // Will only be left or right
+    if !(A3A_NGSA_depressedKeysHM set [["mbt0","mbt1"]#_button,[_shift, _ctrl, _alt]]) then {   // Will only be left or right
         _this call A3A_fnc_NGSA_onMouseClick;   // Only fires on new keys.
-        true;
     };
-    nil;
-    true;
+    true;   // Blocks addition of waypoint marker.
 }];
-private _mapEH_mouseUp = _map displayAddEventHandler ["MouseButtonUp", {
+_map displayAddEventHandler ["MouseButtonUp", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM deleteAt (["mbt0","mbt1"]#_button);    // Will only be left or right
     nil;
 }];
-[localNamespace,"A3A_NGPP","mapEH_mouseDown",_mapEH_mouseDown] call Col_fnc_nestLoc_set;
-[localNamespace,"A3A_NGPP","mapEH_mouseUp",_mapEH_mouseUp] call Col_fnc_nestLoc_set;
 _gameWindow displayAddEventHandler ["MouseButtonDblClick", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
     visibleMap;   // Prevent adding markers.
 }];
 
 
-private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
+addMissionEventHandler ["EachFrame", {
     // Alt+Tab checker. Prevents clicks are keys progressing though alt+tab
     if ("alt" in A3A_NGSA_depressedKeysHM && A3A_NGSA_LastAltTime +1 < serverTime) then {
         {
@@ -121,11 +118,10 @@ private _missionEH_eachFrame_ID = addMissionEventHandler ["EachFrame", {
     //params ["_control"];
     call A3A_fnc_NGSA_onUIUpdate;
 }];
-[localNamespace,"A3A_NGPP","MissionEH_eachFrame_ID",_missionEH_eachFrame_ID] call Col_fnc_nestLoc_set;
 
 
 
-private _missionEH_keyDown = _map displayAddEventHandler ["KeyDown", {
+_map displayAddEventHandler ["KeyDown", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     private _return = nil;
     if ((A3A_NGSA_DIKToKeyName getOrDefault [_key,"none"]) isEqualTo "alt") then {
@@ -136,17 +132,15 @@ private _missionEH_keyDown = _map displayAddEventHandler ["KeyDown", {
     };
     _return;
 }];
-private _missionEH_keyUp = _map displayAddEventHandler ["KeyUp", {
+_map displayAddEventHandler ["KeyUp", {
     params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM deleteAt (A3A_NGSA_DIKToKeyName getOrDefault [_key,_key]);
     nil;
 }];
-[localNamespace,"A3A_NGPP","missionEH_keyDown",_missionEH_keyDown] call Col_fnc_nestLoc_set;
-[localNamespace,"A3A_NGPP","missionEH_keyUp",_missionEH_keyUp] call Col_fnc_nestLoc_set;
 
 // ID 600 is not dropped in case there was a critical error that did not halt the process.
 [0] call A3A_fnc_NGSA_action_changeTool;
-[0,true] call A3A_fnc_NGSA_action_changeColours;
+[0,false] call A3A_fnc_NGSA_action_changeColours;
 [
     "General",
     "<t color='#f0d498'>'F'</t>-Cycle Tool<br/>"+

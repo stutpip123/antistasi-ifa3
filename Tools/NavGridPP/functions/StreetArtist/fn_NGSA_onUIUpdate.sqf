@@ -37,10 +37,10 @@ switch (A3A_NGSA_clickModeEnum) do {
         [_worldPos] call A3A_fnc_NGSA_hover_modeBrush;
     };
     case 2: {       // Toggle Render region
-
+        // Soon™
     };
-    default {       // Error
-
+    default {
+        throw ["IndexOutOfBounds","A3A_NGSA_clickModeEnum must be between 0 and 2 inclusively."];
     };
 };
 

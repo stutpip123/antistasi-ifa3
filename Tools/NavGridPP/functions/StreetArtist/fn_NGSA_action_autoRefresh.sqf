@@ -13,6 +13,7 @@ Public: No
 
 Dependencies:
     <SCALAR> A3A_NGSA_clickModeEnum Currently select click mode
+    <SCALAR> A3A_NGSA_dotBaseSize Required for island sizing.
 
 Example:
     call A3A_fnc_NGSA_action_autoRefresh;

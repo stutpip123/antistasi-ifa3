@@ -36,6 +36,9 @@ A3A_NGSA_autoMarkerRefreshNodeMax = 2000;
 A3A_NGSA_dotBaseSize = 1.2;
 A3A_NGSA_lineBaseSize = 4;
 
+A3A_NGSA_const_nodeConnectionColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
+A3A_NGSA_const_nodeMarkerTypes = ["mil_dot","mil_triangle"];
+
 // Used to detect whether the user has returned from an alt-tab.
 A3A_NGSA_LastAltTime = 0;
 
@@ -66,7 +69,7 @@ private _purples = ["ColorCIV","Color5_FD_F"];  // ColorCIV == colorCivilian
 
 private _fnc_reverseEach = {
     private _a = [];
-    _this apply {_a=+_x; reverse _a, _a};
+    _this apply {_a=+_x; reverse _a; _a};
 };
 A3A_NGSA_const_allMarkerColours = [];
 private _allPallets = [_greens,_purples,_oranges,_khakis,_yellows,_blues] call _fnc_reverseEach;
@@ -83,3 +86,7 @@ reverse A3A_NGSA_const_allMarkerColours;    // Push the brighter colours to the 
 A3A_NGSA_const_allMarkerColoursCount = count A3A_NGSA_const_allMarkerColours;
 A3A_NGSA_const_markerColourAccent1 = _reds#2;
 A3A_NGSA_const_markerColourAccent2 = _reds#1;
+
+
+
+

@@ -1,11 +1,14 @@
 /*
 Maintainer: Caleb Serafin
-    Removes a _roadStruct reference from posRegions
+    Performs per node actions:
+    Select and deselecting nodes.
+    Connecting and disconnecting nodes.
+    Adding and removing nodes.
 
 Arguments:
     <POS2D> _worldPos
     <BOOLEAN> _shift
-    <BOOLEAN> _ctrl
+    <BOOLEAN> _ctrl, Currently unused.
     <BOOLEAN> _alt
 
 Return Value:
@@ -37,7 +40,8 @@ private _select = {
 
 private _actionFired = true;
 switch (true) do {       // Broadcast here.
-    case ("shift" in A3A_NGSA_depressedKeysHM && !A3A_NGSA_modeConnect_targetExists): {
+    // Add a node by holding shift and clicking.
+    case (_shift && !A3A_NGSA_modeConnect_targetExists): {
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _posRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
         if ([A3A_NGSA_UI_marker0_pos, _navGridHM, _posRegionHM] call A3A_fnc_NGSA_canAddPos) then {
@@ -58,8 +62,10 @@ switch (true) do {       // Broadcast here.
             call A3A_fnc_NGSA_action_autoRefresh;
         };
     };
+    // Deselect node by clicking into empty space.
     case (A3A_NGSA_modeConnect_selectedExists && !A3A_NGSA_modeConnect_targetExists): _deselect;
-    case ("alt" in A3A_NGSA_depressedKeysHM): {
+    // Deselect node then delete node under cursor by holding alt.
+    case (_alt): {
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
         private _posRegionHM = [localNamespace,"A3A_NGPP","navGridPosRegionHM",0] call Col_fnc_nestLoc_get;
         [_navGridHM,A3A_NGSA_UI_marker0_pos] call A3A_fnc_NGSA_node_disconnect;
@@ -71,8 +77,11 @@ switch (true) do {       // Broadcast here.
         _markerStructs deleteAt _name;
         call A3A_fnc_NGSA_action_autoRefresh;
     };
+    // Select node
     case (!A3A_NGSA_modeConnect_selectedExists && A3A_NGSA_modeConnect_targetExists): _select;
+    // Deselect by clicking on same node.
     case (A3A_NGSA_modeConnect_selectedExists && (A3A_NGSA_modeConnect_selectedNode isEqualTo A3A_NGSA_modeConnect_targetNode)): _deselect;
+    // Connect two nodes.
     case (A3A_NGSA_modeConnect_selectedExists && A3A_NGSA_modeConnect_targetExists): {
         private _isConnected = [A3A_NGSA_modeConnect_selectedNode,A3A_NGSA_modeConnect_targetNode,A3A_NGSA_modeConnect_roadTypeEnum] call A3A_fnc_NGSA_toggleConnection;
         private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
@@ -86,6 +95,7 @@ switch (true) do {       // Broadcast here.
         call A3A_fnc_NGSA_refreshMarkerOrder;
         call A3A_fnc_NGSA_action_autoRefresh;
     };
+    // This isn't likely to run. But if it does in the future due to changes, it won't do anything.
     default {
         _actionFired = nil
     }

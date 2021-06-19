@@ -1,6 +1,8 @@
 /*
 Maintainer: Caleb Serafin
-    Removes a _roadStruct reference from posRegions
+    Displays coloured markers to indicate bulk actions on nodes under selection:
+    Set node types.
+    Delete nodes.
 
 Arguments:
     <DISPLAY> _display

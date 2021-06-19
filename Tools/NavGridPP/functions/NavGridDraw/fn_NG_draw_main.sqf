@@ -46,12 +46,8 @@ if (isNil {
 }) exitWith {};
 [localNamespace,"A3A_NGPP","draw","busy", true] call Col_fnc_nestLoc_set;
 
-if (isNil {A3A_NGSA_const_allMarkerColours}) then {
-};
-
-private _fnc_diag_report = {};
-if (!_silent) then {
-    _fnc_diag_report = {
+private _fnc_diag_report = if (_silent) then {{}} else {
+    {
         params ["_diag_step_main"];
 
         [3,_diag_step_main,"fn_NG_main"] call A3A_fnc_log;

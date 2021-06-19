@@ -27,10 +27,10 @@ private _radius = 0.5 * (_myPos distance2D _otherPos);
 private _azimuth = _myPos getDir _otherPos;
 private _centre = (_myPos vectorAdd _otherPos) vectorMultiply 0.5;
 
-if !(_exists) then {
-    createMarkerLocal [_name, _centre];
-} else {
+if (_exists) then {
     _name setMarkerPosLocal _centre;
+} else {
+    createMarkerLocal [_name, _centre];
 };
 
 _name setMarkerDirLocal _azimuth;

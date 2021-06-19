@@ -31,14 +31,16 @@ params [
     ["_roadRequirement","any",[""]]
 ];
 
-assert (A3A_NG_const_positionInaccuracy < 100); // This is the minimum distance returned by adjacent navRegions.
+private _isOffroad = (
+    nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false]
+    select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}}
+) isEqualTo A3A_NG_const_emptyArray;
 
-private _isOffroad = (nearestTerrainObjects [_pos, A3A_NG_const_roadTypeEnum, A3A_NG_const_positionInaccuracy, false, false] select {!isNil{getRoadInfo _x #0} && {getRoadInfo _x #0 in A3A_NG_const_roadTypeEnum}}) isEqualTo A3A_NG_const_emptyArray;
-if !(
+if (
     switch (toLower _roadRequirement) do {
-        case "onroad": { !_isOffroad };
-        case "offroad": { _isOffroad };
-        default { true };
+        case "onroad": { _isOffroad };
+        case "offroad": { !_isOffroad };
+        default { false };
     }
 ) exitWith {false};
 private _doublePosInaccuracy = 2 * A3A_NG_const_positionInaccuracy;

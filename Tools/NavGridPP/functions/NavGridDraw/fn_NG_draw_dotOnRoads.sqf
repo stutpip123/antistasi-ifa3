@@ -1,7 +1,7 @@
 /*
 Maintainer: Caleb Serafin
     Places a map marker on points.
-    Previous markers make by this function are deleted.
+    Previous markers made by this function are deleted.
     Colour depends on number of connections:
         0  -> Black
         1  -> Red
@@ -19,7 +19,7 @@ Arguments:
 Return Value:
     <ANY> undefined.
 
-Scope: Server/Server&HC/Clients/Any, Local Arguments/Global Arguments, Local Effect/Global Effect
+Scope: Server, Global Effect
 Environment: Scheduled (Recommended) | Any (If small navGrid like Stratis, Malden)
 Public: Yes
 

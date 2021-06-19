@@ -20,6 +20,7 @@ params [
     ["_specificTool",nil,[0]]
 ];
 
+A3A_NGSA_toolModeChanged = true;    // Used by UI functions for resetting cursor marker states.
 if (isNil{_specificTool}) then {
     A3A_NGSA_clickModeEnum = (A3A_NGSA_clickModeEnum + 1) mod 2;
 } else {
@@ -40,8 +41,8 @@ private _legends = [
     "<t color='#f0d498'>'C'</t>-Cycle connection type.<br/>"+
     " "      // Extra line so make it same length as connection tool. This avoids common visual jumping when switching tools.
 ];
-
-private _selectorText = ["Connection","Brush"];   // Use a special space for the underlining to work.
+// The text uses a non-breaking space for the underlining to work. Find in CharMap or google key combination for your local system.
+private _selectorText = ["Connection","Brush"];
 private _selectorTextPlain = _selectorText #A3A_NGSA_clickModeEnum;
 _selectorText set [A3A_NGSA_clickModeEnum, "<t color='#f0d498' size='"+str(A3A_NGSA_baseTextSize)+"'>"+_selectorTextPlain+"</t>"];
 [

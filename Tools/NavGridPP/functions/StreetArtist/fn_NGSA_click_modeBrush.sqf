@@ -1,11 +1,13 @@
 /*
 Maintainer: Caleb Serafin
-    Removes a _roadStruct reference from posRegions. Fast.
+    Performs bulk actions on nodes under selection:
+    Set node types.
+    Delete nodes.
 
 Arguments:
     <POS2D> _worldPos
-    <BOOLEAN> _shift
-    <BOOLEAN> _ctrl
+    <BOOLEAN> _shift unused for now
+    <BOOLEAN> _ctrl unused for now
     <BOOLEAN> _alt
 
 Return Value:

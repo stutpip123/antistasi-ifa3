@@ -1,6 +1,10 @@
 /*
 Maintainer: Caleb Serafin
-    Gets positions within 9 regions centred on pos.
+    Gets positions within 9 regions centred on pos. The position returned with be in the following order.
+    Where Each square is a region of positions, Pos is marked P and is ordered 5th:
+    3|6|9
+    2|P|8
+    1|4|7
     Much faster than fn_NGSA_posRegionHM_pixelRadius with 100m radius.
 
 Arguments:

@@ -4,7 +4,7 @@ Maintainer: Caleb Serafin
     Does not modify the input.
 
 Arguments:
-    <POS2D || POS3D> Y and Y coordinate, Z is unused can can be omitted.
+    <POS2D || POS3D> X and Y coordinate, Z is unused can can be omitted.
     <SCALAR> Z Position ATL to start scanning terrain height. 1000m leaves 3 decimal place precision, bigger numbers lose precision. [Default=1000]
 
 Return Value:

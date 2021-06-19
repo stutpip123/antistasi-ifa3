@@ -30,7 +30,6 @@ if (!visibleMap) exitWith {nil};
 
 if ("f" in A3A_NGSA_depressedKeysHM) then {
     [] call A3A_fnc_NGSA_action_changeTool;
-    A3A_NGSA_toolModeChanged = true;
 };
 if ("c" in A3A_NGSA_depressedKeysHM) then {
     A3A_NGSA_modeConnect_roadTypeEnum = (A3A_NGSA_modeConnect_roadTypeEnum + 1) mod 3; // 0, 1 ,2
@@ -40,7 +39,7 @@ if ("c" in A3A_NGSA_depressedKeysHM) then {
 private _actionExecuted = true;
 switch (true) do {
     case ((A3A_NGSA_depressedKeysHM getOrDefault ["s",[]]) isEqualTo [false,true,false]): {   // ctrl + s
-        call A3A_fnc_NGSA_action_save;
+        [] call A3A_fnc_NGSA_action_save;
     };
     case ((A3A_NGSA_depressedKeysHM getOrDefault ["r",[]]) isEqualTo [false,true,false]): {   // ctrl + r
         [] spawn A3A_fnc_NGSA_action_refresh;

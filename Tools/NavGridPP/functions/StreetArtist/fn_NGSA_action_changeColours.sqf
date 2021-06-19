@@ -4,7 +4,7 @@ Maintainer: Caleb Serafin
 
 Arguments:
     <NIL> cycle colour mode. | <STRING|INTEGER> switch to specific colour mode. [Default = nil]
-    <BOOLEAN> Skip automatic refresh. [Default = false]
+    <BOOLEAN> Perform automatic refresh. [Default = true]
 
 Return Value:
     <ANY> undefined.
@@ -22,7 +22,7 @@ Example:
 */
 params [
     ["_specificColourMode",nil,["",0]],
-    ["_noRefresh",false,[false]]
+    ["_refresh",true,[false]]
 ];
 
 private _colourModes = ["normal","normalOffroad","islandID","islandIDDeadEnd"];
@@ -37,46 +37,47 @@ _newColourMode = _colourModes #_colourModeIndex;
 [localNamespace,"A3A_NGPP","draw","specialColouring", _newColourMode] call Col_fnc_nestLoc_set;
 
 private _proceduralTextureLine = "<t size='"+str(0.3*A3A_NGSA_baseTextSize)+"'><img image='#(argb,4,4,1)color(1,1,1,1)'/><img image='#(argb,4,4,1)color(1,1,1,1)'/></t>";
+// The titles use a non-breaking space for the underlining to work. Find in CharMap or google key combination for your local system.
 private _legends = [
     // normal
-    "<t align='right' underline='1'>Connection Types</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t align='right' underline='1'>Connection Types</t><br/>"+
     "<t color='#f57a21'>"+_proceduralTextureLine+"</t> OrangeTrack- dirt/narrow/bumpy<br/>"+
     "<t color='#cfc01c'>"+_proceduralTextureLine+"</t> Yellow Road- asphalt/cement/smooth<br/>"+
     "<t color='#26c91e'>"+_proceduralTextureLine+"</t> Green Main Road- smooth/wide/large turns<br/>"+
-    "<t align='right' underline='1'>Connections per Node</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t align='right' underline='1'>Connections per Node</t><br/>"+
     "<img color='#cccccc' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Black:0   <img color='#c12726' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Red:1   <img color='#f57a21' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Orange:2<br/>"+
     "<img color='#cfc01c' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Yellow:3   <img color='#26c91e' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Green:4   <img color='#1fbbfc' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Blue:5+<br/>"+
-    "<t align='right' underline='1'>Node Types</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t align='right' underline='1'>Node Types</t><br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Dot- Road within "+(100 * A3A_NG_const_positionInaccuracy toFixed 0)+" cm.<br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\triangle_CA'/>Triangle- Off road.<br/>"+
     "<img color='#7e44c1' image='a3\ui_f\data\Map\Markers\Military\flag_CA'/>Purple Flag- Island Label.",
     // normalOffroad
-    "<t align='right' underline='1'>Connection Types</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t align='right' underline='1'>Connection Types</t><br/>"+
     "<t color='#f57a21'>"+_proceduralTextureLine+"</t> OrangeTrack- dirt/narrow/bumpy<br/>"+
     "<t color='#cfc01c'>"+_proceduralTextureLine+"</t> Yellow Road- asphalt/cement/smooth<br/>"+
     "<t color='#26c91e'>"+_proceduralTextureLine+"</t> Green Main Road- smooth/wide/large turns<br/>"+
-    "<t align='right' underline='1'>Connections per Node</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t align='right' underline='1'>Connections per Node</t><br/>"+
     "<img color='#8c9b5b' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Khaki Dot- Connected road within "+(100 * A3A_NG_const_positionInaccuracy toFixed 0)+" cm.<br/>"+
     "<img color='#c12726' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Red Dot- Dead end.<br/>"+
     "<img color='#e65a5a' image='a3\ui_f\data\Map\Markers\Military\triangle_CA'/>Pink Triangle- Off road.<br/>"+
     "<img color='#790e0d' image='a3\ui_f\data\Map\Markers\Military\triangle_CA'/>Dark Red Triangle- Off road &amp; Dead end.<br/>"+
     "<img color='#7e44c1' image='a3\ui_f\data\Map\Markers\Military\flag_CA'/>Purple Flag- Island Label.",
     // islandID
-    "<t align='right' underline='1'>Node Types</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t align='right' underline='1'>Node Types</t><br/>"+
     "Islands are separated by "+ str A3A_NGSA_const_allMarkerColoursCount +" colours.<br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Dot- Road within "+(100 * A3A_NG_const_positionInaccuracy toFixed 0)+" cm.<br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\triangle_CA'/>Triangle- Off road.<br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\flag_CA'/>Flag- Island Label.",
     // islandIDDeadEnd
-    "<t align='right' underline='1'>Node Types</t><br/>"+   // The titles use a special space for the underlining to work.
+    "<t align='right' underline='1'>Node Types</t><br/>"+
     "Islands are separated by "+ str A3A_NGSA_const_allMarkerColoursCount +" colours.<br/>"+
     "<img color='#c12726' image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Red Dot- Dead end.<br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\dot_CA'/>Dot- Road within "+(100 * A3A_NG_const_positionInaccuracy toFixed 0)+" cm.<br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\triangle_CA'/>Triangle- Off road.<br/>"+
     "<img image='a3\ui_f\data\Map\Markers\Military\flag_CA'/>Flag- Island Label."
 ];
-
-private _selectorText = ["Normal","Normal &amp; Offroad","Island","Island &amp; Dead-ends"];   // Use a special space for the underlining to work.
+// The text uses a non-breaking space for the underlining to work. Find in CharMap or google key combination for your local system.
+private _selectorText = ["Normal","Normal &amp; Offroad","Island","Island &amp; Dead-ends"];
 _selectorText set [_colourModeIndex, "<t color='#f0d498' size='"+str(A3A_NGSA_baseTextSize)+"'>" + (_selectorText #_colourModeIndex) + "</t>"];
 [
     "Marker Legend",
@@ -86,7 +87,7 @@ _selectorText set [_colourModeIndex, "<t color='#f0d498' size='"+str(A3A_NGSA_ba
     400
 ] call A3A_fnc_customHint;
 
-if (!_noRefresh) then {
+if (_refresh) then {
     private _navGridHM = [localNamespace,"A3A_NGPP","navGridHM",0] call Col_fnc_nestLoc_get;
     if (count _navGridHM <= A3A_NGSA_autoMarkerRefreshNodeMax) then {
         [true] spawn A3A_fnc_NGSA_action_refresh;

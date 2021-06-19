@@ -1,6 +1,10 @@
 /*
 Maintainer: Caleb Serafin
-    Removes a _roadStruct reference from posRegions
+    Displays coloured markers for node actions:
+    Select and deselecting nodes.
+    Connecting and disconnecting nodes.
+    Adding and removing nodes.
+    May also set variables up for click_modeConnect.
 
 Arguments:
     <DISPLAY> _display

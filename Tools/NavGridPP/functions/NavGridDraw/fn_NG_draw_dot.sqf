@@ -44,8 +44,6 @@ private _markerStructs = [localNamespace,"A3A_NGPP","draw","markers_road", creat
 private _pos = _struct#0;
 private _name = "A3A_NG_Dot_"+str _pos;
 if (_dot_size > 0) then {
-    private _const_countColours = createHashMapFromArray [[0,"ColorBlack"],[1,"ColorRed"],[2,"ColorOrange"],[3,"ColorYellow"],[4,"ColorGreen"]];
-    private _const_dot_size = [_dot_size, _dot_size];
     private _const_dot_types = ["mil_dot","mil_triangle"];
 
     private _deadEnd = count (_struct#3) < 2;
@@ -68,7 +66,7 @@ if (_dot_size > 0) then {
                 A3A_NGSA_const_allMarkerColours # ((_struct #1) mod A3A_NGSA_const_allMarkerColoursCount);
         };
         default { // none
-            _const_countColours getOrDefault [count (_struct#3) ,"ColorBlue"];
+            A3A_NGSA_const_nodeConnectionColours getOrDefault [count (_struct#3) ,"ColorBlue"];
         };
     };
 
@@ -80,12 +78,12 @@ if (_dot_size > 0) then {
 
     if (!_exists) then {
         createMarkerLocal [_name,_pos];
-        _name setMarkerTypeLocal (_const_dot_types select (_offRoad));   // Draw triangles where there are no roads.
+        _name setMarkerTypeLocal (A3A_NGSA_const_nodeMarkerTypes select (_offRoad));   // Draw triangles where there are no roads.
     };
     if (abs (_pos#2) >= 0.5) then {   // Display ATL height of floating points.
         _name setMarkerTextLocal ((_pos#2 toFixed 1) + "m")
     };
-    _name setMarkerSizeLocal _const_dot_size;
+    _name setMarkerSizeLocal [_dot_size, _dot_size];
     _name setMarkerColor _colour;
 } else {
     deleteMarker _name;

@@ -23,7 +23,7 @@ See [Steet Artist Editor](https://github.com/official-antistasi-community/A3-Ant
 ***
 ***
 
-# 🗺 Generate navGridDB & Open Street Artist
+# 🗺 Generate navGridDB & open the Street Artist Editor
 Executing `[] spawn A3A_fnc_NG_main` will run with default settings.<br/>
 Looking down gives the best performance during this process. You can lower render distance if it helps.<br/>
 However, you may need to tweak some arguments depending on the simplification level required for the map.<br/>
@@ -35,41 +35,14 @@ However, you may need to tweak some arguments depending on the simplification le
 So running with default settings would also look like this `[50,15,true] spawn A3A_fnc_NG_main;`<br/>
 To run with default and not edit use `[nil,nil,false] spawn A3A_fnc_NG_main;`<br/>
 Max drift is not the only thing that affects road simplification: It will only simplify if the nearestTerrainObject from its position will still return one of it's neighbouring roads. This prevents virtual convoys that are trying to spawn vehicles from jumping to another nearby road because that is the closest navGrid node.<br/>
-When starting the Street Artist editor and switch tools, in game help will display.
 
-# 📥 Import navGridDB & Open Street Artist
+# 📥 Import navGridDB & open the Street Artist Editor
 If you have already generated a navGridDB before loading the world and you do not want to regenerate it again: you can use the import function to load it into Arma 3 for viewing or editing.
 
 1. Local exec `[] spawn A3A_fnc_NGSA_main` in the debug console.
 2. Press `Continue` to close debug console. (If you press `Esc`, you will close the import dialogue!)
 3. Switch to real-life and open the navGridDB file and Copy everything.
 4. Switch to Arma 3 and paste it into the editBox and press the the import button.<br/>
-When starting the Street Artist editor and switch tools, in game help will display.
-
-# 📍 Customise Marker Size and Colours
-**Run after you have generated a navGrid or have imported one.**<br/>
-**And if the Street Artist Editor was not started.**<br/>
-To draw markers with default settings run `[] spawn A3A_fnc_NG_draw_main;`<br/>
-You can re-run this command as much as you want, everytime it will delete the old markers and redraw new. (But please wait for the last one to finish otherwise bad things will happen.)<br/>
-
-### ⚙ Here are some settings which you can tweak:
-1.  <SCALAR> Thickness of line, 1-high density, 4-normal, 8-Stratis world view, 16-Seattle world view. (Set to 0 to disable) (Default = 4)
-2.  <BOOLEAN> False if line partially transparent, true if solid and opaque. (Default = false)
-3.  <BOOLEAN> True to draw distance between road segments. (Only draws if above 5m) (Default = false)
-4.  <SCALAR> Size of road node dots. (Set to 0 to disable) (Default = 0.8)
-5.  <SCALAR> Size of island dots. (Set to 0 to disable) (Default = 1.5)
-
-Therefore, the default execution would also look like this: `[4,false,false,0.8,1] spawn A3A_fnc_NG_draw_main;`<br/>
-You will need to update these variables if using the Street Artist Editor:<br/>
-`A3A_NGSA_dotBaseSize = 1.2;`<br/>
-`A3A_NGSA_lineBaseSize = 4;`<br/>
-
-### 🆓 Presets:
-* Inspect road network overview `[6,true,false,0,1] spawn A3A_fnc_NG_draw_main;`
-* Inspect Junctions `[1,false,false,0.4,0.8] spawn A3A_fnc_NG_draw_main;`
-* Only road dots and islands: `[0,false,false,0.8,1] spawn A3A_fnc_NG_draw_main;`
-* Only large lines and distances: `[6,false,true,0,0] spawn A3A_fnc_NG_draw_main;`
-
 # 🔎 Further Reading
 See [Steet Artist Editor](https://github.com/official-antistasi-community/A3-Antistasi/wiki/Street-Artist-Editor) for A3-Antistasi navGrid Guidelines (and GIFs!).<br/>
 You can find further satisfying and accurate documentation on all sorts of things by looking into the headers of files in `./functions/NavGridPP/`.

@@ -97,6 +97,15 @@ _map displayAddEventHandler ["MouseButtonDown", {
     };
     true;   // Blocks addition of waypoint marker.
 }];
+
+onMapSingleClick "true"; // Blocks addition of waypoint marker.
+
+//prevent drawing on map
+addMissionEventHandler ["MarkerCreated", {
+	params ["_marker", "_channelNumber", "_owner", "_local"];
+    if (!isNull _owner) then {deleteMarker _marker}
+}];
+
 _map displayAddEventHandler ["MouseButtonUp", {
     params ["_display", "_button", "_xPos", "_yPos", "_shift", "_ctrl", "_alt"];
     A3A_NGSA_depressedKeysHM deleteAt (["mbt0","mbt1"]#_button);    // Will only be left or right

@@ -47,7 +47,7 @@ switch (true) do {
     case ((A3A_NGSA_depressedKeysHM getOrDefault ["d",[]]) isEqualTo [false,true,false]): {   // ctrl + d
         [] call A3A_fnc_NGSA_action_changeColours;
     };
-    case ("ctrl" in A3A_NGSA_depressedKeysHM): {   // Block drawing lines on map.
+    case (_shift || _ctrl || _alt || "ctrl" in A3A_NGSA_depressedKeysHM): {   // Block drawing lines on map. only works on first click for some reason
     };
     default {
         _actionExecuted = false;
